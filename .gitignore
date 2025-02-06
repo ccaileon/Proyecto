@@ -1,0 +1,11 @@
+# Ignorar node_modules
+node_modules/
+Back-End/node_modules/
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar logs y caché
+npm-debug.log
+yarn-error.log
+.DS_Store
