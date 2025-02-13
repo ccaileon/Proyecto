@@ -1,0 +1,151 @@
+@font-face {
+  font-family:"Holly-Jolly";
+  src: url('./assets/fonts/Holly-Jolly.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family:"Petrona-Regular";
+  src: url('./assets/fonts/Petrona-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+font-family:"Petrona-SemiBold";
+  src: url('./assets/fonts/Petrona-SemiBold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+  background-color: #FEFDFC;
+}
+
+h1 {
+  color: #293E44;
+  font-family: "Holly-Jolly";
+  font-size: 3rem;
+  margin-bottom: 5%;
+}
+
+.h1-white {
+    color: #ffffff;
+  font-family: "Holly-Jolly";
+  font-size: 3rem;
+    margin-bottom: 5%;
+}
+
+
+h2 {
+  color: #293E44;
+  font-family: "Petrona-SemiBold";
+  font-size: 5rem;
+}
+
+.h2-white {
+  color: white;
+    font-family: "Petrona-SemiBold";
+    font-size: 5rem;
+}
+
+h3 {
+    color: #293E44;
+  font-family: "Petrona-Regular";
+    font-size: 1.7rem;
+  margin-top: 0.5em;
+}
+
+.h3-white {
+    color: white;
+  font-family: "Petrona-Regular";
+    font-size: 1.7rem;
+    margin-top: 0.5em;
+}
+
+h4 {
+     color: #293E44;
+  font-family: "Petrona-Regular";
+   font-size: 1.2rem;
+}
+
+.h4-white {
+     color: #ffffff;
+  font-family: "Petrona-Regular";
+    font-size: 1.2rem;
+}
+
+.btn {
+background-color: #528796;
+font-family: "Petrona-Regular";
+color: white;
+font-size: 1.2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.btn:hover {
+  background-color: #396672;
+  color: white;
+}
+
+p {
+font-family: "Petrona-Regular";
+color: #434343;
+margin-top: 5%;
+font-size: 1.1em;
+}
+
+.p-white {
+font-family: "Petrona-Regular";
+color: white;
+margin-top: 5%;
+font-size: 1.1rem;
+}
+
+img {
+  border-radius: 20px;
+}
+
+.icon {
+  border-radius: 0px!important;
+}
+
+/* NAVBAR */
+
+.navbar .nav-item .nav-link{
+  font-family: "Petrona-Regular";
+  color: #293E44;
+  font-size: 1.2rem;
+}
+
+.navbar .nav-item .nav-link:hover {
+  color:#528796;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+  color: #528796;
+}
+
+.container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+/* FOOTER */
+
+.footer {
+  background-color: #293E44;
+  padding: 5em;
+}
+
+.footer .col-md-4 {
+  width: 33%;
+}
+
+
+
