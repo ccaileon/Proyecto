@@ -1,8 +1,11 @@
-# React + Vite
+# Pagina de Inicio (provisional)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cambios pendientes 13/02:
 
-Currently, two official plugins are available:
+• Añadir elemento para reservar habitación (stiky y global)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+• Mejorar tamaños de elemtnos y encabecabezados
+
+• Trabajar en el responsive
+
+• Arreglar texto del footer (descentrado)
