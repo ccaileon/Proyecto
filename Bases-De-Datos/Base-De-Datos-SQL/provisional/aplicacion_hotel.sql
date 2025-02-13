@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-02-2025 a las 17:57:07
+-- Tiempo de generación: 13-02-2025 a las 19:23:53
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -19,10 +19,9 @@ SET time_zone = "+00:00";
 
 --
 -- Base de datos: `aplicacion_hotel`
+--
 CREATE DATABASE aplicacion_hotel;
 USE aplicacion_hotel;
---
-
 -- --------------------------------------------------------
 
 --
@@ -31,9 +30,9 @@ USE aplicacion_hotel;
 
 CREATE TABLE `account` (
   `account_client_id` int(11) NOT NULL,
-  `account_passwd` varchar(30) NOT NULL,
+  `account_passwd` varchar(30) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `account_points` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -43,14 +42,14 @@ CREATE TABLE `account` (
 
 CREATE TABLE `client` (
   `client_id` int(11) NOT NULL,
-  `client_doc_type` varchar(10) NOT NULL,
-  `client_doc_id` varchar(10) NOT NULL,
-  `client_name` varchar(20) NOT NULL,
-  `client_surname_one` varchar(20) NOT NULL,
-  `client_surname_two` varchar(20) NOT NULL,
+  `client_doc_type` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_doc_id` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_name` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_surname_one` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_surname_two` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `client_telephone` int(20) NOT NULL,
-  `client_email` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+  `client_email` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `client`
@@ -68,22 +67,22 @@ INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_n
 CREATE TABLE `employee` (
   `emp_id` int(11) NOT NULL,
   `emp_doc_id` int(10) NOT NULL,
-  `emp_name` varchar(10) NOT NULL,
-  `emp_surname_one` varchar(10) NOT NULL,
-  `emp_surname_two` varchar(10) NOT NULL,
+  `emp_name` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `emp_surname_one` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `emp_surname_two` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `emp_telephone` int(10) NOT NULL,
-  `emp_email` varchar(20) NOT NULL,
+  `emp_email` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `emp_manager_id` int(11) NOT NULL,
-  `emp_password` varchar(20) NOT NULL,
-  `emp_hotel_id` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `emp_password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `emp_hotel_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `employee`
 --
 
 INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`) VALUES
-(1, 12345678, 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, 'password123', '1');
+(1, 12345678, 'Juan', 'P??rez', 'G??mez', 987654321, 'juan.perez@email.com', 1, 'password123', '1');
 
 -- --------------------------------------------------------
 
@@ -95,9 +94,9 @@ CREATE TABLE `employee_reservation_log` (
   `log_res_id` int(11) NOT NULL,
   `log_emp_id` int(11) NOT NULL,
   `log_op_date` datetime NOT NULL,
-  `log_db_query` text NOT NULL,
-  `log_db_original` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+  `log_db_query` text CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `log_db_original` text CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -107,16 +106,16 @@ CREATE TABLE `employee_reservation_log` (
 
 CREATE TABLE `hotel` (
   `hotel_id` int(6) NOT NULL,
-  `hotel_address` varchar(20) NOT NULL,
+  `hotel_address` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `hotel_telephone` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `hotel`
 --
 
 INSERT INTO `hotel` (`hotel_id`, `hotel_address`, `hotel_telephone`) VALUES
-(1, 'Calle Ejemplo 123, C', 123456789);
+(1, 'Avenida Denia 123, C', 123456789);
 
 -- --------------------------------------------------------
 
@@ -129,12 +128,12 @@ CREATE TABLE `invoice` (
   `invoice_client_id` int(6) NOT NULL,
   `invoice_res_id` int(6) NOT NULL,
   `ivoice_date` date NOT NULL,
-  `invoice_pay_method` varchar(10) NOT NULL,
+  `invoice_pay_method` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `invoice_code_transact` int(20) NOT NULL,
   `invoice_points_used` int(10) NOT NULL,
-  `invoice_details` text NOT NULL,
+  `invoice_details` text CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `invoice_total_price` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -156,20 +155,13 @@ CREATE TABLE `reservation` (
   `res_is_closed` tinyint(1) NOT NULL,
   `res_checkin_by` int(6) NOT NULL,
   `res_checkout_by` int(6) NOT NULL,
-  `res_observations` text NOT NULL,
+  `res_observations` text CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
   `res_wants_double` tinyint(1) NOT NULL,
   `res_file_one` int(11) DEFAULT NULL,
   `res_file_two` int(11) DEFAULT NULL,
   `res_file_three` int(11) DEFAULT NULL,
   `res_add_points` int(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
-
---
--- Volcado de datos para la tabla `reservation`
---
-
-INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`) VALUES
-(1, 1, 1, 1, '2025-02-15', '2025-02-20', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 1, 1, '', 0, NULL, NULL, NULL, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -180,16 +172,31 @@ INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_h
 CREATE TABLE `room` (
   `room_id` int(11) NOT NULL,
   `room_hotel_id` int(11) NOT NULL,
-  `room_type` varchar(10) NOT NULL,
-  `room_capacity` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+  `room_type` varchar(20) NOT NULL,
+  `room_base_price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `room`
 --
 
-INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`) VALUES
-(1, 1, 'suite', 2);
+INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_base_price`) VALUES
+(100, 1, 'standard', 65.00),
+(101, 1, 'standard', 65.00),
+(102, 1, 'standard', 65.00),
+(103, 1, 'standard', 65.00),
+(104, 1, 'standard', 65.00),
+(105, 1, 'standard-family', 80.00),
+(106, 1, 'standard-family', 80.00),
+(107, 1, 'plus', 100.00),
+(108, 1, 'plus-family', 120.00),
+(109, 1, 'plus-jacuzzi', 130.00),
+(110, 1, 'standard-family', 120.00),
+(200, 1, 'plus-views', 150.00),
+(201, 1, 'plus-jacuzzy-views', 170.00),
+(202, 1, 'plus-jacuzzi', 150.00),
+(401, 1, 'suite', 200.00),
+(402, 1, 'presidential', 220.00);
 
 -- --------------------------------------------------------
 
@@ -202,7 +209,39 @@ CREATE TABLE `shift` (
   `shift_date_in` datetime(6) NOT NULL,
   `shift_date_out` datetime(6) NOT NULL,
   `hours_worked` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `type_room`
+--
+
+CREATE TABLE `type_room` (
+  `room_type` varchar(20) NOT NULL,
+  `room_capacity` int(1) NOT NULL,
+  `room_mts_square` decimal(10,0) NOT NULL,
+  `room_has_views` tinyint(1) NOT NULL,
+  `room_has_jacuzzi` tinyint(1) NOT NULL,
+  `room_has_balcony` int(11) NOT NULL,
+  `room_has_service` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `type_room`
+--
+
+INSERT INTO `type_room` (`room_type`, `room_capacity`, `room_mts_square`, `room_has_views`, `room_has_jacuzzi`, `room_has_balcony`, `room_has_service`) VALUES
+('plus', 2, 22, 0, 0, 0, 1),
+('plus-family', 4, 30, 0, 0, 0, 1),
+('plus-family-views', 4, 30, 1, 0, 0, 1),
+('plus-jacuzzi', 2, 22, 0, 1, 0, 1),
+('plus-jacuzzy-views', 2, 22, 1, 1, 0, 1),
+('plus-views', 2, 22, 1, 0, 0, 1),
+('presidential', 4, 40, 1, 1, 1, 1),
+('standard', 2, 18, 0, 0, 0, 0),
+('standard-family', 4, 25, 0, 0, 0, 0),
+('suite', 4, 30, 1, 1, 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -262,13 +301,20 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `room`
   ADD PRIMARY KEY (`room_id`,`room_hotel_id`) USING BTREE,
-  ADD KEY `room-hotel` (`room_hotel_id`);
+  ADD KEY `room-hotel` (`room_hotel_id`),
+  ADD KEY `room-type` (`room_type`);
 
 --
 -- Indices de la tabla `shift`
 --
 ALTER TABLE `shift`
   ADD PRIMARY KEY (`shift_emp_id`);
+
+--
+-- Indices de la tabla `type_room`
+--
+ALTER TABLE `type_room`
+  ADD PRIMARY KEY (`room_type`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -303,12 +349,6 @@ ALTER TABLE `invoice`
 --
 ALTER TABLE `reservation`
   MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT de la tabla `room`
---
-ALTER TABLE `room`
-  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -347,7 +387,8 @@ ALTER TABLE `reservation`
 -- Filtros para la tabla `room`
 --
 ALTER TABLE `room`
-  ADD CONSTRAINT `room-hotel` FOREIGN KEY (`room_hotel_id`) REFERENCES `hotel` (`hotel_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `room-hotel` FOREIGN KEY (`room_hotel_id`) REFERENCES `hotel` (`hotel_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `room-type` FOREIGN KEY (`room_type`) REFERENCES `type_room` (`room_type`);
 
 --
 -- Filtros para la tabla `shift`
