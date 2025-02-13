@@ -1,7 +1,12 @@
+import Formulario from "./Formulario";
+
 function Login() {
 
   return(
-<h1>Inicio de Sesión</h1>
+    <div>
+<Formulario />
+
+</div>
   );
 
 }

@@ -1,7 +1,9 @@
+import FormularioRegistro from "./FormularioRegistro";
+
 function Registro() {
 
   return(
-<h1>Registro</h1>
+<FormularioRegistro />
   );
 
 }
