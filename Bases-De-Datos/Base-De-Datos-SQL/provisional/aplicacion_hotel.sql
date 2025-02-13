@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-02-2025 a las 19:23:53
+-- Tiempo de generación: 13-02-2025 a las 22:17:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -19,9 +19,10 @@ SET time_zone = "+00:00";
 
 --
 -- Base de datos: `aplicacion_hotel`
---
 CREATE DATABASE aplicacion_hotel;
 USE aplicacion_hotel;
+--
+
 -- --------------------------------------------------------
 
 --
@@ -42,21 +43,23 @@ CREATE TABLE `account` (
 
 CREATE TABLE `client` (
   `client_id` int(11) NOT NULL,
+  `client_nacionality` varchar(100) NOT NULL,
   `client_doc_type` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  `client_doc_id` varchar(10) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  `client_name` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  `client_surname_one` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  `client_surname_two` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_doc_id` varchar(30) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_name` varchar(50) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_surname_one` varchar(50) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  `client_surname_two` varchar(50) CHARACTER SET ascii COLLATE ascii_general_ci DEFAULT NULL,
+  `client_prefix` int(4) NOT NULL,
   `client_telephone` int(20) NOT NULL,
-  `client_email` varchar(20) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL
+  `client_email` varchar(100) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `client`
 --
 
-INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(1, 'passport', 'passportnu', 'daniel', 'manogil', 'Lasheras', 2147483647, 'daniel@gmail.com');
+INSERT INTO `client` (`client_id`, `client_nacionality`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_prefix`, `client_telephone`, `client_email`) VALUES
+(1, '', 'passport', 'passportnu', 'daniel', 'manogil', 'Lasheras', 0, 2147483647, 'daniel@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -162,6 +165,13 @@ CREATE TABLE `reservation` (
   `res_file_three` int(11) DEFAULT NULL,
   `res_add_points` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `reservation`
+--
+
+INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`) VALUES
+(2, 1, 100, 1, '2025-02-05', '2025-02-15', '2025-02-05 19:30:52.000000', '2025-02-15 19:30:52.000000', 0, 0, 0, 1, 1, '', 0, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -348,7 +358,7 @@ ALTER TABLE `invoice`
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
