@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt"); // Importamos bcrypt para hashear la contraseña
 const connection = require("../config/db");
 
 const deleteClient = (req, res) => {
@@ -38,6 +39,7 @@ const updateClient = (req, res) => {
     !client_telephone ||
     !client_email
   ) {
+    console.log("❌ Faltan datos en la solicitud");
     return res.status(400).json({ error: "All fields are required" });
   }
 
@@ -62,7 +64,7 @@ const updateClient = (req, res) => {
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "Client not found" });
     }
-    return res.json({ message: "Client successfully updated" }); // ✅ Se asegura de enviar una respuesta
+    return res.json({ message: "Client successfully updated" });
   });
 };
 
@@ -92,52 +94,72 @@ const getClientById = (req, res) => {
   });
 };
 
-const createClient = (req, res) => {
+// 🚀 Aquí agregamos el console.log para depurar
+const createClient = async (req, res) => {
+  console.log("🔍 Datos recibidos en el backend:", req.body);
+
   const {
-    client_doc_type,
-    client_doc_id,
     client_name,
     client_surname_one,
     client_surname_two,
     client_telephone,
     client_email,
+    contraseña, // <-- Ahora manejamos la contraseña correctamente
   } = req.body;
 
   if (
-    !client_doc_type ||
-    !client_doc_id ||
     !client_name ||
     !client_surname_one ||
-    !client_surname_two ||
     !client_telephone ||
-    !client_email
+    !client_email ||
+    !contraseña // <-- Validamos que la contraseña se envíe
   ) {
-    return res.status(400).json({ error: "All fields are required" });
+    console.log("❌ Faltan datos obligatorios en la solicitud");
+    return res.status(400).json({ error: "Required fields are missing" });
   }
 
-  const sql =
-    "INSERT INTO client (client_doc_type, client_doc_id, client_name, client_surname_one, client_surname_two, client_telephone, client_email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const values = [
-    client_doc_type,
-    client_doc_id,
-    client_name,
-    client_surname_one,
-    client_surname_two,
-    client_telephone,
-    client_email,
-  ];
+  try {
+    // **Paso 1: Hashear la contraseña antes de almacenarla**
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
 
-  connection.query(sql, values, (err, results) => {
-    if (err) {
-      console.error("❌ Error creating client:", err);
-      res.status(500).json({ error: "Internal server error" });
-    } else {
-      res.status(201).json({
-        message: "Client successfully created",
-        clientID: results.insertId,
+    // **Paso 2: Insertar el cliente en la tabla `client`**
+    const sqlClient =
+      "INSERT INTO client (client_name, client_surname_one, client_surname_two, client_telephone, client_email) VALUES (?, ?, ?, ?, ?)";
+
+    const valuesClient = [
+      client_name,
+      client_surname_one,
+      client_surname_two,
+      client_telephone,
+      client_email,
+    ];
+
+    connection.query(sqlClient, valuesClient, (err, results) => {
+      if (err) {
+        console.error("❌ Error creando cliente:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      const clientId = results.insertId; // Obtenemos el ID del cliente insertado
+
+      // **Paso 3: Insertar la cuenta en la tabla `account`**
+      const sqlAccount =
+        "INSERT INTO account (account_client_id, account_passwd, account_points) VALUES (?, ?, ?)";
+
+      const valuesAccount = [clientId, hashedPassword, 0]; // Inicializamos puntos en 0
+
+      connection.query(sqlAccount, valuesAccount, (err, results) => {
+        if (err) {
+          console.error("❌ Error creando cuenta:", err);
+          return res.status(500).json({ error: "Internal server error" });
+        }
+        res.status(201).json({ message: "Cliente y cuenta creados con éxito" });
       });
-    }
-  });
+    });
+  } catch (error) {
+    console.error("❌ Error general en el registro:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 module.exports = {

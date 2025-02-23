@@ -5,13 +5,22 @@ function FormularioRegistro() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data); 
-    // ENVÍO DE DATOS AL SERVIDOR
+    console.log("📩 Datos enviados desde el frontend:", data);
+  
+    const formattedData = {
+      client_name: data.nombre,
+      client_surname_one: data.primerApellido,
+      client_surname_two: data.segundoApellido || "",
+      client_telephone: data.telefono,
+      client_email: data.correo,
+      contraseña: data.contraseña // <-- Enviamos la contraseña correctamente
+    };
+  
     try {
-      const response = await axios.post("ENLACE-API", data);
-      console.log("Registro efectuado correctamente: ", response.data);
+      const response = await axios.post("http://localhost:3000/api/clients", formattedData);
+      console.log("✅ Registro efectuado correctamente:", response.data);
     } catch (error) {
-      console.error("Error en el registro: ", error);
+      console.error("❌ Error en el registro:", error);
     }
   };
 

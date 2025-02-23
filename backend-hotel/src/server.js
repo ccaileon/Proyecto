@@ -6,6 +6,7 @@ const employeesRoutes = require("./routes/employees.routes"); // ✅ Importa las
 const reservationRoutes = require("./routes/reservations.routes"); // Importa las rutas de reservaciones
 const clientsRoutes = require("./routes/clients.routes"); // Otras rutas
 const db = require("./config/db");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use("/api/rooms", roomRoutes);
 app.use("/api/reservations", reservationRoutes); // ✅ Registra las rutas de reservaciones
 app.use("/api/employees", employeesRoutes); // ✅ Registra las rutas de empleados
 app.use("/api/clients", clientsRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
