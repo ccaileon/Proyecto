@@ -6,7 +6,7 @@ import Servicios from "./pages/Servicios/Servicios.jsx";
 import Contacto from "./pages/Contacto/Contacto.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Registro from "./pages/Registro/Registro.jsx";
-import EmployeeLogin from "./pages/employeeRoutes/employee-login/EmployeeLogin.jsx";
+import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
 import Footer from "./components/Footer.jsx"
 import "./index.css";
 
@@ -24,8 +24,8 @@ function App() {
         <Route path="/registro" element={<Registro />} />
        <Route path="/employee" element={<EmployeeLogin/>}/>
     </Routes>
-    <Footer/>
   </div>
+  <Footer/>
 </Router>
   )
 }
