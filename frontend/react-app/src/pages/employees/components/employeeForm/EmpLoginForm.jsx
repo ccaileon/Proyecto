@@ -8,7 +8,7 @@ const EmpLoginForm = () => {
     //{errors.emailAdmin?.type === 'required' && <p>El campo nombre es requerido</p>}
     //{errors.emailAdmin?.type === 'pattern' && <p>El correo no está bien</p>}
     return (
-            <Container className="z-3 position-sticky justify-content-center vw-100 vh-100 d-flex">
+            <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex ">
                 <Col xs={12} md={10} lg={8} xl={5}>
                 <FormProvider>
                             <Form.Label className="mt-2">Email:</Form.Label>  
