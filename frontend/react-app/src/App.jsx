@@ -13,6 +13,7 @@ import "./index.css";
 function App() {
   return(
 <Router>
+  <Navbar/>
   <div className="pages-container">
     <Routes>
       <Route path="/" element={<Inicio />} />
@@ -24,6 +25,7 @@ function App() {
        <Route path="/employee" element={<EmployeeLogin/>}/>
     </Routes>
   </div>
+  <Footer/>
 </Router>
   )
 }
