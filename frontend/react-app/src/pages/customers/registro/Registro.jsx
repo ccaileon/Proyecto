@@ -1,4 +1,4 @@
-import FormularioRegistro from "./FormularioRegistro";
+import FormularioRegistro from "./components/FormularioRegistro";
 
 function Registro() {
 
