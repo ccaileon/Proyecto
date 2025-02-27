@@ -1,42 +1,28 @@
-import "./banner.css"
-{/*import { useEffect } from 'react';*/}
+import "./banner.css";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 function Banner() {
-{/*useEffect(() => { BUG, NO FUNCIONA
-    const handleScroll = () => {
-      let scrollPosition = window.scrollY;
-      let banner = document.querySelector(".banner-inicio");
-
-      if (banner) {
-
-        let newBackgroundPosition = scrollPosition * -0.5 + "px"; 
-        banner.style.backgroundPosition = "center " + newBackgroundPosition;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);*/}
-  return(
-
-    <div className="container-fluid banner-inicio" id="banner-inicio">
-      <div className="container">
- <div className='row'>
-          <div className='col-8'>
+  return (
+    <div className="banner-inicio" id="banner-inicio">
+      <Container>
+        <Row>
+          <Col md={8} className="col-8">
             <h1>Descubre Almería</h1>
             <h3>Parque Natural Cabo de Gata</h3>
-            <p>Nos encontramos en la prestigiosa zona del <b>Parque Natural de Cabo de Gata</b>, un paraíso único donde las dunas doradas se encuentran con aguas cristalinas, creando un auténtico oasis de <b>tranquilidad y belleza natural.</b></p>
-         <a href="#cabecera">
-  <button className="btn">Haz tu Reserva</button>
-</a>
-          </div>
+            <p>
+              Nos encontramos en la prestigiosa zona del{" "}
+              <b>Parque Natural de Cabo de Gata</b>, un paraíso único donde las
+              dunas doradas se encuentran con aguas cristalinas, creando un
+              auténtico oasis de <b>tranquilidad y belleza natural.</b>
+            </p>
+            <a href="#cabecera">
+              <Button variant="primary">Haz tu Reserva</Button>
+            </a>
+          </Col>
+        </Row>
+      </Container>
     </div>
-    </div>
-    </div>
-
   );
 }
 
-export default Banner
+export default Banner;

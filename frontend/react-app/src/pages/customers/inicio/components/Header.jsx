@@ -1,5 +1,6 @@
-import './header.css';
-import { useEffect } from 'react';
+import "./header.css";
+import { useEffect } from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 function Header() {
   useEffect(() => {
@@ -21,67 +22,75 @@ function Header() {
 
   return (
     <header>
-      <div className='container-fluid cabecera' id='cabecera'> 
-        <div className='row'>
-          <div className='col-8'>
+      <Container fluid className="cabecera" id="cabecera">
+        <Row>
+          <Col md={8} className="col-8">
             <h1>Dunas de Oro</h1>
-            <div className='d-flex flex-row gap-2'>
+            <div className="d-flex flex-row gap-2">
               <h2>Resort</h2>
-              <h2 className='h2-white'>&</h2>
+              <h2 className="h2-white">&</h2>
               <h2>Spa</h2>
             </div>
-          </div>
-          <div className='col-4'>
-            <h3 className='mx-auto d-flex justify-content-center'>Buscar Habitación</h3>
+          </Col>
+          <Col md={4} className="col-4">
+            <h3 className="mx-auto d-flex justify-content-center">Buscar Habitación</h3>
 
             {/* Formulario Búsqueda de Habitaciones */}
-            <form className='form'>
-              <div className="row">
-                <div className="col">
-                  <label htmlFor="checkin"><h4>Check-in</h4></label>
-                  <input className="form-control" type="date" id="checkin" name="checkin"></input>
-                </div>
-                <div className="col">
-                  <label htmlFor="checkout"><h4>Check-out</h4></label>
-                  <input className="form-control" type="date" id="checkout" name="checkout"></input>
-                </div>
-              </div>
+            <Form className="form">
+              <Row>
+                <Col>
+                  <Form.Label htmlFor="checkin">
+                    <h4>Check-in</h4>
+                  </Form.Label>
+                  <Form.Control type="date" id="checkin" name="checkin" />
+                </Col>
+                <Col>
+                  <Form.Label htmlFor="checkout">
+                    <h4>Check-out</h4>
+                  </Form.Label>
+                  <Form.Control type="date" id="checkout" name="checkout" />
+                </Col>
+              </Row>
 
               <div className="d-flex justify-content-center gap-3 custom-select">
-                <div className="col-3">
-                  <label htmlFor="adultos"><h4>Adultos</h4></label>
-                  <select className="form-select" name="adultos" id="adultos">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                  </select>
-                </div>
-                <div className="col-3">
-                  <label htmlFor="children"><h4>Niños</h4></label>
-                  <select className="form-select" name="children" id="children">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                  </select>
-                </div>
+                <Col xs={3}>
+                  <Form.Label htmlFor="adultos">
+                    <h4>Adultos</h4>
+                  </Form.Label>
+                  <Form.Select name="adultos" id="adultos">
+                    {[...Array(6)].map((_, i) => (
+                      <option key={i} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+                <Col xs={3}>
+                  <Form.Label htmlFor="children">
+                    <h4>Niños</h4>
+                  </Form.Label>
+                  <Form.Select name="children" id="children">
+                    {[...Array(7)].map((_, i) => (
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
               </div>
 
-              <div className='container d-flex justify-content-center'>
-                <input className='btn' type='submit' value='Buscar'></input>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+              <Container className="d-flex justify-content-center">
+                <Button type="submit" className="btn">
+                  Buscar
+                </Button>
+              </Container>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     </header>
   );
 }
 
 export default Header;
+

@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+// -- Clientes --
 import Navbar from "./components/Navbar.jsx"
-import Inicio from "./pages/Inicio/Inicio.jsx";
-import Habitaciones from "./pages/Habitaciones/Habitaciones.jsx";
-import Servicios from "./pages/Servicios/Servicios.jsx";
-import Contacto from "./pages/Contacto/Contacto.jsx";
-import Login from "./pages/Login/Login.jsx";
-import Registro from "./pages/Registro/Registro.jsx";
+import Inicio from "./pages/customers/inicio/Inicio.jsx";
+import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
+import Servicios from "./pages/customers/servicios/Servicios.jsx";
+import Contacto from "./pages/customers/contacto/Contacto.jsx";
+import Login from "./pages/customers/login/Login.jsx";
+import Registro from "./pages/customers/registro/Registro.jsx";
+// -- Empleados -- 
 import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
 import Footer from "./components/Footer.jsx"
 import "./index.css";

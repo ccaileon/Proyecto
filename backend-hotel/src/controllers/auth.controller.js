@@ -2,9 +2,9 @@ const bcrypt = require("bcrypt");
 const connection = require("../config/db");
 
 const login = (req, res) => {
-  const { client_email, contraseña } = req.body;
+  const { client_email, password } = req.body;
 
-  if (!client_email || !contraseña) {
+  if (!client_email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
@@ -28,7 +28,7 @@ const login = (req, res) => {
     const user = results[0];
 
     // **Verificar la contraseña**
-    const passwordMatch = await bcrypt.compare(contraseña, user.account_passwd);
+    const passwordMatch = await bcrypt.compare(password, user.account_passwd);
     if (!passwordMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
