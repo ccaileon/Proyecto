@@ -1,7 +1,7 @@
 .banner-inicio {
   margin: 0!important;
   padding: 0!important;
-background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/banner-inicio.jpg');
+background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/imgInicio/banner-inicio.jpg');
 background-size: cover;
 background-attachment: fixed;
 background-position: center 30%;

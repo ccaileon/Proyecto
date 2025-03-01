@@ -1,8 +1,25 @@
-import "./header.css";
-import { useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css'; 
+import { DateRange } from 'react-date-range';
+import './header.css'; 
 
 function Header() {
+  const [state, setState] = useState([
+    {
+      startDate: new Date(),
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
+
+  // Estado para controlar la visibilidad del calendario
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  const calendarRef = useRef(null);
+
+  // Efecto Paralelaje
   useEffect(() => {
     const handleScroll = () => {
       let scrollPosition = window.scrollY;
@@ -17,6 +34,25 @@ function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Maneja la visibilidad del calendario cuando se hace clic en los campos
+  const handleDateClick = (field) => {
+    setShowCalendar(true);
+  };
+
+  // Cerrar el calendario si se hace clic fuera de él
+  const handleOutsideClick = (e) => {
+    if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+      setShowCalendar(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
@@ -40,17 +76,43 @@ function Header() {
               <Row>
                 <Col>
                   <Form.Label htmlFor="checkin">
-                    <h4>Check-in</h4>
+                    <h4>Llegada</h4>
                   </Form.Label>
-                  <Form.Control type="date" id="checkin" name="checkin" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Seleccionar fecha"
+                    onClick={() => handleDateClick('checkin')}
+                    value={state[0].startDate ? state[0].startDate.toLocaleDateString() : ''}
+                    readOnly
+                  />
                 </Col>
+
                 <Col>
                   <Form.Label htmlFor="checkout">
-                    <h4>Check-out</h4>
+                    <h4>Salida</h4>
                   </Form.Label>
-                  <Form.Control type="date" id="checkout" name="checkout" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Seleccionar fecha"
+                    onClick={() => handleDateClick('checkout')}
+                    value={state[0].endDate ? state[0].endDate.toLocaleDateString() : ''}
+                    readOnly
+                  />
                 </Col>
               </Row>
+
+              {/* Mostrar el calendario solo cuando showCalendar sea true */}
+              {showCalendar && (
+                <div ref={calendarRef} className="calendar-container">
+                  <DateRange
+                    editableDateInputs={true}
+                    onChange={item => setState([item.selection])}
+                    moveRangeOnFirstSelection={false}
+                    ranges={state}
+                    showDateDisplay={false} 
+                  />
+                </div>
+              )}
 
               <div className="d-flex justify-content-center gap-3 custom-select">
                 <Col xs={3}>
@@ -93,4 +155,3 @@ function Header() {
 }
 
 export default Header;
-

@@ -6,7 +6,8 @@ function Formulario() {
   return (
     <Container className="mt-5">
       <h1 className="text-center">Iniciar Sesión</h1>
-      <Form>
+      <Container className="d-flex justify-content-center align-items-center">
+      <Form className="formulario-inicio p-4 border rounded shadow bg-light">
         {/* Campo de correo electrónico */}
         <Form.Group controlId="formEmail">
 
@@ -24,7 +25,7 @@ function Formulario() {
           Iniciar Sesión
         </Button>
       </Form>
-
+</Container>
       {/* Enlace de registro */}
       <p className="text-center mt-3">
         ¿Aún no tienes una cuenta?{" "}

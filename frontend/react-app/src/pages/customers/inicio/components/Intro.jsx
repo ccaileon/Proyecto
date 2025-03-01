@@ -6,7 +6,7 @@ function Intro() {
     <Container className="intro">
       <Row>
         <Col className="col">
-          <img className="imagen" src="src/assets/img/zona-playa.jpg" alt="Zona Playa" width="100%" />
+          <img className="imagen" src="src/assets/img/imgInicio/zona-playa.jpg" alt="Zona Playa" width="100%" />
         </Col>
 
         <Col>
