@@ -1,21 +1,28 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
-// -- Clientes --
+// -- CLIENTES --
+// -- Navegación y Footer --
 import Navbar from "./components/Navbar.jsx"
+import Search from "./components/Search.jsx"
+import Footer from "./components/Footer.jsx"
+// -- Secciones --
 import Inicio from "./pages/customers/inicio/Inicio.jsx";
 import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
 import Servicios from "./pages/customers/servicios/Servicios.jsx";
 import Contacto from "./pages/customers/contacto/Contacto.jsx";
 import Login from "./pages/customers/login/Login.jsx";
 import Registro from "./pages/customers/registro/Registro.jsx";
-// -- Empleados -- 
+
+// -- EMPLEADOS -- 
 import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
-import Footer from "./components/Footer.jsx"
+
+// -- CSS --
 import "./index.css";
 
 function App() {
   return(
 <Router>
   <Navbar/>
+  <Search />
   <div className="pages-container">
     <Routes>
       <Route path="/" element={<Inicio />} />
