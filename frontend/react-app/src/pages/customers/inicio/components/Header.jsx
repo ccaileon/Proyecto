@@ -14,7 +14,6 @@ function Header() {
     }
   ]);
 
-  // Estado para controlar la visibilidad del calendario
   const [showCalendar, setShowCalendar] = useState(false);
 
   const calendarRef = useRef(null);
@@ -37,7 +36,6 @@ function Header() {
     };
   }, []);
 
-  // Maneja la visibilidad del calendario cuando se hace clic en los campos
   const handleDateClick = (field) => {
     setShowCalendar(true);
   };

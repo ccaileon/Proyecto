@@ -1,0 +1,18 @@
+.navbar .nav-item .nav-link{
+  font-family: "Petrona-Regular";
+  color: #293E44;
+  font-size: 1.2rem;
+}
+
+.navbar .nav-item .nav-link:hover {
+  color:#528796;
+}
+
+.navbar-nav .nav-item .nav-link.active {
+  color: #528796;
+}
+
+.react-bootstrap .container {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}

@@ -1,0 +1,8 @@
+.footer {
+  background-color: #293E44;
+  padding: 5em;
+}
+
+.footer .col-md-4 {
+  width: 33%;
+}

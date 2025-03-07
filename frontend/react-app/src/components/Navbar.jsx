@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-
+import "./navbar.css";
 function Navbar() {
 
   return(
@@ -27,11 +27,18 @@ function Navbar() {
     </div>
     <div>
       <ul className="navbar-nav mx-auto d-flex justify-content-right">
-        <li className="nav-item">
-          <NavLink className="nav-link" aria-current="page" to="/Login">Iniciar Sesión</NavLink>
+    <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="src\assets\icons\user.png" width="30px" />
+          </a>
+          <ul className="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><NavLink className="dropdown-item" to="/login">Iniciar Sesión</NavLink></li>
+            <li><NavLink className="dropdown-item" to="/registro">Registro</NavLink></li>
+          </ul>
         </li>
         </ul>
     </div>
+    
   </div>
 </nav>
 

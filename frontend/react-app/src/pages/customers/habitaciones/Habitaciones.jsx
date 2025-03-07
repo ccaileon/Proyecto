@@ -14,6 +14,7 @@ function Habitaciones() {
   precio={65}
   descripcion="Una opción sencilla y acogedora, ideal para quienes buscan comodidad sin complicaciones. Equipada con todo lo esencial para una estancia agradable a un precio accesible."
   imagenUrl="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"
+  tipo="economica"
 />
 
 <Room
@@ -21,6 +22,7 @@ function Habitaciones() {
   precio={80}
   descripcion="El espacio perfecto para compartir en familia. Amplia, confortable y equipada con todo lo necesario para una estancia placentera. Disponemos de cunas bajo solicitud."
   imagenUrl="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"
+  tipo="economica"
 />
 
 <Room
@@ -28,6 +30,7 @@ function Habitaciones() {
   precio={100}
   descripcion="Un refugio espacioso con un diseño moderno y elegante. Perfecta para quienes buscan un ambiente acogedor con un toque de estilo."
   imagenUrl="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"
+  tipo="plus"
 />
 
 <Room
