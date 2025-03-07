@@ -91,10 +91,10 @@ function totalHuespedes() {
   }
 
   return (
-<Container className="buscador">
+<Container fluid className="buscador">
 <Row>
   <Col md={6} lg={3}>
-    <Form.Label htmlFor="checkin" className="d-block">
+    <Form.Label htmlFor="checkin" className="d-block input search">
       <h4>Llegada</h4>
     </Form.Label>
     <Form.Control
@@ -123,7 +123,7 @@ function totalHuespedes() {
     <Form.Label htmlFor="adultos" className="d-block">
       <h4>Adultos</h4>
     </Form.Label>
-      <p id="numAdult">1</p>
+      <p id="numAdult" className="contador">1</p>
     <Button onClick={addAdult}>+</Button>
      <Button onClick={subtractAdult}>-</Button>
   </Col>
@@ -132,7 +132,7 @@ function totalHuespedes() {
     <Form.Label htmlFor="children" className="d-block">
       <h4>Niños</h4>
     </Form.Label>
-    <p id="numChild">0</p>
+    <p id="numChild" className="contador">0</p>
     <Button onClick={addChild}>+</Button>
      <Button onClick={subtractChild}>-</Button>
   </Col>
@@ -140,7 +140,7 @@ function totalHuespedes() {
     <Form.Label htmlFor="children" className="d-block">
       <h4>Bebés (&lt; 2 años)</h4>
     </Form.Label>
-    <p id="numBaby">0</p>
+    <p id="numBaby" className="contador">0</p>
     <Button onClick={addBaby}>+</Button>
      <Button onClick={subtractBaby}>-</Button>
   </Col>

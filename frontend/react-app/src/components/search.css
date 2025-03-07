@@ -1,0 +1,18 @@
+.buscador {
+  display: flex;
+  flex-direction: row;
+  background-color: #293E44;
+}
+
+.d-block.form-label h4 {
+  color: white !important;
+}
+
+.contador {
+  display: flex;
+  text-align: center;
+  background-color: white;
+  padding: 1%;
+  border-radius: 50px;
+  width: 20%;
+}
