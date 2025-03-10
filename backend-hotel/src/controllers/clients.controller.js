@@ -104,7 +104,7 @@ const createClient = async (req, res) => {
     client_surname_two,
     client_telephone,
     client_email,
-    password, // <-- Ahora manejamos la contraseña correctamente
+    password,
   } = req.body;
 
   if (
@@ -112,7 +112,7 @@ const createClient = async (req, res) => {
     !client_surname_one ||
     !client_telephone ||
     !client_email ||
-    !password // <-- Validamos que la contraseña se envíe
+    !password
   ) {
     console.log("❌ Faltan datos obligatorios en la solicitud");
     return res.status(400).json({ error: "Required fields are missing" });
@@ -121,6 +121,7 @@ const createClient = async (req, res) => {
   try {
     // **Paso 1: Hashear la contraseña antes de almacenarla**
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("🔑 Hash generado antes de guardarlo:", hashedPassword); // <-- Verificar el hash
 
     // **Paso 2: Insertar el cliente en la tabla `client`**
     const sqlClient =

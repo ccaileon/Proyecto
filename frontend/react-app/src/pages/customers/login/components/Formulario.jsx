@@ -1,32 +1,78 @@
-import { Link } from "react-router-dom";
-import { Container, Form, Button } from 'react-bootstrap'; // Importa los componentes necesarios
-import './formulario.css';
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import { Container, Form, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import "./formulario.css";
 
-function Formulario() {
+const alert = withReactContent(Swal);
+
+function FormularioLogin() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    console.log("📩 Datos enviados al backend:", data);
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/login", {
+        client_email: data.email,
+        password: data.password, // Enviar la contraseña ingresada
+      });
+
+      console.log("✅ Login exitoso:", response.data);
+
+      if (response.status === 200) {
+        alert.fire({
+          title: "Inicio de sesión exitoso",
+          text: "Bienvenido de nuevo",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        }).then(() => {
+          navigate("/dashboard"); // Redirigir a otra página después del login
+        });
+      }
+    } catch (error) {
+      console.error("❌ Error en el inicio de sesión:", error);
+      alert.fire({
+        title: "Error",
+        text: "Correo o contraseña incorrectos",
+        icon: "error",
+        confirmButtonText: "Intentar de nuevo",
+      });
+    }
+  };
+
   return (
     <Container className="mt-5">
       <h1 className="text-center">Iniciar Sesión</h1>
       <Container className="d-flex justify-content-center align-items-center">
-      <Form className="formulario-inicio p-4 border rounded shadow bg-light">
-        {/* Campo de correo electrónico */}
-        <Form.Group controlId="formEmail">
+        <Form className="formulario-inicio p-4 border rounded shadow bg-light" onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group controlId="formEmail">
+            <Form.Control 
+              type="email" 
+              placeholder="Correo Electrónico" 
+              {...register("email", { required: "Este campo es obligatorio" })}
+            />
+            {errors.email && <p className="text-danger">{errors.email.message}</p>}
+          </Form.Group>
 
-          <Form.Control type="email" placeholder="Correo Electrónico" />
-        </Form.Group>
+          <Form.Group controlId="formPassword" className="mt-3">
+            <Form.Control 
+              type="password" 
+              placeholder="Contraseña" 
+              {...register("password", { required: "Este campo es obligatorio" })}
+            />
+            {errors.password && <p className="text-danger">{errors.password.message}</p>}
+          </Form.Group>
 
-        {/* Campo de contraseña */}
-        <Form.Group controlId="formPassword" className="mt-3">
+          <Button variant="primary" type="submit" className="mt-4 w-100">
+            Iniciar Sesión
+          </Button>
+        </Form>
+      </Container>
 
-          <Form.Control type="password" placeholder="Contraseña" />
-        </Form.Group>
-
-        {/* Botón de inicio de sesión */}
-        <Button variant="primary" type="submit" className="mt-4 w-100">
-          Iniciar Sesión
-        </Button>
-      </Form>
-</Container>
-      {/* Enlace de registro */}
       <p className="text-center mt-3">
         ¿Aún no tienes una cuenta?{" "}
         <Link to="/Registro">Regístrate</Link>.
@@ -35,4 +81,5 @@ function Formulario() {
   );
 }
 
-export default Formulario;
+export default FormularioLogin;
+
