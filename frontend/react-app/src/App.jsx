@@ -18,6 +18,7 @@ import "./index.css";
 function App() {
   return(
 <Router>
+  <Navbar/>
   <div className="pages-container">
     <Routes>
       <Route path="/" element={<Inicio />} />
@@ -30,9 +31,9 @@ function App() {
         <Route path="/employee/:menu" element={<EmployeeMenu/>}/>
         <Route path="/employee/:menu/reservations" element={<EmpReservations/>}/>
         <Route path="/employee/:menu/rooms" element={<EmpRooms/>}/>
-
     </Routes>
   </div>
+  <Footer/>
 </Router>
   )
 }
