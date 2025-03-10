@@ -3,7 +3,6 @@ import { useForm} from "react-hook-form";
 import { Container, Form, Col, Button} from "react-bootstrap";
 import axios from "axios";
 import "./empLoginForm.css"
-import {EmpLoginError} from "../employeeLoginError/EmployeeLoginError";
 
 const EmpLoginForm = ()=>{
     const { register, handleSubmit, formState: {errors, isSubmitting} } = useForm();
@@ -31,7 +30,7 @@ const EmpLoginForm = ()=>{
                             <Form.Label className="mt-2" >Contraseña:</Form.Label>
                             <Form.Control type="password" {...register("password", {required : "Es necesaria una contraseña", maxlength: 100})}/>
                             {errors.password && (<div>{errors.password.message}</div>)}    
-                                <Button disabled={isSubmitting} className="mt-3 border-0" type="submit">{isSubmitting ? "Cargando..." : "Log In"}</Button>
+                            <Button disabled={isSubmitting} className="mt-3 border-0" type="submit">{isSubmitting ? "Cargando..." : "Log In"}</Button>
                 </form>
                 </Col>
             </Container>
