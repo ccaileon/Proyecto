@@ -1,40 +1,67 @@
-
-import { useForm} from "react-hook-form";
-import { Container, Form, Col, Button} from "react-bootstrap";
-import axios from "axios";
-import "./empLoginForm.css"
 import {EmpLoginError} from "../employeeLoginError/EmployeeLoginError";
 
-const EmpLoginForm = ()=>{
-    const { register, handleSubmit, formState: {errors, isSubmitting} } = useForm();
-    const onSubmit = async data => {
-        try{
-            //Esta promesa es para probar que el boton de login cambia su texto a "Cargando..."
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await axios.post("YOUR_API_ENDPOINT", data);
-            //AQUÍ VA EL ENVÍO DEL FORM A NODEJS
-        }catch(error){
-            //AQUÍ VA UN SWAL EN CASO DE QUE LA AUTENTICACIÓN FALLE
-            console.log(error);
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Container, Form, Col, Button, Alert } from "react-bootstrap";
+import axios from "axios";
+import "./empLoginForm.css";
+
+const EmpLoginForm = () => {
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+    const [loginError, setLoginError] = useState("");
+
+    const onSubmit = async (data) => {
+        setLoginError(""); // Clear previous errors
+        console.log("📩 Data sent to backend:", data);
+
+        try {
+            const response = await axios.post("http://localhost:3000/api/auth/employee-login", data);
+            console.log("✅ Login successful:", response.data);
+
+            // Show a success message (can be replaced with a redirect)
+            alert(`Welcome, ${response.data.user.name}`);
             
+        } catch (error) {
+            console.error("❌ Login error:", error);
+            setLoginError("Invalid email or password. Please try again.");
         }
-    }
-    //{errors.emailAdmin?.type === 'required' && <p>El campo nombre es requerido</p>}
-    //{errors.emailAdmin?.type === 'pattern' && <p>El correo no está bien</p>}
+    };
+
     return (
-            <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex">    
-                <Col xs={12} md={10} lg={8} xl={5}>
+        <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex">
+            <Col xs={12} md={10} lg={8} xl={5}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                            <Form.Label className="mt-2">Email:</Form.Label>  
-                            <Form.Control type="email" {...register("email",{ required : "Es necesario un email", maxlength: 100, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Escriba un email válido"}})}/> 
-                            {errors.email && (<div>{errors.email.message}</div>)}
-                            <Form.Label className="mt-2" >Contraseña:</Form.Label>
-                            <Form.Control type="password" {...register("password", {required : "Es necesaria una contraseña", maxlength: 100})}/>
-                            {errors.password && (<div>{errors.password.message}</div>)}    
-                                <Button disabled={isSubmitting} className="mt-3 border-0" type="submit">{isSubmitting ? "Cargando..." : "Log In"}</Button>
+                    {loginError && <Alert variant="danger">{loginError}</Alert>}
+
+                    <Form.Label className="mt-2">Email:</Form.Label>
+                    <Form.Control 
+                        type="email" 
+                        {...register("emp_email", { 
+                            required: "Email is required", 
+                            pattern: { 
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
+                                message: "Enter a valid email address" 
+                            } 
+                        })} 
+                    />
+                    {errors.emp_email && (<div className="text-danger">{errors.emp_email.message}</div>)}
+
+                    <Form.Label className="mt-2">Password:</Form.Label>
+                    <Form.Control 
+                        type="password" 
+                        {...register("emp_password", { 
+                            required: "Password is required" 
+                        })} 
+                    />
+                    {errors.emp_password && (<div className="text-danger">{errors.emp_password.message}</div>)}
+
+                    <Button disabled={isSubmitting} className="mt-3 border-0 w-100" type="submit">
+                        {isSubmitting ? "Loading..." : "Log In"}
+                    </Button>
                 </form>
-                </Col>
-            </Container>
-    )
-}
-export default EmpLoginForm
+            </Col>
+        </Container>
+    );
+};
+
+export default EmpLoginForm;
