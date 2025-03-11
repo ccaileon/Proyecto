@@ -11,7 +11,6 @@ import Servicios from "./pages/customers/servicios/Servicios.jsx";
 import Contacto from "./pages/customers/contacto/Contacto.jsx";
 import Login from "./pages/customers/login/Login.jsx";
 import Registro from "./pages/customers/registro/Registro.jsx";
-import Footer from "./components/Footer.jsx"
 // -- EMPLEADOS -- 
 import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
 import EmployeeMenu from "./pages/employees/employeeMenu/EmployeeMenu.jsx";

@@ -22,6 +22,10 @@ export default function EmpResrvationsFilter(){
           <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-end'>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row className="align-items-end">
+                  <Form.Group as={Col} className="mb-3" controlId="formRoom">
+                    <Form.Label>Nº de habitación:</Form.Label>
+                    <Form.Control type="text" {...register("clientRoom")}/>
+                  </Form.Group>
                   <Form.Group as={Col} className="mb-3" controlId="formId">
                     <Form.Label>Documento identidad:</Form.Label>
                     <Form.Control type="text" {...register("clientId")}/>
