@@ -22,7 +22,6 @@ function App() {
   return(
 <Router>
   <Navbar/>
-  <Search />
   <div className="pages-container">
     <Routes>
       <Route path="/" element={<Inicio />} />

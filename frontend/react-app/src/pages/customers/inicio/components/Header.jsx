@@ -9,7 +9,7 @@ function Header() {
   const [state, setState] = useState([
     {
       startDate: new Date(),
-      endDate: null,
+      endDate: new Date(),
       key: 'selection'
     }
   ]);
@@ -36,8 +36,8 @@ function Header() {
     };
   }, []);
 
-  const handleDateClick = (field) => {
-    setShowCalendar(true);
+  const handleDateClick = () => {
+   setShowCalendar(prev => !prev);
   };
 
   // Cerrar el calendario si se hace clic fuera de él

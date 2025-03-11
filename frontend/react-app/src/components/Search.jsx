@@ -1,29 +1,35 @@
 import { useState, useRef, useEffect } from "react";
 import { Container, Form, Row, Col, Button} from "react-bootstrap";
 import { DateRange } from 'react-date-range';
-import "./search.css";
-
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css'; 
+/*import "./search.css";*/
+import HuespedesSelector from "./HuespedesSelector";
 
 function Search() {
 // -- Calendario --
 const [state, setState] = useState([
     {
       startDate: new Date(),
-      endDate: null,
+      endDate: new Date(),
       key: 'selection'
     }
   ]);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
-  const handleDateClick = (field) => {
-    setShowCalendar(true);
+
+  // Cerrar el calendario si se hace clic fuera de él
+  const handleDateClick = () => {
+    setShowCalendar(prev => !prev);
   };
+
   // Cerrar el calendario si se hace clic fuera de él
   const handleOutsideClick = (e) => {
     if (calendarRef.current && !calendarRef.current.contains(e.target)) {
       setShowCalendar(false);
     }
   };
+
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
@@ -92,8 +98,8 @@ function totalHuespedes() {
 
   return (
 <Container fluid className="buscador">
-<Row>
-  <Col md={6} lg={3}>
+<Row className="buscador">
+  <Col xs={2}>
     <Form.Label htmlFor="checkin" className="d-block input search">
       <h4>Llegada</h4>
     </Form.Label>
@@ -106,7 +112,7 @@ function totalHuespedes() {
     />
   </Col>
 
-  <Col md={6} lg={3}>
+  <Col xs={2}>
     <Form.Label htmlFor="checkout" className="d-block">
       <h4>Salida</h4>
     </Form.Label>
@@ -118,51 +124,46 @@ function totalHuespedes() {
       readOnly
     />
   </Col>
+<HuespedesSelector />
 
-  <Col md={6} lg={3}>
+{/*
+  <Col xs={2}>
     <Form.Label htmlFor="adultos" className="d-block">
       <h4>Adultos</h4>
     </Form.Label>
+      <div className="botones">
       <p id="numAdult" className="contador">1</p>
     <Button onClick={addAdult}>+</Button>
      <Button onClick={subtractAdult}>-</Button>
+     </div>
   </Col>
 
-  <Col md={6} lg={3}>
+  <Col xs={2}>
     <Form.Label htmlFor="children" className="d-block">
       <h4>Niños</h4>
     </Form.Label>
+     <div className="botones">
     <p id="numChild" className="contador">0</p>
     <Button onClick={addChild}>+</Button>
      <Button onClick={subtractChild}>-</Button>
+     </div>
   </Col>
-    <Col md={6} lg={3}>
+    <Col xs={2}>
     <Form.Label htmlFor="children" className="d-block">
       <h4>Bebés (&lt; 2 años)</h4>
     </Form.Label>
+    <div className="botones">
     <p id="numBaby" className="contador">0</p>
     <Button onClick={addBaby}>+</Button>
      <Button onClick={subtractBaby}>-</Button>
+     </div>
   </Col>
-  <Col md={6} lg={3}>     
+  */}
+  <Col xs={2}>     
   <Button type="submit" className="btn mt-3">
            Buscar
           </Button></Col>
 </Row>
-
-{/* Mostrar el calendario solo cuando showCalendar sea true */}
-{showCalendar && (
-  <div ref={calendarRef} className="calendar-container">
-    <DateRange
-      editableDateInputs={true}
-      onChange={item => setState([item.selection])}
-      moveRangeOnFirstSelection={false}
-      ranges={state}
-      showDateDisplay={false} 
-    />
-  </div>
-)}
-
 
 {/* Mostrar el calendario solo cuando showCalendar sea true */}
 {showCalendar && (
