@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 // -- CLIENTES --
 // -- Navegación y Footer --
-import Navbar from "./components/Navbar.jsx"
-import Search from "./components/Search.jsx"
+import Menu2 from "./components/Menu2.jsx"
 import Footer from "./components/Footer.jsx"
+
 // -- Secciones --
 import Inicio from "./pages/customers/inicio/Inicio.jsx";
 import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
@@ -21,7 +21,7 @@ import "./index.css";
 function App() {
   return(
 <Router>
-  <Navbar/>
+  <Menu2 />
   <div className="pages-container">
     <Routes>
       <Route path="/" element={<Inicio />} />

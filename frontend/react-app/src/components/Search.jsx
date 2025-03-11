@@ -37,67 +37,9 @@ const [state, setState] = useState([
     };
   }, []);
 
-  // -- Huéspedes -- 
-const numChild = document.getElementById("numChild");
-const numAdult = document.getElementById("numAdult");
-const numBaby = document.getElementById("numBaby");
- let huespedes = {
-  adult: 1,
-  child: 0,
-  baby: 0
-};
-
-function totalHuespedes() {
-  return huespedes.adult + huespedes.child;
-}
-  function addAdult() {
-    if (totalHuespedes() < 6) {
-    huespedes.adult +=1;
-    }
-    numAdult.textContent = huespedes.adult;
-    return huespedes.adult;
-  }
-    function subtractAdult() {
-      if (huespedes.adult > 1) {
-    huespedes.adult -=1;
-    numAdult.textContent = huespedes.adult;
-    } 
-
-    return huespedes.adult;
-  }
-
-  function addChild() {
-    if (totalHuespedes() < 6) {
-    huespedes.child +=1;
-    }
-    numChild.textContent = huespedes.child;
-    return huespedes.child;
-  }
-    function subtractChild() {
-      if (huespedes.child > 0) {
-    huespedes.child -=1;
-    }
-    numChild.textContent = huespedes.child;
-    return huespedes.child;
-  }
-
-  function addBaby() {
-    if (huespedes.baby < 2) {
-    huespedes.baby +=1;
-    }
-    numBaby.textContent = huespedes.baby;
-    return huespedes.baby;
-  }
-    function subtractBaby() {
-      if (huespedes.baby > 0) {
-    huespedes.baby -=1;
-    }
-    numBaby.textContent = huespedes.baby;
-    return huespedes.baby;
-  }
 
   return (
-<Container fluid className="buscador">
+<Container className="buscador">
 <Row className="buscador">
   <Col xs={2}>
     <Form.Label htmlFor="checkin" className="d-block input search">
@@ -126,39 +68,7 @@ function totalHuespedes() {
   </Col>
 <HuespedesSelector />
 
-{/*
-  <Col xs={2}>
-    <Form.Label htmlFor="adultos" className="d-block">
-      <h4>Adultos</h4>
-    </Form.Label>
-      <div className="botones">
-      <p id="numAdult" className="contador">1</p>
-    <Button onClick={addAdult}>+</Button>
-     <Button onClick={subtractAdult}>-</Button>
-     </div>
-  </Col>
 
-  <Col xs={2}>
-    <Form.Label htmlFor="children" className="d-block">
-      <h4>Niños</h4>
-    </Form.Label>
-     <div className="botones">
-    <p id="numChild" className="contador">0</p>
-    <Button onClick={addChild}>+</Button>
-     <Button onClick={subtractChild}>-</Button>
-     </div>
-  </Col>
-    <Col xs={2}>
-    <Form.Label htmlFor="children" className="d-block">
-      <h4>Bebés (&lt; 2 años)</h4>
-    </Form.Label>
-    <div className="botones">
-    <p id="numBaby" className="contador">0</p>
-    <Button onClick={addBaby}>+</Button>
-     <Button onClick={subtractBaby}>-</Button>
-     </div>
-  </Col>
-  */}
   <Col xs={2}>     
   <Button type="submit" className="btn mt-3">
            Buscar

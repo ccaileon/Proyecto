@@ -45,7 +45,7 @@ let includes;
           </Col>
           <Col md={4} className="d-flex align-items-center">
             <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
-            <h4><b>Servicio de Habitaciones</b></h4>
+            <h4><b>Lavandería</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
             <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
@@ -53,25 +53,56 @@ let includes;
           </Col>
         </Row>
    </>
-       <><Row className="justify-content-center">
-          <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/relax.png" width="10%" className="me-4 icon" />
-            <h4><b>Terraza Disponible</b></h4>
-          </Col>
-          <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
-            <h4><b>Servicio de Habitaciones</b></h4>
-          </Col>
-          <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
-            <h4><b>Minibar</b></h4>
-          </Col>
-        </Row>
-   </>
+     
    </>;
       break;
     case "suite":
-      includes = <p>💰 Opción económica sin perder comodidad.</p>;
+        includes = <><Row className="justify-content-center">
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/relax.png" width="10%" className="me-4 icon" />
+            <h4><b>Espacio Tranquilo</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
+            <h4><b>Desayuno Incluído</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
+            <h4><b>Wifi Gratuíto</b></h4>
+          </Col>
+        </Row>
+        <><Row className="justify-content-center">
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/relax.png" width="10%" className="me-4 icon" />
+            <h4><b>Habitación Amplia</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
+            <h4><b>Lavandería</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
+            <h4><b>Minibar</b></h4>
+          </Col>
+        </Row>
+          <><Row className="justify-content-center">
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/relax.png" width="10%" className="me-4 icon" />
+            <h4><b>Pase Circuito Hidromasaje</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
+            <h4><b>Terraza Privada</b></h4>
+          </Col>
+          <Col md={4} className="d-flex align-items-center">
+            <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
+            <h4><b>Cocina Propia</b></h4>
+          </Col>
+        </Row>
+   </>
+   </>
+     
+   </>;
       break;
     default:
       includes = <p>🏨 Información adicional no disponible.</p>;

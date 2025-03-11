@@ -1,7 +1,14 @@
+import Cabecera from "../../../components/Cabecera";
+import "./servicios.css"
+
 function Servicios() {
 
   return(
-<h1>Servicios</h1>
+<div>
+   <Cabecera 
+ nombre="Servicios"
+ clase="cabecera-servicios"/>
+</div>
   );
 
 }
