@@ -9,12 +9,11 @@ function Header() {
   const [state, setState] = useState([
     {
       startDate: new Date(),
-      endDate: null,
+      endDate: new Date(),
       key: 'selection'
     }
   ]);
 
-  // Estado para controlar la visibilidad del calendario
   const [showCalendar, setShowCalendar] = useState(false);
 
   const calendarRef = useRef(null);
@@ -37,9 +36,8 @@ function Header() {
     };
   }, []);
 
-  // Maneja la visibilidad del calendario cuando se hace clic en los campos
-  const handleDateClick = (field) => {
-    setShowCalendar(true);
+  const handleDateClick = () => {
+   setShowCalendar(prev => !prev);
   };
 
   // Cerrar el calendario si se hace clic fuera de él

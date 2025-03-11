@@ -1,23 +1,33 @@
-import { useForm} from "react-hook-form";
-import { Container, Form, Col, Button} from "react-bootstrap";
+import {EmpLoginError} from "../employeeLoginError/EmployeeLoginError";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Container, Form, Col, Button, Alert } from "react-bootstrap";
 import axios from "axios";
-import "./empLoginForm.css"
-const EmpLoginForm = ()=>{
-    const { register, handleSubmit, formState: {errors, isSubmitting} } = useForm();
-    const onSubmit = async data => {
-        try{
-            //Esta promesa es para probar que el boton de login cambia su texto a "Cargando..."
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            await axios.post("YOUR_API_ENDPOINT", data);
-            //AQUÍ VA EL ENVÍO DEL FORM A NODEJS
-        }catch(error){
-            //AQUÍ VA UN SWAL EN CASO DE QUE LA AUTENTICACIÓN FALLE
-            console.log(error);
+import "./empLoginForm.css";
+
+const EmpLoginForm = () => {
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
+    const [loginError, setLoginError] = useState("");
+
+    const onSubmit = async (data) => {
+        setLoginError(""); // Clear previous errors
+        console.log("📩 Data sent to backend:", data);
+
+        try {
+            const response = await axios.post("http://localhost:3000/api/auth/employee-login", data);
+            console.log("✅ Login successful:", response.data);
+
+            // Show a success message (can be replaced with a redirect)
+            alert(`Welcome, ${response.data.user.name}`);
+
             
+        } catch (error) {
+            console.error("❌ Login error:", error);
+            setLoginError("Invalid email or password. Please try again.");
         }
-    }
-    //{errors.emailAdmin?.type === 'required' && <p>El campo nombre es requerido</p>}
-    //{errors.emailAdmin?.type === 'pattern' && <p>El correo no está bien</p>}
+    };
+
     return (
             <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex">    
                 <Col xs={12} md={10} lg={8} xl={5}>

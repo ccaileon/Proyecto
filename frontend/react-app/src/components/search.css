@@ -1,0 +1,34 @@
+.buscador {
+display: flex;
+flex-direction: row;
+  background-color: #293E44;
+  padding: 0.5rem;
+}
+
+.d-block.form-label h4 {
+  color: white !important;
+}
+
+.contador {
+  display: flex;
+  text-align: center;
+  background-color: white;
+  padding: 1%;
+  border-radius: 10px;
+  width: 2rem;
+}
+
+.botones {
+  display: flex;
+}
+
+.botones button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.2rem;
+  margin-left: 0.2rem;
+  margin-top: 0.6rem;
+}

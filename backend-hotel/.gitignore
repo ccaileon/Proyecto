@@ -1,9 +1,10 @@
 # Ignorar node_modules
 node_modules/
-Back-End/node_modules/
 
 # Ignorar archivos de entorno
 .env
+bcrypt-test.js
+bcrypt-hash-test.js
 
 # Ignorar logs y caché
 npm-debug.log
