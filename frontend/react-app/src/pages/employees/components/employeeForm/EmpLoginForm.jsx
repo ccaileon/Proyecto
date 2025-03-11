@@ -20,6 +20,7 @@ const EmpLoginForm = () => {
 
             // Show a success message (can be replaced with a redirect)
             alert(`Welcome, ${response.data.user.name}`);
+
             
         } catch (error) {
             console.error("❌ Login error:", error);
@@ -28,40 +29,19 @@ const EmpLoginForm = () => {
     };
 
     return (
-        <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex">
-            <Col xs={12} md={10} lg={8} xl={5}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {loginError && <Alert variant="danger">{loginError}</Alert>}
-
-                    <Form.Label className="mt-2">Email:</Form.Label>
-                    <Form.Control 
-                        type="email" 
-                        {...register("emp_email", { 
-                            required: "Email is required", 
-                            pattern: { 
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 
-                                message: "Enter a valid email address" 
-                            } 
-                        })} 
-                    />
-                    {errors.emp_email && (<div className="text-danger">{errors.emp_email.message}</div>)}
-
-                    <Form.Label className="mt-2">Password:</Form.Label>
-                    <Form.Control 
-                        type="password" 
-                        {...register("emp_password", { 
-                            required: "Password is required" 
-                        })} 
-                    />
-                    {errors.emp_password && (<div className="text-danger">{errors.emp_password.message}</div>)}
-
-                    <Button disabled={isSubmitting} className="mt-3 border-0 w-100" type="submit">
-                        {isSubmitting ? "Loading..." : "Log In"}
-                    </Button>
-                </form>
-            </Col>
-        </Container>
-    );
-};
-
-export default EmpLoginForm;
+            <Container className="z-3 position-relative justify-content-center min-wh-100 min-vh-100 h-auto d-flex">    
+                <Col xs={12} md={10} lg={8} xl={5}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                                <Form.Label className="mt-2">Email:</Form.Label>  
+                                <Form.Control type="email" {...register("email",{ required : "Es necesario un email", maxlength: 100, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: "Escriba un email válido"}})}/> 
+                                {errors.email && (<div>{errors.email.message}</div>)}
+                                <Form.Label className="mt-2" >Contraseña:</Form.Label>
+                                <Form.Control type="password" {...register("password", {required : "Es necesaria una contraseña", maxlength: 100})}/>
+                                {errors.password && (<div>{errors.password.message}</div>)}    
+                                <Button disabled={isSubmitting} className="mt-3 border-0" type="submit">{isSubmitting ? "Cargando..." : "Log In"}</Button>
+                    </form>
+                </Col>
+            </Container>
+    )
+}
+export default EmpLoginForm
