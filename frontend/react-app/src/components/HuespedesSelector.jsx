@@ -21,7 +21,7 @@ function HuespedesSelector() {
   }, []);
 
   return (
-    <div style={{ position: "relative", width: "25%" }}>
+    <div style={{ position: "relative", width: "27%" }}>
       {/* Campo de entrada */}
         <Form.Label htmlFor="checkout" className="d-block">
       <h4>Huéspedes</h4>

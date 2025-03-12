@@ -1,21 +1,5 @@
-.buscador {
-display: flex;
-flex-direction: row;
-  background-color: #293E44;
-  padding: 0.5rem;
-}
-
 .d-block.form-label h4 {
   color: white !important;
-}
-
-.contador {
-  display: flex;
-  text-align: center;
-  background-color: white;
-  padding: 1%;
-  border-radius: 10px;
-  width: 2rem;
 }
 
 .botones {
@@ -31,4 +15,12 @@ flex-direction: row;
   padding: 0.2rem;
   margin-left: 0.2rem;
   margin-top: 0.6rem;
+}
+
+.calendar-container {
+  position: absolute; /* Posiciona el calendario sin afectar el flujo del contenedor */
+  z-index: 999; /* Asegura que el calendario se muestre por encima de otros elementos */
+  top: 100%; /* Posiciona el calendario debajo del campo de fecha */
+  left: 0; /* Alinea el calendario con el borde izquierdo del contenedor */
+  width: 100%; /* Asegura que el calendario tenga el mismo ancho que el input */
 }

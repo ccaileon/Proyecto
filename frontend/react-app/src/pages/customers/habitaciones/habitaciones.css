@@ -2,3 +2,15 @@
   padding-top: 5%;
   padding-bottom: 5%;
 }
+
+.cabecera-habitaciones {
+  margin: 0!important;
+  padding: 0!important;
+background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/cabeceras/cabecera-habitaciones.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-position: center 30%;
+height: 50vh;
+transition: background-position 0.3s ease-out;
+}
