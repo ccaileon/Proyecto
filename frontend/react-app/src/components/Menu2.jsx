@@ -8,7 +8,7 @@ function Menu() {
   return(
 <Navbar expand="lg" bg="light" className="bg-body-tertiary">
   <Container fluid className="navbar-custom">
-    <Navbar.Brand as={NavLink} to="/Inicio">
+    <Navbar.Brand as={NavLink} to="/">
       <img src="public\logotipo.png" width="60px" alt="Logo" />
     </Navbar.Brand>
 

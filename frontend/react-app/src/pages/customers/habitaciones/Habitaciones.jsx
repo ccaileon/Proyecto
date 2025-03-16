@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import Room from "./components/Room";
 import "./habitaciones.css";
 import Cabecera from "../../../components/Cabecera";
+import IntroHabitaciones from "./components/IntroHabitaciones";
 
 function Habitaciones() {
 
@@ -12,6 +13,7 @@ function Habitaciones() {
  nombre="Habitaciones"
  clase="cabecera-habitaciones"/>
 
+<IntroHabitaciones />
 
     <Container>
 <Container className="habitaciones">
