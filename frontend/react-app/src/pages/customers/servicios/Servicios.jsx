@@ -1,5 +1,8 @@
 import Cabecera from "../../../components/Cabecera";
 import "./servicios.css"
+import IntroServicios from "./components/IntroServicios";
+import NuestrosServicios from "./components/NuestrosServicios";
+import BannerServicios from "./components/BannerServicios";
 
 function Servicios() {
 
@@ -8,6 +11,9 @@ function Servicios() {
    <Cabecera 
  nombre="Servicios"
  clase="cabecera-servicios"/>
+ <IntroServicios />
+ <NuestrosServicios />
+ <BannerServicios />
 </div>
   );
 

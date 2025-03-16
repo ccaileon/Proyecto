@@ -1,8 +1,8 @@
 import Header from "./components/Header";
-import Intro from "./components/Intro";
-import Servicios from "./components/Servicios";
+import IntroInicio from "./components/IntroInicio";
+import ServiciosInicio from "./components/ServiciosInicio";
 import Elegirnos from "./components/Elegirnos";
-import Banner from "./components/Banner";
+import BannerInicio from "./components/BannerInicio";
 
 
 
@@ -11,10 +11,10 @@ function Inicio() {
   return(
     <div>
 <Header />
-<Intro />
-<Servicios />
+<IntroInicio />
+<ServiciosInicio />
 <Elegirnos />
-<Banner />
+<BannerInicio />
 </div>
   );
 
