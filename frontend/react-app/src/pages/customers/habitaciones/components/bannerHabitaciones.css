@@ -1,0 +1,19 @@
+.banner-habitaciones {
+  margin: 0!important;
+  padding-top: 4%;
+background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/imgHabitaciones/contenido/banner-habitaciones.jpg');
+background-size: cover;
+background-attachment: fixed;
+background-position: center 30%;
+height: 90vh;
+transition: background-position 0.3s ease-out;
+}
+
+.banner-habitaciones .col-8 {
+    background-color: #fffbf9a4;
+  border-radius: 30px;
+padding: 2.5em;
+ margin-top: 6%;
+ width: 40%;
+ height: auto;
+}

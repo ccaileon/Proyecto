@@ -13,3 +13,7 @@
   background-color: transparent; /* Asegura que el fondo no tenga color */
   border: none; /* Elimina el borde */
 }
+
+.room-text {
+  padding-left: 3%;
+}

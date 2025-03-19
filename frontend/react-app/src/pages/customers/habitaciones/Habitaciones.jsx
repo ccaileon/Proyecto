@@ -3,6 +3,7 @@ import Room from "./components/Room";
 import "./habitaciones.css";
 import Cabecera from "../../../components/Cabecera";
 import IntroHabitaciones from "./components/IntroHabitaciones";
+import BannerHabitaciones from "./components/BannerHabitaciones";
 
 function Habitaciones() {
 
@@ -15,8 +16,9 @@ function Habitaciones() {
 
 <IntroHabitaciones />
 
-    <Container>
+<Container fluid className="room-container">
 <Container className="habitaciones">
+<h1>Habitaciones funcionales y cómodas</h1>
 
 <Room
   titulo="Habitación Estándar"
@@ -33,7 +35,11 @@ function Habitaciones() {
   imagenUrl="src\assets\img\imgHabitaciones\standardFamily\habitacion-standard-familiar.jpg"
   tipo="economica"
 />
+</Container>
+</Container>
 
+<Container className="habitaciones">
+<h1>Más espacio, más comodidad</h1>
 <Room
   titulo="Habitación Brisa"
   precio={100}
@@ -41,7 +47,6 @@ function Habitaciones() {
   imagenUrl="src\assets\img\imgHabitaciones\plus\habitacion-plus.jpg"
   tipo="plus"
 />
-
 <Room
   titulo="Habitación Coral"
   precio={100}
@@ -50,6 +55,11 @@ function Habitaciones() {
   tipo="plus"
 />
 
+</Container>
+
+<Container fluid className="room-container">
+<Container className="habitaciones">
+<h1>La mejor experiencia de alojamiento</h1>
 <Room
   titulo="Suite Arrecife"
   precio={200}
@@ -67,6 +77,7 @@ function Habitaciones() {
 />
 </Container>
 </Container>
+<BannerHabitaciones/>
 </div>
   );
 

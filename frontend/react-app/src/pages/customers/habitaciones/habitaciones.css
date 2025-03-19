@@ -14,3 +14,15 @@ background-position: center 30%;
 height: 50vh;
 transition: background-position 0.3s ease-out;
 }
+
+.room-container {
+  background-color: #293E44;
+}
+
+.room-container p, 
+.room-container h1, 
+.room-container h2, 
+.room-container h3, 
+.room-container h4 {
+  color: white;
+}
