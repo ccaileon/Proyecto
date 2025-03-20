@@ -1,23 +1,53 @@
 const Room = require("../models/room.model");
 
+function formatDateToSQL(fecha) {
+  if (!fecha) return null;
+  const partes = fecha.split("/");
+  if (partes.length !== 3) {
+    console.error("❌ Error: Formato de fecha inválido", fecha);
+    return null;
+  }
+  const [day, month, year] = partes;
+  return `${year}-${month}-${day}`; // Formato YYYY-MM-DD
+}
+
 const searchRooms = (req, res) => {
   const { checkIn, checkOut, adults, children } = req.query;
 
   console.log("🔎 Parámetros recibidos:", req.query);
 
+  // Convertir fechas al formato correcto
+  const checkInFormatted = formatDateToSQL(checkIn);
+  const checkOutFormatted = formatDateToSQL(checkOut);
+
+  console.log("📌 Fechas convertidas a SQL:", {
+    checkInFormatted,
+    checkOutFormatted,
+  });
+
   // Convertir a número y validar
-  const totalGuests = parseInt(adults, 10) + parseInt(children, 10);
-  if (!checkIn || !checkOut || isNaN(totalGuests)) {
+  const totalGuests =
+    (parseInt(adults, 10) || 0) + (parseInt(children, 10) || 0);
+
+  if (!checkInFormatted || !checkOutFormatted || isNaN(totalGuests)) {
     return res.status(400).json({ error: "Invalid search parameters" });
   }
 
-  Room.searchRooms(checkIn, checkOut, totalGuests, (err, results) => {
-    if (err) {
-      console.error("❌ Database error:", err);
-      return res.status(500).json({ error: "Database error", details: err });
+  Room.searchRooms(
+    checkInFormatted,
+    checkOutFormatted,
+    totalGuests,
+    (err, results) => {
+      if (err) {
+        console.error("❌ Database error:", err);
+        return res.status(500).json({ error: "Database error", details: err });
+      }
+
+      console.log("📌 Resultados obtenidos:", results);
+
+      res.json(results);
     }
-    res.json(results);
-  });
+  );
 };
 
 const getRooms = (req, res) => {
