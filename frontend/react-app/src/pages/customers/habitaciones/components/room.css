@@ -3,17 +3,6 @@
   padding-bottom: 2%
 }
 
-.accordion-button:focus {
-  box-shadow: none; /* Elimina el borde azul */
-  outline: none; /* Elimina el contorno */
-  background-color: transparent; /* Elimina el fondo azul */
-}
-
-.accordion-button {
-  background-color: transparent; /* Asegura que el fondo no tenga color */
-  border: none; /* Elimina el borde */
-}
-
 .room-text {
   padding-left: 3%;
 }

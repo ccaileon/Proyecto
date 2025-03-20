@@ -1,8 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import ScrollToTop from "./utils/ScrollToTop.js";
+
 // -- CLIENTES --
 // -- Navegación y Footer --
 import Menu2 from "./components/Menu2.jsx"
 import Footer from "./components/Footer.jsx"
+import AvisoLegal from "./pages/customers/terminosLegales/avisoLegal/AvisoLegal.jsx";
+import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivacidad/PoliticaPrivacidad.jsx";
+import TerminosCondiciones from "./pages/customers/terminosLegales/terminosCondiciones/TerminosCondiciones.jsx";
 // -- Secciones --
 import Inicio from "./pages/customers/inicio/Inicio.jsx";
 import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
@@ -23,15 +28,22 @@ import "./index.css";
 function App() {
   return(
 <Router>
+  <ScrollToTop />
   <Menu2 />
   <div className="pages-container">
     <Routes>
+      { /* Rutas Cliente  */}
       <Route path="/" element={<Inicio />} />
         <Route path="/habitaciones" element={<Habitaciones />} />
         <Route path="/servicios" element={<Servicios />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        { /* Rutas Términos y Condiciones  */}
+        <Route path="/aviso" element={<AvisoLegal />} />
+        <Route path="/privacidad" element={<PoliticaPrivacidad />} />
+        <Route path="/condiciones" element={<TerminosCondiciones />} />
+        { /* Rutas Empleado  */}
         <Route path="/employee" element={<EmployeeLogin/>}/>
         <Route path="/employee/:menu" element={<EmployeeMenu/>}/>
         <Route path="/employee/:menu/reservations" element={<EmpReservations/>}/>
