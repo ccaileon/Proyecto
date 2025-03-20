@@ -1,4 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
+import { NavLink } from "react-router-dom";
+
 import './footer.css';
 
 function Footer() {
@@ -26,9 +28,37 @@ function Footer() {
             <img src="src/assets/icons/telefono.png" width="24" className="icon" alt="Contacto" />
             <h3 className="h3-white">Contacto</h3>
           </div>
-          <p className="p-white">912 34 56 78<br />dunasdeoro@info.com</p>
+          <p className="p-white">912 34 56 78<br />info@dunasdeoro.com</p>
         </Col>
       </Row>
+<div className='footer-terminos'> 
+      <Row className="d-flex justify-content-center text-center">
+        <Col md={4}>
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            <NavLink to="/aviso" className="custom-navlink">
+            <p className="p-white">Aviso Legal</p>
+            </NavLink>
+          </div>
+        </Col>
+
+          <Col md={4}>
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            <NavLink to="/privacidad" className="custom-navlink">
+            <p className="p-white">Política de Privacidad</p>
+            </NavLink>
+          </div>
+        </Col>
+
+      <Col md={4}>
+          <div className="d-flex justify-content-center align-items-center gap-2">
+            <NavLink to="/condiciones" className="custom-navlink">
+            <p className="p-white">Términos y Condiciones</p>
+            </NavLink>
+          </div>
+        </Col>
+      </Row>
+      </div>
+       <p className='p-white text-center copyright'> Copyright © {new Date().getFullYear()} Dunas de Oro Resort & Spa.</p>
     </Container>
   );
 }
