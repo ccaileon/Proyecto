@@ -15,12 +15,15 @@ import Servicios from "./pages/customers/servicios/Servicios.jsx";
 import Contacto from "./pages/customers/contacto/Contacto.jsx";
 import Login from "./pages/customers/login/Login.jsx";
 import Registro from "./pages/customers/registro/Registro.jsx";
+import ResultadoBusqueda from "./pages/customers/resultadoBusqueda/ResultadoBusqueda.jsx";
 
 // -- EMPLEADOS -- 
 import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
 import EmployeeMenu from "./pages/employees/employeeMenu/EmployeeMenu.jsx";
 import EmpRooms from "./pages/employees/employeeRooms/EmployeeRooms.jsx";
 import EmpReservations from "./pages/employees/employeeReservations/EmployeeReservations.jsx";
+import EmpReservationsList from "./pages/employees/employeeReservations/components/employeeReservationsList/EmployeeReservationsList.jsx";
+
 
 // -- CSS --
 import "./index.css";
@@ -39,6 +42,8 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/search" element={<ResultadoBusqueda />} />
+
         { /* Rutas Términos y Condiciones  */}
         <Route path="/aviso" element={<AvisoLegal />} />
         <Route path="/privacidad" element={<PoliticaPrivacidad />} />
@@ -48,6 +53,7 @@ function App() {
         <Route path="/employee/:menu" element={<EmployeeMenu/>}/>
         <Route path="/employee/:menu/reservations" element={<EmpReservations/>}/>
         <Route path="/employee/:menu/rooms" element={<EmpRooms/>}/>
+        <Route path="/employee/reservations-list" element={<EmpReservationsList />} />
     </Routes>
   </div>
   <Footer/>

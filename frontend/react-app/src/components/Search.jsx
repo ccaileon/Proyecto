@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Container, Form, Row, Col, Button} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css'; 
@@ -8,8 +8,8 @@ import "./search.css";
 import HuespedesSelector from "./HuespedesSelector";
 
 function Search() {
-// -- Calendario --
-const [state, setState] = useState([
+  const navigate = useNavigate(); 
+  const [state, setState] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
@@ -18,85 +18,92 @@ const [state, setState] = useState([
   ]);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
+  const [huespedes, setHuespedes] = useState({ adultos: 1, ninos: 0, bebes: 0 });
 
-  // Cerrar el calendario si se hace clic fuera de él
   const handleDateClick = () => {
     setShowCalendar(prev => !prev);
   };
 
-  // Cerrar el calendario si se hace clic fuera de él
-  const handleOutsideClick = (e) => {
-    if (calendarRef.current && !calendarRef.current.contains(e.target)) {
-      setShowCalendar(false);
-    }
-  };
-
   useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
+    document.addEventListener("mousedown", (e) => {
+      if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+        setShowCalendar(false);
+      }
+    });
+    return () => document.removeEventListener("mousedown", handleDateClick);
   }, []);
 
+  const formatDate = (date) => {
+    const localDate = new Date(date);
+    localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+    const day = localDate.getDate().toString().padStart(2, "0");
+    const month = (localDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = localDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const handleSearch = () => {
+    const checkIn = formatDate(state[0].startDate);
+    const checkOut = formatDate(state[0].endDate);
+    const { adultos, ninos } = huespedes;
+    
+    console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
+
+    navigate(`/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adultos}&children=${ninos}`);
+  };
 
   return (
-<Container className="buscador">
-  <Row className="buscador">
-    <Col xs={2}>
-      <Form.Label htmlFor="checkin" className="d-block input search">
-        <h4>Llegada</h4>
-      </Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Seleccionar fecha"
-        onClick={() => handleDateClick('checkin')}
-        value={state[0].startDate ? state[0].startDate.toLocaleDateString() : ''}
-        readOnly
-      />
-    </Col>
+    <Container className="buscador">
+      <Row className="buscador">
+        <Col xs={2}>
+          <Form.Label htmlFor="checkin" className="d-block input search">
+            <h4>Llegada</h4>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Seleccionar fecha"
+            onClick={() => handleDateClick('checkin')}
+            value={state[0].startDate ? formatDate(state[0].startDate) : ''}
+            readOnly
+          />
+        </Col>
 
-    <Col xs={2}>
-      <Form.Label htmlFor="checkout" className="d-block">
-        <h4>Salida</h4>
-      </Form.Label>
-      <Form.Control
-        type="text"
-        placeholder="Seleccionar fecha"
-        onClick={() => handleDateClick('checkout')}
-        value={state[0].endDate ? state[0].endDate.toLocaleDateString() : ''}
-        readOnly
-      />
-    </Col>
+        <Col xs={2}>
+          <Form.Label htmlFor="checkout" className="d-block">
+            <h4>Salida</h4>
+          </Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Seleccionar fecha"
+            onClick={() => handleDateClick('checkout')}
+            value={formatDate(state[0].endDate)}
+            readOnly
+          />
+        </Col>
 
-    <HuespedesSelector />
+        <HuespedesSelector huespedes={huespedes} setHuespedes={setHuespedes} />
 
-    <Col xs={2}>     
-    <Link to="/ResultadoBusqueda" style={{ textDecoration: "none" }}>
-      <Button className="btn mt-3">
-        Buscar
-      </Button>
-      </Link>
-    </Col>
-  </Row>
+        <Col xs={2}>     
+          <Button className="btn mt-3" onClick={handleSearch}>
+            Buscar
+          </Button>
+        </Col>
+      </Row>
 
-  {/* Calendario desplegable */}
-  {showCalendar && (
-    <div ref={calendarRef} className="calendar-container">
-      <DateRange
-        editableDateInputs={true}
-        onChange={item => setState([item.selection])}
-        moveRangeOnFirstSelection={false}
-        ranges={state}
-        showDateDisplay={false} 
-      />
-      <Button className="btn-listo" onClick={() => setShowCalendar(false)}>
-        Listo
-      </Button>
-    </div>
-  )}
-</Container>
-
-
-)}
+      {showCalendar && (
+        <div ref={calendarRef} className="calendar-container">
+          <DateRange
+            editableDateInputs={true}
+            onChange={item => setState([item.selection])}
+            moveRangeOnFirstSelection={false}
+            ranges={state}
+            showDateDisplay={false} 
+          />
+          <Button className="btn-listo" onClick={() => setShowCalendar(false)}>Listo</Button>
+        </div>
+      )}
+    </Container>
+  );
+}
 
 export default Search;
