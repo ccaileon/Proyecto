@@ -51,7 +51,7 @@ function FormularioRegistro() {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-5 mb-5">
       <h1 className="text-center">Formulario de Registro</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="mt-4">
         <Form.Group controlId="formNombre">

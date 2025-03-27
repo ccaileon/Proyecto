@@ -25,3 +25,10 @@
 margin-left: 1rem;
 }
 
+.user-icon {
+  content: url("public/user.png"); /* Imagen normal */
+}
+
+.user-icon:hover {
+  content: url("public/user-hover.png"); /* Imagen al pasar el ratón */
+}

@@ -45,10 +45,10 @@ function FormularioLogin() {
   };
 
   return (
-    <Container className="mt-5">
-      <h1 className="text-center">Iniciar Sesión</h1>
-      <Container className="d-flex justify-content-center align-items-center">
-        <Form className="formulario-inicio p-4 border rounded shadow bg-light" onSubmit={handleSubmit(onSubmit)}>
+    <Container className="mt-5  mb-10">
+      <h1>Iniciar Sesión</h1>
+      <div className="d-flex">
+        <Form className="formulario-inicio" onSubmit={handleSubmit(onSubmit)}>
           <Form.Group controlId="formEmail">
             <Form.Control 
               type="email" 
@@ -71,11 +71,11 @@ function FormularioLogin() {
             Iniciar Sesión
           </Button>
         </Form>
-      </Container>
+      </div>
 
-      <p className="text-center mt-3">
-        ¿Aún no tienes una cuenta?{" "}
-        <Link to="/Registro">Regístrate</Link>.
+      <p className="mt-3 p-4">
+        ¿Has olvidado la contraseña?{" "}
+        <Link to="/Registro">Recuperar</Link>.
       </p>
     </Container>
   );

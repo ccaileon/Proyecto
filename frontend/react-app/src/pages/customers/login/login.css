@@ -1,0 +1,8 @@
+
+.vr{
+  position:absolute;
+  width: 1px;                /* Un separador de 1px */
+  background-color: #528796; /* Color del separador */
+  height: 50%;  
+
+}

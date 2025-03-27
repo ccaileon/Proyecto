@@ -3,7 +3,7 @@ import ScrollToTop from "./utils/ScrollToTop.js";
 
 // -- CLIENTES --
 // -- Navegación y Footer --
-import Menu2 from "./components/Menu2.jsx"
+import Menu from "./components/Menu.jsx"
 import Footer from "./components/Footer.jsx"
 import AvisoLegal from "./pages/customers/terminosLegales/avisoLegal/AvisoLegal.jsx";
 import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivacidad/PoliticaPrivacidad.jsx";
@@ -32,7 +32,7 @@ function App() {
   return(
 <Router>
   <ScrollToTop />
-  <Menu2 />
+  <Menu />
   <div className="pages-container">
     <Routes>
       { /* Rutas Cliente  */}
