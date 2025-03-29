@@ -1,0 +1,28 @@
+.sidebar {
+  width: 20%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #293E44;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+}
+
+.menu-item:hover {
+  background-color: #3966724b;
+}
+
+.menu-item.active {
+  background-color: #396672;
+}

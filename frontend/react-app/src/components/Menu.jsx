@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
+import { useState } from 'react';
 import "./menu.css";
 import Search from "./Search";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
 function Menu() {
+const [isLoggedIn, setIsLoggedIn] = useState(false); // Lógica de conexión va aquí (comprobar si el usuario está conectado)
 
   return(
 <Navbar expand="lg" bg="light" className="bg-body-tertiary">
@@ -18,13 +20,13 @@ function Menu() {
         <Nav.Link as={NavLink} to="/" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           Inicio
         </Nav.Link>
-        <Nav.Link as={NavLink} to="/Habitaciones" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+        <Nav.Link as={NavLink} to="/habitaciones" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           Habitaciones
         </Nav.Link>
-        <Nav.Link as={NavLink} to="/Servicios" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+        <Nav.Link as={NavLink} to="/servicios" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           Servicios
         </Nav.Link>
-        <Nav.Link as={NavLink} to="/Contacto" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
+        <Nav.Link as={NavLink} to="/contacto" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           Contacto
         </Nav.Link>
         
@@ -36,19 +38,8 @@ function Menu() {
       <Search />
     </div>
       </Container>
-{ /* <Dropdown align="end" className="nav-item">
-          <Dropdown.Toggle variant="link" id="dropdown-user" className="nav-link">
-            <img src="public\user.png" width="30px" alt="User" />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item as={NavLink} to="/login">Iniciar Sesión</Dropdown.Item>
-            <Dropdown.Item as={NavLink} to="/registro">Registro</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
 
-        */ }
-
-        <NavLink to="/login" className="nav-link me-4">
+        <NavLink to={isLoggedIn ? "/datos" : "/login"} className="nav-link me-4">
   <img src="public/user.png" width="30px" alt="Iniciar Sesión" className="user-icon"/>
 </NavLink>
   

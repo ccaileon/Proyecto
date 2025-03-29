@@ -1,0 +1,13 @@
+.container-datos {
+    margin-left: 22%!important; /* Desplaza el contenido para que no quede detrás del menú */
+  width: calc(100% - 22%)!important; /* Ocupa el resto del ancho */
+  padding: 20px;
+
+}
+
+.dato {
+  background-color: #ebebeb;
+  padding: 2%;
+  margin-top: 0!important;
+  margin-bottom: 0!important;
+}

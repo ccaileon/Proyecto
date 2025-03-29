@@ -35,7 +35,7 @@ function Footer() {
       <Row className="d-flex justify-content-center text-center">
         <Col md={4}>
           <div className="d-flex justify-content-center align-items-center gap-2">
-            <NavLink to="/aviso" className="custom-navlink">
+            <NavLink to="/Aviso" className="custom-navlink">
             <p className="p-white">Aviso Legal</p>
             </NavLink>
           </div>
@@ -43,7 +43,7 @@ function Footer() {
 
           <Col md={4}>
           <div className="d-flex justify-content-center align-items-center gap-2">
-            <NavLink to="/privacidad" className="custom-navlink">
+            <NavLink to="/Privacidad" className="custom-navlink">
             <p className="p-white">Política de Privacidad</p>
             </NavLink>
           </div>
@@ -51,7 +51,7 @@ function Footer() {
 
       <Col md={4}>
           <div className="d-flex justify-content-center align-items-center gap-2">
-            <NavLink to="/condiciones" className="custom-navlink">
+            <NavLink to="/Condiciones" className="custom-navlink">
             <p className="p-white">Términos y Condiciones</p>
             </NavLink>
           </div>

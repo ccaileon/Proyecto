@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom"
 import ScrollToTop from "./utils/ScrollToTop.js";
 
 // -- CLIENTES --
@@ -8,6 +8,11 @@ import Footer from "./components/Footer.jsx"
 import AvisoLegal from "./pages/customers/terminosLegales/avisoLegal/AvisoLegal.jsx";
 import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivacidad/PoliticaPrivacidad.jsx";
 import TerminosCondiciones from "./pages/customers/terminosLegales/terminosCondiciones/TerminosCondiciones.jsx";
+// -- Cuenta de Usuario --
+import Datos from "./pages/customers/account/Datos/Datos.jsx";
+import Preferencias from "./pages/customers/account/Preferencias/Preferencias.jsx";
+import Recompensas from "./pages/customers/account/Recompensas/Recompensas.jsx";
+import Reservas from "./pages/customers/account/Reservas/Reservas.jsx";
 // -- Secciones --
 import Inicio from "./pages/customers/inicio/Inicio.jsx";
 import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
@@ -24,30 +29,64 @@ import EmpRooms from "./pages/employees/employeeRooms/EmployeeRooms.jsx";
 import EmpReservations from "./pages/employees/employeeReservations/EmployeeReservations.jsx";
 import EmpReservationsList from "./pages/employees/employeeReservations/components/employeeReservationsList/EmployeeReservationsList.jsx";
 
-
 // -- CSS --
 import "./index.css";
+
+function Layout() {
+  const location = useLocation(); // Permite saber en que página estamos, nativo de react-router-dom
+
+  const rutasConMenu = [ // Almacena las rutas en las que el menu público es visible
+"/", "/habitaciones", "/servicios", "/contacto", "/login", 
+    "/registro", "/search", "/configuracion", "/preferencias", 
+    "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones"
+  ];
+
+  return (
+    <>
+      <ScrollToTop />
+      {/* Mostramos el menú público solo si la ruta actual está en la lista */}
+      {rutasConMenu.some(ruta => location.pathname.startsWith(ruta))&& <Menu />} 
+
+      <div className="pages-container">
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/habitaciones" element={<Habitaciones />} />
+          <Route path="/servicios" element={<Servicios />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
+          <Route path="/search" element={<ResultadoBusqueda />} />
+          <Route path="/datos" element={<Datos />} />
+          <Route path="/preferencias" element={<Preferencias />} />
+          <Route path="/recompensas" element={<Recompensas />} />
+          <Route path="/reservas" element={<Reservas />} />
+          <Route path="/aviso" element={<AvisoLegal />} />
+          <Route path="/privacidad" element={<PoliticaPrivacidad />} />
+          <Route path="/condiciones" element={<TerminosCondiciones />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
+  );
+
+}
+
+
 
 function App() {
   return(
 <Router>
   <ScrollToTop />
-  <Menu />
   <div className="pages-container">
     <Routes>
-      { /* Rutas Cliente  */}
-      <Route path="/" element={<Inicio />} />
-        <Route path="/habitaciones" element={<Habitaciones />} />
-        <Route path="/servicios" element={<Servicios />} />
-        <Route path="/contacto" element={<Contacto />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/search" element={<ResultadoBusqueda />} />
+  {/* Rutas Cliente Públicas */} 
+        <Route path="*" element={<Layout />} />
+        { /* Rutas Cuenta Cliente (Menú pendiente de realizar) */}
+        <Route path="/datos" element={<Datos />} />
+        <Route path="/preferencias" element={<Preferencias />} />
+        <Route path="/recompensas" element={<Recompensas />} />
+        <Route path="/reservas" element={<Reservas />} />
 
-        { /* Rutas Términos y Condiciones  */}
-        <Route path="/aviso" element={<AvisoLegal />} />
-        <Route path="/privacidad" element={<PoliticaPrivacidad />} />
-        <Route path="/condiciones" element={<TerminosCondiciones />} />
         { /* Rutas Empleado  */}
         <Route path="/employee" element={<EmployeeLogin/>}/>
         <Route path="/employee/:menu" element={<EmployeeMenu/>}/>
@@ -56,7 +95,7 @@ function App() {
         <Route path="/employee/reservations-list" element={<EmpReservationsList />} />
     </Routes>
   </div>
-  <Footer/>
+
 </Router>
   )
 }
