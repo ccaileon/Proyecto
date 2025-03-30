@@ -1,21 +1,18 @@
-import PanelUsuario from "../components/PanelUsuario"
-import Logout from "../components/Logout";
-import { Container, Col, Row } from "react-bootstrap"
-import "../components/datos.css";
+import EstructuraUsuario from "../components/EstructuraUsuario";
+import PuntosAcumulados from "./components/PuntosAcumulados";
+import { Container } from "react-bootstrap";
 
 function Recompensas() {
   return(
+EstructuraUsuario(
 <>
-<PanelUsuario />
-<Container className="container-datos">
-    <Row className="d-flex justify-content-between">
-         <Col xs="auto">
-  <h1>Recompensas</h1> 
-  </Col>
-  <Col xs="auto"><Logout /></Col>
-  </Row>
-  </Container>
+<Container>
+<h1>Recompensas</h1>
+<p>Estos son sus puntos acumulados:</p>
+<PuntosAcumulados />
+</Container>
 </>
+)
   )
 }
 

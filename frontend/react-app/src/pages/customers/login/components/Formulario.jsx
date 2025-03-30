@@ -67,7 +67,7 @@ function FormularioLogin() {
             {errors.password && <p className="text-danger">{errors.password.message}</p>}
           </Form.Group>
 
-          <Button variant="primary" type="submit" className="mt-4 w-100">
+          <Button variant="btn" type="submit" className="mt-4 w-100">
             Iniciar Sesión
           </Button>
         </Form>

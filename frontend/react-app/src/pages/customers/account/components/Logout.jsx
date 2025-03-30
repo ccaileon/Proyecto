@@ -3,7 +3,7 @@
 function Logout() {
 
   return(
-<p>→ Desconexión</p>
+<p className="p-white">→ Desconexión</p>
   );
 }
 

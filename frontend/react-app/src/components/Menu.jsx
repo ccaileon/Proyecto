@@ -8,10 +8,10 @@ function Menu() {
 const [isLoggedIn, setIsLoggedIn] = useState(false); // Lógica de conexión va aquí (comprobar si el usuario está conectado)
 
   return(
-<Navbar expand="lg" bg="light" className="bg-body-tertiary">
+<Navbar expand="lg" bg="light" className="bg-body-tertiary menu">
   <Container fluid className="navbar-custom">
     <Navbar.Brand as={NavLink} to="/">
-      <img src="public\logotipo.png" width="60px" alt="Logo" />
+      <img src="/logotipo.png" width="60px" alt="Logo" />
     </Navbar.Brand>
 
     <Navbar.Toggle aria-controls="navbarNav" />
@@ -40,7 +40,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false); // Lógica de conexión va 
       </Container>
 
         <NavLink to={isLoggedIn ? "/datos" : "/login"} className="nav-link me-4">
-  <img src="public/user.png" width="30px" alt="Iniciar Sesión" className="user-icon"/>
+  <img src="/user.png" width="30px" alt="Iniciar Sesión" className="user-icon"/>
 </NavLink>
   
 </Navbar>

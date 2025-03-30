@@ -13,6 +13,8 @@ import Datos from "./pages/customers/account/Datos/Datos.jsx";
 import Preferencias from "./pages/customers/account/Preferencias/Preferencias.jsx";
 import Recompensas from "./pages/customers/account/Recompensas/Recompensas.jsx";
 import Reservas from "./pages/customers/account/Reservas/Reservas.jsx";
+// -- Checkout --
+import DatosReserva from "./pages/customers/checkout/datosReserva/DatosReserva.jsx";
 // -- Secciones --
 import Inicio from "./pages/customers/inicio/Inicio.jsx";
 import Habitaciones from "./pages/customers/habitaciones/Habitaciones.jsx";
@@ -21,6 +23,8 @@ import Contacto from "./pages/customers/contacto/Contacto.jsx";
 import Login from "./pages/customers/login/Login.jsx";
 import Registro from "./pages/customers/registro/Registro.jsx";
 import ResultadoBusqueda from "./pages/customers/resultadoBusqueda/ResultadoBusqueda.jsx";
+// -- 404 Not Found --
+import NotFound from "./pages/customers/NotFound/NotFound.jsx";
 
 // -- EMPLEADOS -- 
 import EmployeeLogin from "./pages/employees/employeeLogin/EmployeeLogin.jsx";
@@ -37,8 +41,8 @@ function Layout() {
 
   const rutasConMenu = [ // Almacena las rutas en las que el menu público es visible
 "/", "/habitaciones", "/servicios", "/contacto", "/login", 
-    "/registro", "/search", "/configuracion", "/preferencias", 
-    "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones"
+    "/registro", "/search", "/datos", "/preferencias", 
+    "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones", "datosReserva"
   ];
 
   return (
@@ -63,6 +67,9 @@ function Layout() {
           <Route path="/aviso" element={<AvisoLegal />} />
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
           <Route path="/condiciones" element={<TerminosCondiciones />} />
+          <Route path="/datosReserva" element={<DatosReserva />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       <Footer />
@@ -81,11 +88,6 @@ function App() {
     <Routes>
   {/* Rutas Cliente Públicas */} 
         <Route path="*" element={<Layout />} />
-        { /* Rutas Cuenta Cliente (Menú pendiente de realizar) */}
-        <Route path="/datos" element={<Datos />} />
-        <Route path="/preferencias" element={<Preferencias />} />
-        <Route path="/recompensas" element={<Recompensas />} />
-        <Route path="/reservas" element={<Reservas />} />
 
         { /* Rutas Empleado  */}
         <Route path="/employee" element={<EmployeeLogin/>}/>

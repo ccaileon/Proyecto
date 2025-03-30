@@ -8,7 +8,7 @@ return(
 <p><strong>Como cliente registrado, disfrutarás de los siguientes beneficios:</strong></p>
 <Accordion>
   <Accordion.Item eventKey="0">
-    <Accordion.Header>Programa de recompensas y puntos</Accordion.Header>
+    <Accordion.Header>Programa de Recompensas y Puntos</Accordion.Header>
     <Accordion.Body>Acumula puntos con cada una de tus estancias y consigue descuentos increibles en tu próxima visita.</Accordion.Body>
   </Accordion.Item>
   <Accordion.Item eventKey="1">
@@ -16,7 +16,7 @@ return(
     <Accordion.Body>Wi-Fi premium sin costo adicional y mejoras gratuítas de habitación según disponibilidad</Accordion.Body>
   </Accordion.Item>
     <Accordion.Item eventKey="2">
-    <Accordion.Header>Consulta tus reservas</Accordion.Header>
+    <Accordion.Header>Consulta tus Reservas</Accordion.Header>
     <Accordion.Body>Haz tus reservas de forma más rápida y sencilla al guardar tus datos. También, podrás consultar el historial de tus reservas en todo momento.</Accordion.Body>
   </Accordion.Item>
 </Accordion>
