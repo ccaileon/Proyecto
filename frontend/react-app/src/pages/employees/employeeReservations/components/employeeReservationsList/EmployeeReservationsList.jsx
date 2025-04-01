@@ -1,37 +1,24 @@
-import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Container, Table } from "react-bootstrap";
 
-export default function EmpReservationsList({ onRowClick }) {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/api/reservations")
-      .then(response => response.json())
-      .then(data => {
-        console.log("✅ Reservas obtenidas:", data);
-
-        // Convertir los datos al formato esperado y formatear fechas sin librerías externas
-        const formattedData = data.map(res => ({
-          idReserva: res.res_id.toString(),   // ID de la reserva
-          idRoom: res.res_room_id.toString(), // ID de la habitación
-          nameRes: `Cliente ${res.res_client_id}`, // Temporalmente el ID del cliente
-          dateIn: formatDate(res.res_checkin),   // Fecha de Check-In formateada
-          dateOut: formatDate(res.res_checkout), // Fecha de Check-Out formateada
-          state: res.res_is_closed ? "Cerrada" : "Activa" // Estado de la reserva
-        }));
-
-        setData(formattedData);
-      })
-      .catch(error => console.error("❌ Error al obtener las reservas:", error));
-  }, []); // Solo se ejecuta una vez al montar el componente
-
+export default function EmpReservationsList({ data, onRowClick }) {
   // 🔥 Función para formatear fechas sin librerías externas
   const formatDate = (isoDate) => {
     if (!isoDate) return "Fecha inválida";
     const date = new Date(isoDate);
     return date.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
   };
+
+  const formattedData = data.map(res => ({
+    idReserva: res.res_id?.toString() || res.idReserva,
+    idRoom: res.res_room_id?.toString() || res.idRoom,
+    nameRes: res.client_name || res.nameRes || `Cliente ${res.res_client_id}`,
+    dateIn: formatDate(res.res_checkin || res.dateIn),
+    dateOut: formatDate(res.res_checkout || res.dateOut),
+    state: res.res_is_closed !== undefined 
+      ? (res.res_is_closed ? "Cerrada" : "Activa")
+      : res.state
+  }));
 
   return (
     <Container fluid className="p-0">
@@ -48,8 +35,8 @@ export default function EmpReservationsList({ onRowClick }) {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
-            data.map((row, rowIndex) => (
+          {formattedData.length > 0 ? (
+            formattedData.map((row, rowIndex) => (
               <tr key={rowIndex} onClick={() => onRowClick(row)} style={{ cursor: 'pointer' }}>
                 <td>{row.idReserva}</td>
                 <td>{row.idRoom}</td>
@@ -72,5 +59,6 @@ export default function EmpReservationsList({ onRowClick }) {
 
 // 📌 Validación de PropTypes
 EmpReservationsList.propTypes = {
+  data: PropTypes.array.isRequired,
   onRowClick: PropTypes.func.isRequired,
 };

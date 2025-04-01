@@ -1,4 +1,5 @@
-import {EmpLoginError} from "../employeeLoginError/EmployeeLoginError";
+import { useNavigate} from "react-router-dom";
+//import {EmpLoginError} from "../employeeLoginError/EmployeeLoginError";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,22 +10,31 @@ import "./empLoginForm.css";
 const EmpLoginForm = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const [loginError, setLoginError] = useState("");
+    const navigate = useNavigate();
 
     const onSubmit = async (data) => {
-        setLoginError(""); // Clear previous errors
-        console.log("📩 Data sent to backend:", data);
-
+        setLoginError("");
+        console.log("📩 Original data:", data);
+    
+        // transformamos a lo que el backend espera
+        const loginPayload = {
+            emp_email: data.email,
+            emp_password: data.password
+        };
+    
         try {
-            const response = await axios.post("http://localhost:3000/api/auth/employee-login", data);
+            const response = await axios.post("http://localhost:3000/api/auth/employee", loginPayload);
             console.log("✅ Login successful:", response.data);
+            
+            sessionStorage.setItem("Token", response.data.token);
+            sessionStorage.setItem("User", JSON.stringify(response.data.user));
 
-            // Show a success message (can be replaced with a redirect)
-            alert(`Welcome, ${response.data.user.name}`);
-
+            navigate("/employee/menu");
             
         } catch (error) {
             console.error("❌ Login error:", error);
             setLoginError("Invalid email or password. Please try again.");
+              
         }
     };
 
@@ -40,6 +50,13 @@ const EmpLoginForm = () => {
                                 {errors.password && (<div>{errors.password.message}</div>)}    
                                 <Button disabled={isSubmitting} className="mt-3 border-0" type="submit">{isSubmitting ? "Cargando..." : "Log In"}</Button>
                     </form>
+
+                    {/* Mostrar error si existe */}
+                    {loginError && (
+                    <Alert variant="danger" className="mt-3">
+                        {loginError}
+                    </Alert>
+                    )}
                 </Col>
             </Container>
     )

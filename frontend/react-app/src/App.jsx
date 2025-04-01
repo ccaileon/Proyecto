@@ -33,6 +33,9 @@ import EmpRooms from "./pages/employees/employeeRooms/EmployeeRooms.jsx";
 import EmpReservations from "./pages/employees/employeeReservations/EmployeeReservations.jsx";
 import EmpReservationsList from "./pages/employees/employeeReservations/components/employeeReservationsList/EmployeeReservationsList.jsx";
 
+// -- Rutas Privadas --
+import PrivateRoute from "./components/PrivateRoute.jsx";
+
 // -- CSS --
 import "./index.css";
 
@@ -89,12 +92,19 @@ function App() {
   {/* Rutas Cliente Públicas */} 
         <Route path="*" element={<Layout />} />
 
-        { /* Rutas Empleado  */}
+        { /* Rutas Privadas Empleado */}
         <Route path="/employee" element={<EmployeeLogin/>}/>
-        <Route path="/employee/:menu" element={<EmployeeMenu/>}/>
-        <Route path="/employee/:menu/reservations" element={<EmpReservations/>}/>
-        <Route path="/employee/:menu/rooms" element={<EmpRooms/>}/>
-        <Route path="/employee/reservations-list" element={<EmpReservationsList />} />
+        <Route path="/employee/:menu" element={
+          <PrivateRoute><EmployeeMenu /></PrivateRoute>} />
+        <Route path="/employee/:menu/reservations" element={
+          <PrivateRoute><EmpReservations/></PrivateRoute>
+        }/>
+        <Route path="/employee/:menu/rooms" element={
+          <PrivateRoute><EmpRooms/></PrivateRoute>
+        }/>
+        <Route path="/employee/reservations-list" element={
+          <PrivateRoute><EmpReservationsList/></PrivateRoute>
+        } />
     </Routes>
   </div>
 

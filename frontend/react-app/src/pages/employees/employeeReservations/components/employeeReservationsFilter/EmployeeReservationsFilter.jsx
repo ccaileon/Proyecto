@@ -2,18 +2,42 @@ import { useForm} from "react-hook-form";
 import axios from "axios";
 import {Button, Container, Navbar, Row, Col} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
-export default function EmpResrvationsFilter(){
+
+
+
+
+export default function EmpReservationsFilter({setFilteredData}){
   const { register, handleSubmit } = useForm();
-  const onSubmit  = async data => {
-    try{
-      //AQUÍ VA EL ENVÍO DEL FORM A NODEJS
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await axios.post("YOUR_API_ENDPOINT", data);
-    }catch(error){
-      //AQUÍ VA UN SWAL EN CASO DE QUE LA AUTENTICACIÓN FALLE
-      console.log(error);  
+
+
+
+  const onSubmit = async (data) => {
+    try {
+      const token = sessionStorage.getItem("Token");
+  
+      // Construimos filtros solo si están llenos
+      const params = {};
+      if (data.clientRoom) params.room = data.clientRoom;
+      if (data.clientId) params.doc_id = data.clientId;
+      if (data.clientName) params.name = data.clientName;
+      if (data.clientDate) params.checkin = data.clientDate;
+  
+      const response = await axios.get("http://localhost:3000/api/reservations", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params
+      });
+  
+      console.log("✅ Reservas filtradas:", response.data);
+      setFilteredData(response.data); // Actualiza el estado con los datos filtrados
+  
+    } catch (error) {
+      console.error("❌ Error al buscar reservas:", error);
+      // Swal.fire("Error", "No se pudieron cargar las reservas", "error");
     }
-  }
+  };
+  
     return(
       <Container fluid>
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
