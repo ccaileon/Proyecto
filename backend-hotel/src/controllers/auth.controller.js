@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const connection = require("../config/db");
 
@@ -102,8 +103,21 @@ const employeeLogin = (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
+    // **Generate JWT token**
+    const token = jwt.sign(
+      {
+        id: employee.emp_id,
+        name: employee.emp_name,
+        email: emp_email,
+      },
+      process.env.JWT_SECRET || "claveUltraSecreta", // cambia esto por una variable segura
+      { expiresIn: "2h" }
+    );
+
+    // **Log the token for debugging purposes**
     res.json({
       message: "Login successful",
+      token,
       user: {
         id: employee.emp_id,
         name: employee.emp_name,

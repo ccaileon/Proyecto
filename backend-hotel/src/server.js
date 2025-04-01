@@ -6,10 +6,12 @@ const employeesRoutes = require("./routes/employees.routes");
 const reservationRoutes = require("./routes/reservations.routes");
 const clientsRoutes = require("./routes/clients.routes");
 const authRoutes = require("./routes/auth.routes");
+const employeeRoutes = require("./routes/employees.routes");
 const db = require("./config/db");
 const net = require("net");
-
 const app = express();
+
+app.use("/api/employee", employeeRoutes);
 app.use(cors());
 app.use(express.json()); // Allows JSON requests
 

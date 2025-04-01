@@ -1,9 +1,19 @@
+import {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Image, Card, Button} from "react-bootstrap";
 import { EmpLoginNav } from "../components/employeeLoginNav/EmployeeLoginNav";
 import { EmpMenuCard}  from "../components/employeeMenuCard/EmployeeMenuCard";
 import EmpBackground from "../components/employeeBackground/EmpBackground";
 import "./employeeMenu.css";
 const EmployeeMenu = ()=> {
+  const navigate = useNavigate();
+
+const handleLogout = () => {
+  sessionStorage.clear(); // 🔐 Borra la sesión
+  navigate("/employee"); // 🔁 Redirige al login
+};
+
+  
   return (
     <Container fluid className="justify-content-center min-vh-100 min-wh-100 w-100 p-0 m-0">
         <EmpLoginNav/>
@@ -20,9 +30,10 @@ const EmployeeMenu = ()=> {
             title="Gestionar habitaciones"
             imageUrl="https://i.ibb.co/0jyKWY0Z/pexels-photo-164595.jpg"
             route="/employee/:menu/rooms"/>
-            
           </Col>
         </Row>
+  
+
 
     </Container>
       

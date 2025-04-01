@@ -3,9 +3,44 @@ const connection = require("../config/db");
 
 // Obtener todas las reservas
 const getReservations = (req, res) => {
-  Reservation.getAll((err, results) => {
+  const {
+    room, // nº de habitación
+    doc_id, // documento de cliente
+    name, // nombre de cliente
+    checkin, // fecha check-in
+  } = req.query;
+
+  let sql = `
+    SELECT r.*, c.client_name, c.client_doc_id 
+    FROM reservation r
+    JOIN client c ON r.res_client_id = c.client_id
+    WHERE 1 = 1
+  `;
+  const params = [];
+
+  if (room) {
+    sql += " AND r.res_room_id = ?";
+    params.push(room);
+  }
+
+  if (doc_id) {
+    sql += " AND c.client_doc_id LIKE ?";
+    params.push(`%${doc_id}%`);
+  }
+
+  if (name) {
+    sql += " AND c.client_name LIKE ?";
+    params.push(`%${name}%`);
+  }
+
+  if (checkin) {
+    sql += " AND DATE(r.res_checkin) = ?";
+    params.push(checkin);
+  }
+
+  connection.query(sql, params, (err, results) => {
     if (err) {
-      console.error("❌ Error al obtener reservas:", err);
+      console.error("❌ Error al obtener reservas con filtros:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
     res.json(results);
@@ -57,11 +92,9 @@ const createReservation = (req, res) => {
           .json({ error: "Error verificando la habitación.", details: err });
       }
       if (roomResult.length === 0) {
-        return res
-          .status(400)
-          .json({
-            error: "La habitación no existe o no pertenece a un hotel válido.",
-          });
+        return res.status(400).json({
+          error: "La habitación no existe o no pertenece a un hotel válido.",
+        });
       }
 
       // Verificar si el cliente existe
@@ -88,12 +121,10 @@ const createReservation = (req, res) => {
             (err, employeeResult) => {
               if (err) {
                 console.error("Error verificando el empleado:", err);
-                return res
-                  .status(500)
-                  .json({
-                    error: "Error verificando el empleado.",
-                    details: err,
-                  });
+                return res.status(500).json({
+                  error: "Error verificando el empleado.",
+                  details: err,
+                });
               }
               if (employeeResult.length === 0) {
                 return res
@@ -121,20 +152,16 @@ const createReservation = (req, res) => {
                 (err, result) => {
                   if (err) {
                     console.error("Error creando la reserva:", err);
-                    return res
-                      .status(500)
-                      .json({
-                        error: "Error creando la reserva.",
-                        details: err,
-                      });
+                    return res.status(500).json({
+                      error: "Error creando la reserva.",
+                      details: err,
+                    });
                   }
 
-                  res
-                    .status(201)
-                    .json({
-                      message: "Reserva creada exitosamente.",
-                      reservationId: result.insertId,
-                    });
+                  res.status(201).json({
+                    message: "Reserva creada exitosamente.",
+                    reservationId: result.insertId,
+                  });
                 }
               );
             }
