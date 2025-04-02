@@ -9,7 +9,7 @@ const {
   deleteEmployee,
 } = require("../controllers/employees.controller");
 
-router.get("reservations", verifyToken, (req, res) => {
+router.get("/reservations", verifyToken, (req, res) => {
   res.json({
     message: "Acceso autorizado ✅",
     empleados: req.user, // Aquí puedes acceder a los datos del usuario decodificados
