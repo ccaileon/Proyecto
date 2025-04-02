@@ -12,10 +12,19 @@ const login = (req, res) => {
   }
 
   const sql = `
-    SELECT c.client_id, c.client_name, c.client_surname_one, a.account_passwd 
-    FROM client c 
-    JOIN account a ON c.client_id = a.account_client_id 
-    WHERE c.client_email = ?`;
+    SELECT 
+      c.client_id, 
+      c.client_name, 
+      c.client_surname_one, 
+      c.client_surname_two,
+      c.client_doc_type,
+      c.client_doc_id,
+      c.client_telephone,
+      c.client_email,
+      a.account_passwd 
+  FROM client c 
+  JOIN account a ON c.client_id = a.account_client_id 
+  WHERE c.client_email = ?`;
 
   connection.query(sql, [client_email], async (err, results) => {
     if (err) {
@@ -49,14 +58,28 @@ const login = (req, res) => {
 
       console.log("✅ Usuario autenticado correctamente.");
 
-      // **Devolver respuesta de éxito**
+      const token = jwt.sign(
+        {
+          id: user.client_id,
+          name: user.client_name,
+          email: client_email,
+        },
+        process.env.JWT_SECRET || "claveUltraSecreta", // asegúrate de tener esto en tu .env
+        { expiresIn: "2h" }
+      );
+
       res.json({
         message: "Login successful",
+        token,
         user: {
           id: user.client_id,
           name: user.client_name,
-          surname: user.client_surname_one,
+          surname_one: user.client_surname_one,
+          surname_two: user.client_surname_two,
           email: client_email,
+          telephone: user.client_telephone,
+          doc_id: user.client_doc_id,
+          doc_type: user.client_doc_type,
         },
       });
     } catch (error) {

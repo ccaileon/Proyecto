@@ -4,17 +4,28 @@ const connection = require("../config/db");
 const deleteClient = (req, res) => {
   const clientId = req.params.id;
 
-  const sql = " DELETE FROM client WHERE client_id = ?";
-
-  connection.query(sql, [clientId], (err, results) => {
+  // Paso 1: Borrar cuenta asociada al cliente
+  const deleteAccountSQL = "DELETE FROM account WHERE account_client_id = ?";
+  connection.query(deleteAccountSQL, [clientId], (err) => {
     if (err) {
-      console.error("❌ Error deleting client:", err);
-      return res.status(500).json({ error: "internal server error" });
+      console.error("❌ Error deleting account:", err);
+      return res.status(500).json({ error: "Error deleting account" });
     }
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ error: "Client not found" });
-    }
-    return res.json({ message: "Client successfully deleted" });
+
+    // Paso 2: Borrar cliente
+    const deleteClientSQL = "DELETE FROM client WHERE client_id = ?";
+    connection.query(deleteClientSQL, [clientId], (err, results) => {
+      if (err) {
+        console.error("❌ Error deleting client:", err);
+        return res.status(500).json({ error: "Error deleting client" });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: "Client not found" });
+      }
+
+      return res.json({ message: "Client and account successfully deleted" });
+    });
   });
 };
 

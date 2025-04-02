@@ -24,13 +24,19 @@ function FormularioLogin() {
       console.log("✅ Login exitoso:", response.data);
 
       if (response.status === 200) {
+
+        sessionStorage.setItem("clientToken", response.data.token);
+        sessionStorage.setItem("clientUser", JSON.stringify(response.data.user));
+        
+        console.log("🔑 Token almacenado en sessionStorage:", response.data.token);
+
         alert.fire({
           title: "Inicio de sesión exitoso",
           text: "Bienvenido de nuevo",
           icon: "success",
           confirmButtonText: "Aceptar",
         }).then(() => {
-          navigate("/dashboard"); // Redirigir a otra página después del login
+          navigate("/"); // Redirigir a otra página después del login
         });
       }
     } catch (error) {

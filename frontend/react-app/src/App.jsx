@@ -35,6 +35,7 @@ import EmpReservationsList from "./pages/employees/employeeReservations/componen
 
 // -- Rutas Privadas --
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import PrivateRouteClient from "./components/PrivateRouteClient.jsx";
 
 // -- CSS --
 import "./index.css";
@@ -63,14 +64,15 @@ function Layout() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/search" element={<ResultadoBusqueda />} />
-          <Route path="/datos" element={<Datos />} />
-          <Route path="/preferencias" element={<Preferencias />} />
-          <Route path="/recompensas" element={<Recompensas />} />
-          <Route path="/reservas" element={<Reservas />} />
+          <Route path="/datos" element={<PrivateRouteClient><Datos /></PrivateRouteClient>} />
+          <Route path="/preferencias" element={<PrivateRouteClient><Preferencias /></PrivateRouteClient>} />
+          <Route path="/recompensas" element={<PrivateRouteClient><Recompensas /></PrivateRouteClient>} />
+          <Route path="/reservas" element={<PrivateRouteClient><Reservas /></PrivateRouteClient>} />
           <Route path="/aviso" element={<AvisoLegal />} />
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
           <Route path="/condiciones" element={<TerminosCondiciones />} />
           <Route path="/datosReserva" element={<DatosReserva />} />
+          <Route path="/checkout" element={<DatosReserva />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { useState } from 'react';
 import "./menu.css";
 import Search from "./Search";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
+
 function Menu() {
-const [isLoggedIn, setIsLoggedIn] = useState(false); // Lógica de conexión va aquí (comprobar si el usuario está conectado)
+
+  const isLoggedIn = !!sessionStorage.getItem("clientToken");
+
 
   return(
 <Navbar expand="lg" bg="light" className="bg-body-tertiary menu">
