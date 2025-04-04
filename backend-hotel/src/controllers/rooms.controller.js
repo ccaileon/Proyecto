@@ -1,24 +1,21 @@
 const Room = require("../models/room.model");
 
-function formatDateToSQL(fecha) {
-  if (!fecha) return null;
-  const partes = fecha.split("/");
-  if (partes.length !== 3) {
-    console.error("❌ Error: Formato de fecha inválido", fecha);
-    return null;
-  }
-  const [day, month, year] = partes;
-  return `${year}-${month}-${day}`; // Formato YYYY-MM-DD
-}
-
 const searchRooms = (req, res) => {
   const { checkIn, checkOut, adults, children } = req.query;
 
   console.log("🔎 Parámetros recibidos:", req.query);
 
-  // Convertir fechas al formato correcto
-  const checkInFormatted = formatDateToSQL(checkIn);
-  const checkOutFormatted = formatDateToSQL(checkOut);
+  // ✅ Convertir a fechas JS válidas directamente
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+
+  if (isNaN(checkInDate) || isNaN(checkOutDate)) {
+    console.error("❌ Error: Formato de fecha inválido", checkIn, checkOut);
+    return res.status(400).json({ error: "Formato de fecha inválido" });
+  }
+
+  const checkInFormatted = checkInDate.toISOString().split("T")[0];
+  const checkOutFormatted = checkOutDate.toISOString().split("T")[0];
 
   console.log("📌 Fechas convertidas a SQL:", {
     checkInFormatted,

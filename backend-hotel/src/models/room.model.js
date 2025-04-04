@@ -2,36 +2,38 @@ const connection = require("../config/db");
 
 const Room = {
   searchRooms: (checkIn, checkOut, totalGuests, callback) => {
-    // ⚠️ Eliminado `babies`
     if (typeof callback !== "function") {
       console.error("❌ Error: callback no es una función");
       return;
     }
 
-    let sql = `
+    const sql = `
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
              t.room_has_balcony, t.room_has_service
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
-      WHERE r.room_capacity >= ? 
+      WHERE r.room_capacity >= ?
       AND r.room_id NOT IN (
-          SELECT DISTINCT res_room_id FROM reservation 
-          WHERE (? <= res_checkout AND ? >= res_checkin)
+        SELECT DISTINCT res_room_id FROM reservation
+        WHERE NOT (
+          ? >= res_checkout OR
+          ? <= res_checkin
+        )
       )
     `;
 
-    let queryParams = [totalGuests, checkOut, checkIn];
+    const queryParams = [totalGuests, checkIn, checkOut];
 
     console.log("📌 Ejecutando consulta SQL con valores:", queryParams);
 
     connection.query(sql, queryParams, (err, results) => {
       if (err) {
         console.error("❌ Error en la consulta SQL:", err);
-        return callback(err, null); // ⚠️ Se devuelve el error al callback
+        return callback(err, null);
       }
-      callback(null, results); // ✅ Llamada correcta al callback
+      callback(null, results);
     });
   },
 
