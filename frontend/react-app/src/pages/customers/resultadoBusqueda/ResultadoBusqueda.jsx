@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"; // Detectar cambios en la URL
+import { useLocation} from "react-router-dom";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 
 function ResultadoBusqueda() {
   const [resultados, setResultados] = useState([]);
-  const location = useLocation(); // Detectar cambios en la URL
+  const location = useLocation();
+  
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -37,7 +38,7 @@ function ResultadoBusqueda() {
         setResultados(uniqueRooms);
       })
       .catch(error => console.error("❌ Error al obtener resultados:", error));
-  }, [location.search]); // 🔥 Se ejecuta cada vez que la URL cambia
+  }, [location.search]);
 
   return (
     <Container className="mt-4">
@@ -60,7 +61,26 @@ function ResultadoBusqueda() {
                     <strong>Metros cuadrados:</strong> {room.room_mts_square} m²
                   </Card.Text>
                   <Button variant="primary" className="me-2">Ver detalles</Button>
-                  <Button variant="success">Reservar</Button>
+                  <Button
+  variant="success"
+  onClick={() => {
+    const urlParams = new URLSearchParams(location.search);
+    const checkIn = urlParams.get("checkIn");
+    const checkOut = urlParams.get("checkOut");
+
+    // Guardar los datos necesarios individualmente
+    sessionStorage.setItem("selectedRoomId", room.room_id);
+    sessionStorage.setItem("hotelId", room.room_hotel_id || 1); // Asegúrate que room_room_hotel_id viene del backend
+    sessionStorage.setItem("checkin", checkIn);
+    sessionStorage.setItem("checkout", checkOut);
+
+    window.location.href = "/checkout";
+  }}
+>
+  Reservar
+</Button>
+
+
                 </Card.Body>
               </Card>
             </Col>

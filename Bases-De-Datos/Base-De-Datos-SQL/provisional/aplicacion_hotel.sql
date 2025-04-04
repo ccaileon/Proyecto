@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-03-2025 a las 22:38:41
+-- Tiempo de generación: 03-04-2025 a las 19:38:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,8 +38,9 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
-(11, '$2b$10$.YTXH9qn1OlnvkFUXi/Uz.qOwWw8Ls.0jb5xBvhtwy/.Uq/nlpMLW', 0),
-(12, '$2b$10$7yBUNbQy1ajPK2cQPxP.vOR4RIGmn2gGaIMb74l8vG2aSvBqClDOK', 0);
+(15, '$2b$10$kqe6za5bKkNwGlawPZageOO/xIMQCA4rzNQAdASz.Vi1nGjwnd7Wa', 0),
+(16, '$2b$10$4fN5oxbRgctjp/OdSHcri.riTUDM6HA6hRuDGKTQoJ9WL3Z7Pzmou', 0),
+(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 0);
 
 -- --------------------------------------------------------
 
@@ -51,11 +52,11 @@ CREATE TABLE `client` (
   `client_id` int(11) NOT NULL,
   `client_doc_type` varchar(10) NOT NULL,
   `client_doc_id` varchar(10) NOT NULL,
-  `client_name` varchar(20) NOT NULL,
-  `client_surname_one` varchar(20) NOT NULL,
+  `client_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `client_surname_one` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `client_surname_two` varchar(20) NOT NULL,
   `client_telephone` int(20) NOT NULL,
-  `client_email` varchar(20) NOT NULL
+  `client_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
@@ -63,8 +64,9 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(11, '', '', 'Eduard', 'Ciprian', 'Prueba2', 987654321, 'prueba2@gmail.com'),
-(12, '', '', 'Sheila', 'Acedo', 'Prueba3', 123456789, 'prueba3@gmail.com');
+(15, '', '', 'Prueba', '1', '', 612345678, 'prueba1@gmail.com'),
+(16, '', '', 'Prueba', '2', '', 612345678, 'prueba2@gmail.com'),
+(17, '', '', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -74,12 +76,12 @@ INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_n
 
 CREATE TABLE `employee` (
   `emp_id` int(11) NOT NULL,
-  `emp_doc_id` int(10) NOT NULL,
-  `emp_name` varchar(10) NOT NULL,
+  `emp_doc_id` varchar(15) NOT NULL,
+  `emp_name` varchar(50) NOT NULL,
   `emp_surname_one` varchar(10) NOT NULL,
   `emp_surname_two` varchar(10) NOT NULL,
   `emp_telephone` int(10) NOT NULL,
-  `emp_email` varchar(20) NOT NULL,
+  `emp_email` varchar(100) NOT NULL,
   `emp_manager_id` int(11) NOT NULL,
   `emp_password` varchar(100) NOT NULL,
   `emp_hotel_id` varchar(20) NOT NULL
@@ -90,7 +92,7 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`) VALUES
-(2, 12345678, 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1');
+(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1');
 
 -- --------------------------------------------------------
 
@@ -105,6 +107,35 @@ CREATE TABLE `employee_reservation_log` (
   `log_db_query` text NOT NULL,
   `log_db_original` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `guest`
+--
+
+CREATE TABLE `guest` (
+  `guest_id` int(11) NOT NULL,
+  `guest_name` varchar(100) NOT NULL,
+  `guest_lastname` varchar(100) NOT NULL,
+  `guest_email` varchar(100) DEFAULT NULL,
+  `guest_phone` varchar(20) DEFAULT NULL,
+  `guest_preferences` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `guest`
+--
+
+INSERT INTO `guest` (`guest_id`, `guest_name`, `guest_lastname`, `guest_email`, `guest_phone`, `guest_preferences`) VALUES
+(1, 'Laura', 'Martínez', 'laura@mail.com', '666999111', 'Cerca del ascensor'),
+(2, 'Laura', 'Martínez', 'laura@mail.com', '666999111', 'Cerca del ascensor'),
+(3, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
+(4, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
+(5, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
+(6, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
+(7, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
+(8, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor');
 
 -- --------------------------------------------------------
 
@@ -162,14 +193,22 @@ CREATE TABLE `reservation` (
   `res_is_checkout` tinyint(1) NOT NULL,
   `res_is_closed` tinyint(1) NOT NULL,
   `res_checkin_by` int(6) NOT NULL,
-  `res_checkout_by` int(6) NOT NULL,
+  `res_checkout_by` int(11) DEFAULT NULL,
   `res_observations` text NOT NULL,
   `res_wants_double` tinyint(1) NOT NULL,
   `res_file_one` int(11) DEFAULT NULL,
   `res_file_two` int(11) DEFAULT NULL,
   `res_file_three` int(11) DEFAULT NULL,
-  `res_add_points` int(5) NOT NULL
+  `res_add_points` int(5) NOT NULL,
+  `res_guest_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+
+--
+-- Volcado de datos para la tabla `reservation`
+--
+
+INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`, `res_guest_id`) VALUES
+(14, 17, 3, 1, '2025-04-10', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, NULL, '', 0, NULL, NULL, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -189,24 +228,8 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`) VALUES
-(2, 1, 'presidential', 4),
 (3, 1, 'suite', 4),
 (4, 1, 'suite', 4),
-(5, 1, 'presidential', 4),
-(7, 1, 'plus-jacuzzi', 2),
-(8, 1, 'plus-jacuzzi', 2),
-(9, 1, 'plus-jacuzzi', 2),
-(10, 1, 'plus-jacuzzi', 2),
-(11, 1, 'plus-family-views', 4),
-(12, 1, 'plus-family-views', 4),
-(13, 1, 'plus-family-views', 4),
-(14, 1, 'plus-family-views', 4),
-(15, 1, 'plus-family-views', 4),
-(16, 1, 'plus-family-views', 4),
-(17, 1, 'plus-family-views', 4),
-(18, 1, 'plus-family-views', 4),
-(19, 1, 'plus-family-views', 4),
-(20, 1, 'plus-family-views', 4),
 (21, 1, 'plus-family', 4),
 (22, 1, 'plus-family', 4),
 (23, 1, 'plus-family', 4),
@@ -243,7 +266,16 @@ INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`) VA
 (54, 1, 'plus', 2),
 (55, 1, 'plus', 2),
 (56, 1, 'suite', 4),
-(57, 1, 'suite', 4);
+(57, 1, 'suite', 4),
+(58, 1, 'suite', 4),
+(59, 1, 'standard', 2),
+(60, 1, 'standard-family', 4),
+(61, 1, 'standard', 2),
+(62, 1, 'standard-family', 4),
+(63, 1, 'standard-family', 4),
+(64, 1, 'standard-family', 4),
+(65, 1, 'standard', 2),
+(66, 1, 'standard', 2);
 
 -- --------------------------------------------------------
 
@@ -281,11 +313,6 @@ CREATE TABLE `type_room` (
 INSERT INTO `type_room` (`room_type`, `room_capacity`, `room_mts_square`, `room_has_views`, `room_has_jacuzzi`, `room_has_balcony`, `room_has_service`) VALUES
 ('plus', 2, 22, 0, 0, 0, 1),
 ('plus-family', 4, 30, 0, 0, 0, 1),
-('plus-family-views', 4, 30, 1, 0, 0, 1),
-('plus-jacuzzi', 2, 22, 0, 1, 0, 1),
-('plus-jacuzzy-views', 2, 22, 1, 1, 0, 1),
-('plus-views', 2, 22, 1, 0, 0, 1),
-('presidential', 4, 40, 1, 1, 1, 1),
 ('standard', 2, 18, 0, 0, 0, 0),
 ('standard-family', 4, 25, 0, 0, 0, 0),
 ('suite', 4, 30, 1, 1, 1, 1);
@@ -320,6 +347,12 @@ ALTER TABLE `employee_reservation_log`
   ADD KEY `log-employee` (`log_emp_id`);
 
 --
+-- Indices de la tabla `guest`
+--
+ALTER TABLE `guest`
+  ADD PRIMARY KEY (`guest_id`);
+
+--
 -- Indices de la tabla `hotel`
 --
 ALTER TABLE `hotel`
@@ -341,7 +374,8 @@ ALTER TABLE `reservation`
   ADD KEY `reservation-client` (`res_client_id`),
   ADD KEY `reservation-room` (`res_room_hotel_id`,`res_room_id`),
   ADD KEY `reservation-employee-in` (`res_checkin_by`),
-  ADD KEY `reservation-employee-out` (`res_checkout_by`);
+  ADD KEY `reservation-employee-out` (`res_checkout_by`),
+  ADD KEY `fk_reservation_guest` (`res_guest_id`);
 
 --
 -- Indices de la tabla `room`
@@ -371,13 +405,19 @@ ALTER TABLE `type_room`
 -- AUTO_INCREMENT de la tabla `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `guest`
+--
+ALTER TABLE `guest`
+  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `hotel`
@@ -395,13 +435,13 @@ ALTER TABLE `invoice`
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `room`
 --
 ALTER TABLE `room`
-  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- Restricciones para tablas volcadas
@@ -431,6 +471,7 @@ ALTER TABLE `invoice`
 -- Filtros para la tabla `reservation`
 --
 ALTER TABLE `reservation`
+  ADD CONSTRAINT `fk_reservation_guest` FOREIGN KEY (`res_guest_id`) REFERENCES `guest` (`guest_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `reservation-client` FOREIGN KEY (`res_client_id`) REFERENCES `client` (`client_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `reservation-employee-in` FOREIGN KEY (`res_checkin_by`) REFERENCES `employee` (`emp_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `reservation-employee-out` FOREIGN KEY (`res_checkout_by`) REFERENCES `employee` (`emp_id`) ON UPDATE CASCADE,

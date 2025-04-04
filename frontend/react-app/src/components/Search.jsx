@@ -33,6 +33,7 @@ function Search() {
     return () => document.removeEventListener("mousedown", handleDateClick);
   }, []);
 
+  // Mostrar en inputs
   const formatDate = (date) => {
     const localDate = new Date(date);
     localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
@@ -42,15 +43,27 @@ function Search() {
     return `${day}/${month}/${year}`;
   };
 
-  const handleSearch = () => {
-    const checkIn = formatDate(state[0].startDate);
-    const checkOut = formatDate(state[0].endDate);
-    const { adultos, ninos } = huespedes;
-    
-    console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
+  // Enviar a la URL
+  const toISOStringDate = (date) => {
+    const d = new Date(date);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split("T")[0];
+  };
 
+  const handleSearch = () => {
+    const checkIn = toISOStringDate(state[0].startDate);
+    const checkOut = toISOStringDate(state[0].endDate);
+    const { adultos, ninos } = huespedes;
+  
+    // ✅ Guardar en sessionStorage para que estén disponibles en el checkout
+    sessionStorage.setItem("checkin", checkIn);
+    sessionStorage.setItem("checkout", checkOut);
+  
+    console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
+  
     navigate(`/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adultos}&children=${ninos}`);
   };
+  
 
   return (
     <Container className="buscador">
@@ -107,3 +120,4 @@ function Search() {
 }
 
 export default Search;
+
