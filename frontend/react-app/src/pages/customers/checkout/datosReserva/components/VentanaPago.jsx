@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
@@ -145,4 +146,16 @@ const VentanaPago = ({ guestData }) => {
 };
 
 export default VentanaPago;
+
+VentanaPago.propTypes = {
+  guestData: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    surname_one: PropTypes.string.isRequired,
+    surname_two: PropTypes.string,
+    phone: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    bed_type: PropTypes.string.isRequired,
+    comment: PropTypes.string
+  }).isRequired
+};
 

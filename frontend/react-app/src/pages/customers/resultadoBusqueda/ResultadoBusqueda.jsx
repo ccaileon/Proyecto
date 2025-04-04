@@ -68,9 +68,17 @@ function ResultadoBusqueda() {
     const checkIn = urlParams.get("checkIn");
     const checkOut = urlParams.get("checkOut");
 
-    // Guardar los datos necesarios individualmente
+    // Guardar en sessionStorage lo que usará OrderSummary.jsx
+    sessionStorage.setItem("reservaData", JSON.stringify({
+      room,
+      checkIn,
+      checkOut,
+      adults: urlParams.get("adults"),
+      children: urlParams.get("children"),
+    }));
+
     sessionStorage.setItem("selectedRoomId", room.room_id);
-    sessionStorage.setItem("hotelId", room.room_hotel_id || 1); // Asegúrate que room_room_hotel_id viene del backend
+    sessionStorage.setItem("hotelId", room.room_hotel_id || 1);
     sessionStorage.setItem("checkin", checkIn);
     sessionStorage.setItem("checkout", checkOut);
 
@@ -79,6 +87,7 @@ function ResultadoBusqueda() {
 >
   Reservar
 </Button>
+
 
 
                 </Card.Body>
