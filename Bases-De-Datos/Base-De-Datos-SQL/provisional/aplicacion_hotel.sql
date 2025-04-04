@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-04-2025 a las 19:38:09
+-- Tiempo de generación: 04-04-2025 a las 19:18:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -128,14 +128,8 @@ CREATE TABLE `guest` (
 --
 
 INSERT INTO `guest` (`guest_id`, `guest_name`, `guest_lastname`, `guest_email`, `guest_phone`, `guest_preferences`) VALUES
-(1, 'Laura', 'Martínez', 'laura@mail.com', '666999111', 'Cerca del ascensor'),
-(2, 'Laura', 'Martínez', 'laura@mail.com', '666999111', 'Cerca del ascensor'),
-(3, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
-(4, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
-(5, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
-(6, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
-(7, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor'),
-(8, 'Carlos', 'Ramírez', 'carlos.ramirez@email.com', '611223344', 'Cerca del ascensor');
+(19, 'Eva', 'Martín', 'eva@gmail.com', '123456789', 'doble'),
+(20, 'Eduard', 'Prueba2', 'eduard@gmail.com', '123456789', 'doble');
 
 -- --------------------------------------------------------
 
@@ -163,16 +157,25 @@ INSERT INTO `hotel` (`hotel_id`, `hotel_address`, `hotel_telephone`) VALUES
 --
 
 CREATE TABLE `invoice` (
-  `invoice_id` int(6) NOT NULL,
-  `invoice_client_id` int(6) NOT NULL,
-  `invoice_res_id` int(6) NOT NULL,
-  `ivoice_date` date NOT NULL,
-  `invoice_pay_method` varchar(10) NOT NULL,
-  `invoice_code_transact` int(20) NOT NULL,
-  `invoice_points_used` int(10) NOT NULL,
-  `invoice_details` text NOT NULL,
-  `invoice_total_price` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+  `invoice_id` int(11) NOT NULL,
+  `invoice_code_transact` int(11) DEFAULT NULL,
+  `invoice_details` text DEFAULT NULL,
+  `invoice_pay_method` varchar(10) DEFAULT NULL,
+  `invoice_points_used` int(11) DEFAULT NULL,
+  `invoice_total_price` decimal(10,2) DEFAULT NULL,
+  `invoice_date` date DEFAULT curdate(),
+  `invoice_res_id` int(11) DEFAULT NULL,
+  `invoice_client_id` int(11) DEFAULT NULL,
+  `invoice_guest_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `invoice`
+--
+
+INSERT INTO `invoice` (`invoice_id`, `invoice_code_transact`, `invoice_details`, `invoice_pay_method`, `invoice_points_used`, `invoice_total_price`, `invoice_date`, `invoice_res_id`, `invoice_client_id`, `invoice_guest_id`) VALUES
+(1, NULL, 'Habitación doble, 2 adultos, 0 niños, 5 noches', 'tarjeta', 0, 605.00, '2025-04-04', 25, NULL, 19),
+(2, NULL, 'Habitación plus, 2 adultos, 0 niños, 3 noches', 'tarjeta', 0, 363.00, '2025-04-04', 26, NULL, 20);
 
 -- --------------------------------------------------------
 
@@ -182,7 +185,7 @@ CREATE TABLE `invoice` (
 
 CREATE TABLE `reservation` (
   `res_id` int(6) NOT NULL,
-  `res_client_id` int(6) NOT NULL,
+  `res_client_id` int(11) DEFAULT NULL,
   `res_room_id` int(6) NOT NULL,
   `res_room_hotel_id` int(6) NOT NULL,
   `res_checkin` date NOT NULL,
@@ -208,7 +211,8 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`, `res_guest_id`) VALUES
-(14, 17, 3, 1, '2025-04-10', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, NULL, '', 0, NULL, NULL, NULL, 0, NULL);
+(25, NULL, 25, 1, '2025-05-07', '2025-05-08', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Sin alergias', 0, NULL, NULL, NULL, 0, 19),
+(26, NULL, 36, 1, '2025-04-09', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Galletas y Zumitos.', 0, NULL, NULL, NULL, 0, 20);
 
 -- --------------------------------------------------------
 
@@ -362,9 +366,10 @@ ALTER TABLE `hotel`
 -- Indices de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  ADD PRIMARY KEY (`invoice_id`,`invoice_client_id`,`invoice_res_id`),
-  ADD KEY `invoice-reservation` (`invoice_res_id`),
-  ADD KEY `invoice-client` (`invoice_client_id`);
+  ADD PRIMARY KEY (`invoice_id`),
+  ADD KEY `fk_invoice_res` (`invoice_res_id`),
+  ADD KEY `fk_invoice_client` (`invoice_client_id`),
+  ADD KEY `fk_invoice_guest` (`invoice_guest_id`);
 
 --
 -- Indices de la tabla `reservation`
@@ -417,7 +422,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT de la tabla `guest`
 --
 ALTER TABLE `guest`
-  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `hotel`
@@ -429,13 +434,13 @@ ALTER TABLE `hotel`
 -- AUTO_INCREMENT de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `room`
@@ -464,8 +469,9 @@ ALTER TABLE `employee_reservation_log`
 -- Filtros para la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  ADD CONSTRAINT `invoice-client` FOREIGN KEY (`invoice_client_id`) REFERENCES `client` (`client_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `invoice-reservation` FOREIGN KEY (`invoice_res_id`) REFERENCES `reservation` (`res_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_invoice_client` FOREIGN KEY (`invoice_client_id`) REFERENCES `client` (`client_id`),
+  ADD CONSTRAINT `fk_invoice_guest` FOREIGN KEY (`invoice_guest_id`) REFERENCES `guest` (`guest_id`),
+  ADD CONSTRAINT `fk_invoice_res` FOREIGN KEY (`invoice_res_id`) REFERENCES `reservation` (`res_id`);
 
 --
 -- Filtros para la tabla `reservation`
