@@ -63,6 +63,26 @@ const Reservation = {
   delete: (id, callback) => {
     db.query("DELETE FROM reservation WHERE res_id = ?", [id], callback);
   },
+
+  getClientReservations: (clientId, callback) => {
+    const sql = `
+      SELECT 
+        r.res_id AS id,
+        DATE_FORMAT(r.res_checkin, '%Y-%m-%d') AS checkIn,
+        DATE_FORMAT(r.res_checkout, '%Y-%m-%d') AS checkOut,
+        DATE_FORMAT(i.invoice_date, '%Y-%m-%d') AS fechaReserva,
+        rm.room_type AS tipoHabitacion,
+        i.invoice_total_price AS precio,
+        i.invoice_pay_method AS metodoPago
+      FROM reservation r
+      JOIN room rm ON r.res_room_id = rm.room_id
+      JOIN invoice i ON i.invoice_res_id = r.res_id
+      WHERE r.res_client_id = ?
+      ORDER BY r.res_checkin DESC
+    `;
+
+    db.query(sql, [clientId], callback);
+  },
 };
 
 module.exports = Reservation;

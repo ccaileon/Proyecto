@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 
-const ReservasTable = () => {
+const TablaReservas = () => {
   const [reservas, setReservas] = useState([]);
 
   useEffect(() => {
-    fetch("URL") //  API
+    const token = sessionStorage.getItem("clientToken");
+  
+    fetch("http://localhost:3000/api/reservations/client/my-reservations", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => setReservas(data))
       .catch((error) => console.error("Error al obtener reservas:", error));
   }, []);
+  
 
   return (
     <Table striped bordered hover>
@@ -24,19 +31,26 @@ const ReservasTable = () => {
         </tr>
       </thead>
       <tbody>
-        {reservas.map((reserva, index) => (
-          <tr key={index}>
-            <td>{reserva.fechaReserva}</td>
-            <td>{reserva.checkIn}</td>
-            <td>{reserva.checkOut}</td>
-            <td>{reserva.tipoHabitacion}</td>
-            <td>{reserva.precio}</td>
-            <td>{reserva.metodoPago}</td>
-          </tr>
-        ))}
-      </tbody>
+        {Array.isArray(reservas) && reservas.length > 0 ? (
+          reservas.map((reserva, index) => (
+        <tr key={index}>
+        <td>{reserva.fechaReserva}</td>
+        <td>{reserva.checkIn}</td>
+        <td>{reserva.checkOut}</td>
+        <td>{reserva.tipoHabitacion}</td>
+        <td>{reserva.precio}</td>
+        <td>{reserva.metodoPago}</td>
+      </tr>
+    ))
+      ) : (
+    <tr>
+      <td colSpan="6">No se encontraron reservas</td>
+    </tr>
+  )}
+</tbody>
+
     </Table>
   );
 };
 
-export default ReservasTable;
+export default TablaReservas;

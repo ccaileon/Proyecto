@@ -228,7 +228,6 @@ const createReservationForGuest = (req, res) => {
 // 🧾 Crear reserva con cliente registrado
 const createReservation = (req, res) => {
   const {
-    res_client_id,
     res_room_id,
     res_room_hotel_id,
     res_checkin,
@@ -240,18 +239,16 @@ const createReservation = (req, res) => {
     invoiceData = {},
   } = req.body;
 
+  const clientId = req.user?.client_id;
+
   if (
-    !res_client_id ||
+    !clientId ||
     !res_room_id ||
     !res_room_hotel_id ||
     !res_checkin ||
     !res_checkout
   ) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
-  }
-
-  if (new Date(res_checkin) >= new Date(res_checkout)) {
-    return res.status(400).json({ error: "Fechas inválidas" });
   }
 
   const checkOverlapQuery = `
@@ -284,7 +281,7 @@ const createReservation = (req, res) => {
             return res.status(400).json({ error: "Empleado no válido" });
 
           const data = {
-            res_client_id,
+            res_client_id: clientId,
             res_guest_id: null,
             res_room_id,
             res_room_hotel_id,
@@ -307,8 +304,10 @@ const createReservation = (req, res) => {
             const sqlInvoice = `
               INSERT INTO invoice (
                 invoice_res_id, invoice_total_price,
-                invoice_details, invoice_pay_method, invoice_points_used, invoice_date
-              ) VALUES (?, ?, ?, ?, ?, CURDATE())
+                invoice_details, invoice_pay_method,
+                invoice_points_used, invoice_client_id,
+                invoice_date
+              ) VALUES (?, ?, ?, ?, ?, ?, CURDATE())
             `;
 
             connection.query(
@@ -319,6 +318,7 @@ const createReservation = (req, res) => {
                 invoiceData.invoice_details,
                 invoiceData.invoice_pay_method,
                 invoiceData.invoice_points_used || 0,
+                clientId,
               ],
               (err, result) => {
                 if (err) {
@@ -328,8 +328,9 @@ const createReservation = (req, res) => {
                 }
 
                 res.status(201).json({
-                  message: "✅ Reserva creada correctamente",
+                  message: "✅ Reserva creada correctamente para cliente",
                   reservationId: res_id,
+                  clientId,
                 });
               }
             );
@@ -385,6 +386,54 @@ const deleteReservation = (req, res) => {
   });
 };
 
+const getMyReservations = (req, res) => {
+  const clientId = req.user?.client_id;
+
+  if (!clientId) {
+    return res.status(401).json({ error: "Token inválido o expirado" });
+  }
+
+  const sql = `
+    SELECT 
+      r.res_id,
+      DATE_FORMAT(r.res_checkin, '%Y-%m-%d') AS checkIn,
+      DATE_FORMAT(r.res_checkout, '%Y-%m-%d') AS checkOut,
+      DATE_FORMAT(i.invoice_date, '%Y-%m-%d') AS fechaReserva,
+      rm.room_type AS tipoHabitacion,
+      i.invoice_total_price AS precio,
+      i.invoice_pay_method AS metodoPago
+    FROM reservation r
+    JOIN room rm ON r.res_room_id = rm.room_id
+    JOIN invoice i ON i.invoice_res_id = r.res_id
+    WHERE r.res_client_id = ?
+    ORDER BY r.res_checkin DESC
+  `;
+
+  connection.query(sql, [clientId], (err, results) => {
+    if (err) {
+      console.error("❌ Error obteniendo reservas del cliente:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+    res.json(results);
+  });
+};
+
+const getClientReservations = (req, res) => {
+  const clientId = req.user?.client_id;
+
+  if (!clientId) {
+    return res.status(401).json({ error: "No autorizado" });
+  }
+
+  Reservation.getClientReservations(clientId, (err, results) => {
+    if (err) {
+      console.error("❌ Error obteniendo reservas del cliente:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+    res.json(results);
+  });
+};
+
 module.exports = {
   getReservations,
   getReservationById,
@@ -392,4 +441,6 @@ module.exports = {
   createReservationForGuest,
   updateReservation,
   deleteReservation,
+  getMyReservations,
+  getClientReservations,
 };
