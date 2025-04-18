@@ -6,18 +6,22 @@ const verifyToken = require("../../middlewares/verifyToken");
 /* // Middleware para verificar el token
 router.get("/", verifyToken, reservationController.getReservations);
 router.get("/:id", verifyToken, reservationController.getReservationById);
-router.post("/", verifyToken, reservationController.createReservation);
 router.put("/:id", verifyToken, reservationController.updateReservation);
 router.delete("/:id", verifyToken, reservationController.deleteReservation); */
 
-// RUTAS PRIVADAS (solo empleados)
-router.get("/", verifyToken, reservationController.getReservations); // con filtros
+// ✅ RUTAS PRIVADAS (reservas internas para empleados)
+router.get("/", verifyToken, reservationController.getReservations);
 router.get("/:id", verifyToken, reservationController.getReservationById);
 router.put("/:id", verifyToken, reservationController.updateReservation);
 router.delete("/:id", verifyToken, reservationController.deleteReservation);
 
-// RUTA PÚBLICA para crear reservas (clientes no logueados)
-router.post("/", reservationController.createReservation);
+// ✅ RUTA PRIVADA para clientes logueados que reservan
+router.post("/client", verifyToken, reservationController.createReservation);
+router.get("/client/my-reservations", verifyToken, reservationController.getMyReservations);
+
+
+
+// ✅ RUTA PÚBLICA para crear reservas sin cuenta
 router.post("/guest", reservationController.createReservationForGuest);
 
 // (opcional) RUTA GET pública (por ejemplo: solo sus reservas)

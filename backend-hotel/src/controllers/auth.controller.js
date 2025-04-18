@@ -60,9 +60,8 @@ const login = (req, res) => {
 
       const token = jwt.sign(
         {
-          id: user.client_id,
-          name: user.client_name,
-          email: client_email,
+          client_id: user.client_id,
+          client_email: client_email,
         },
         process.env.JWT_SECRET || "claveUltraSecreta", // asegúrate de tener esto en tu .env
         { expiresIn: "2h" }
