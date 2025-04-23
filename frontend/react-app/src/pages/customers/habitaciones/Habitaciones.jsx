@@ -28,7 +28,7 @@ function Habitaciones() {
   imagenUrl="src\assets\img\imgHabitaciones\standard\habitacion-standard.jpg"
   tipo="economica"
 />
-
+<hr />
 <Room
   titulo="Habitación Familiar"
   capacidad={"4 personas"}
@@ -50,6 +50,7 @@ function Habitaciones() {
   imagenUrl="src\assets\img\imgHabitaciones\plus\habitacion-plus.jpg"
   tipo="plus"
 />
+<hr />
 <Room
   titulo="Habitación Coral"
   precio={100}
@@ -72,7 +73,7 @@ function Habitaciones() {
   imagenUrl="src\assets\img\imgHabitaciones\suite\habitacion-suite.jpg"
   tipo="suite"
 />
-
+<hr />
 <Room
   titulo="Suite Duna Dorada"
   precio={220}

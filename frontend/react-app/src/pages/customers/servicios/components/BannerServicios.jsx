@@ -7,7 +7,7 @@ function BannerServicios() {
     <div className="banner-servicios" id="banner-servicios">
       <Container>
         <Row>
-          <Col md={8} className="col-8">
+           <Col xs={12} md={8} className="contenido-banner">
             <h1>Disfruta más pagando menos</h1>
             <h3>Oferta para nuestros huéspedes</h3>
             <p>

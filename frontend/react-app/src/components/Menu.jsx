@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import "./menu.css";
-import Search from "./Search";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
 
@@ -35,10 +34,6 @@ function Menu() {
       </Nav>
     </Navbar.Collapse>
 
-
-    <div className="ms-auto d-flex cuerpo-buscador">
-      <Search />
-    </div>
       </Container>
 
         <NavLink to={isLoggedIn ? "/datos" : "/login"} className="nav-link me-4">

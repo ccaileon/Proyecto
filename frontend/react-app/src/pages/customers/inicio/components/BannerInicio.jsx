@@ -6,7 +6,7 @@ function BannerInicio() {
     <div className="banner-inicio" id="banner-inicio">
       <Container>
         <Row>
-          <Col md={8} className="col-8">
+          <Col xs={12} md={8} className="contenido-banner">
             <h1>Descubre Almería</h1>
             <h3>Parque Natural Cabo de Gata</h3>
             <p>

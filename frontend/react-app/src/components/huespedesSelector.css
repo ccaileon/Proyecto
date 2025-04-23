@@ -30,10 +30,16 @@
   width: 30px;
   height: 30px;
   border-radius: 15%;
-  font-size: 18px;
-}
+  font-size: 20px;
+  display: flex;                
+  justify-content: center;      
+  align-items: center;          
+  text-align: center;      
+
+}  
 
 .btn-listo {
   width: 100%;
   margin-top: 10px;
 }
+

@@ -11,3 +11,16 @@
 }
 
 
+.buscador {
+  position: sticky!important;
+  top: 0; 
+  z-index: 9999; 
+  background-color: #293E44;
+  padding: 1rem 2rem;
+  font-family: "Petrona-Regular";
+}
+
+
+.label {
+  color: white;
+}

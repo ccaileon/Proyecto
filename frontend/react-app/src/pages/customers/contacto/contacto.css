@@ -1,23 +1,48 @@
 .contenedor-contacto {
-  background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/imgContacto/contacto-banner.jpg');
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;
-background-position: center 60%;
-height: 90vh;
-transition: background-position 0.3s ease-out;
+  background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)), url('src/assets/img/imgContacto/contacto-banner.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center 60%;
+  transition: background-position 0.3s ease-out;
+  padding-top: 5%;
+  padding-bottom: 5em;
 }
 
 .contenedor-contacto h1 {
-  font-size: 5em;
-  padding-top: 5%;
-  margin-bottom: 3%!important;
+  font-size: 4em;
+  margin-bottom: 1rem;
 }
 
 .contenedor-contacto p {
-  font-size: 1.5em;
-  padding-top: 0!important;
-  margin-top: 0!important;
-  padding-bottom: 3%;
+  font-size: 1.2em;
+  margin-bottom: 2rem;
 }
 
+.formulario-contacto {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2em;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive solo para contacto */
+@media (max-width: 768px) {
+  .contenedor-contacto {
+    padding-top: 3em;
+    padding-bottom: 5em;
+    background-position: center 30%;
+  }
+
+  .contenedor-contacto h1 {
+    font-size: 2em;
+  }
+
+  .contenedor-contacto p {
+    font-size: 1em;
+  }
+
+  .formulario-contacto {
+    padding: 1.5em;
+  }
+}

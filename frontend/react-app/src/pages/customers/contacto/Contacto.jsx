@@ -32,7 +32,7 @@ function Contacto() {
 <Container>
   <h1 className="text-center">Formulario de Contacto</h1>
 <p className="text-center"><b>Envíenos su mensaje y le contactaremos en un plazo máximo de 24 horas.</b></p>
-   <Form onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit} className="formulario-contacto">
         <Row>
           <Col md={6}>
             <Form.Group controlId="formName">
