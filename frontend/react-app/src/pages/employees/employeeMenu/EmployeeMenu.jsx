@@ -1,43 +1,78 @@
 import {useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Image, Card, Button} from "react-bootstrap";
+import { Container, Row, Col, Image, Card, Button, Carousel} from "react-bootstrap";
 import { EmpLoginNav } from "../components/employeeLoginNav/EmployeeLoginNav";
-import { EmpMenuCard}  from "../components/employeeMenuCard/EmployeeMenuCard";
 import EmpBackground from "../components/employeeBackground/EmpBackground";
-import "./employeeMenu.css";
+import styles from "./EmployeeMenu.module.css";
 const EmployeeMenu = ()=> {
   const navigate = useNavigate();
 
-const handleLogout = () => {
-  sessionStorage.clear(); // 🔐 Borra la sesión
-  navigate("/employee"); // 🔁 Redirige al login
-};
 
+const menuItems = [
+  {
+    title: "Gestionar reservas",
+    image: "/src/assets/img/imgEmpleados/menu/manage_res.jpg",
+    route: "/employee/menu/reservations",
+  },
+  {
+    title: "Gestionar habitaciones",
+    image: "/src/assets/img/imgEmpleados/menu/manage_room.jpg",
+    route: "/employee/menu/rooms",
+  },
+  {
+    title: "Gestionar empleados",
+    image: "/src/assets/img/imgEmpleados/menu/manage_em.jpg",
+    route: "/employee/menu/employees",
+  },
+];
   
-  return (
-    <Container fluid className="justify-content-center min-vh-100 min-wh-100 w-100 p-0 m-0">
-        <EmpLoginNav/>
-        <Row id="employee-menu-row" className="min-wh-100 min-vh-100 m-0 p-0 justify-content-center text-center  align-items-center">
-          <Col  >     
-            <EmpMenuCard
-            title="Gestionar reservas"
-            imageUrl="https://www.grupobillingham.com/blog/wp-content/uploads/2022/12/planner-agenda-calendario.jpg"
-            route="/employee/:menu/reservations"
-            />
-          </Col>
-          <Col >
-            <EmpMenuCard
-            title="Gestionar habitaciones"
-            imageUrl="https://i.ibb.co/0jyKWY0Z/pexels-photo-164595.jpg"
-            route="/employee/:menu/rooms"/>
-          </Col>
-        </Row>
-  
+return (
+  <Container fluid className="p-0 m-0 w-100">
+    <EmpLoginNav />
+    <div
+      style={{
+        height: 'calc(100vh - 41px)', // ajusta si tu nav mide distinto
+        overflow: 'hidden',
+      }}
+    >
+      <Carousel fade className="w-100 h-100" data-bs-theme="dark" interval={null}>
+        {menuItems.map((item, idx) => (
+          <Carousel.Item
+          key={idx}
+          className="position-relative d-flex align-items-center justify-content-center"
+          style={{
+            height: '100vh',
+            backgroundImage: `url(${item.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          {/* Overlay oscuro translúcido */}
+          <div
+            className="position-absolute top-0 start-0 w-100 h-100"
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.4)', // opacidad ajustable
+              zIndex: 1,
+            }}
+          ></div>
+        
+          {/* Contenido centrado */}
+          <div
+            className="text-center"
+            style={{ cursor: 'pointer', zIndex: 2 }}
+            onClick={() => navigate(item.route)}
+          >
+            <h3 className={styles.carouselTitle}>{item.title}</h3>
+          </div>
+        </Carousel.Item>
+        
+        ))}
+      </Carousel>
+    </div>
+  </Container>
+);
 
-
-    </Container>
-      
-  )
 }
 
 export default EmployeeMenu;  

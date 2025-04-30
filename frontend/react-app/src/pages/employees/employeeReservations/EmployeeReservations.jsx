@@ -11,7 +11,7 @@ export default function EmpReservations() {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
-  // 🔄 Cargar todas las reservas al montar el componente
+
   useEffect(() => {
     const fetchReservations = async () => {
       try {
@@ -23,17 +23,15 @@ export default function EmpReservations() {
         });
 
         const data = await response.json();
-        console.log("✅ Reservas obtenidas al inicio:", data);
         setFilteredData(data);
       } catch (error) {
-        console.error("❌ Error al cargar reservas:", error);
+        console.error("Error: ", error);
       }
     };
 
     fetchReservations();
   }, []);
 
-  // 📌 Mostrar los datos en el panel lateral
   const handleRowClick = (reservation) => {
     setSelectedReservation(reservation);
     setShowOffcanvas(true);
@@ -43,7 +41,6 @@ export default function EmpReservations() {
     setShowOffcanvas(false);
     setSelectedReservation(null);
   };
-
   return (
     <Container fluid className="m-0 p-0">
       <EmpLoginNav />

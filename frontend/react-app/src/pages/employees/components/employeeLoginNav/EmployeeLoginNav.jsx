@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-
+import styles from "./EmployeeLoginNav.module.css"
 
 export function EmpLoginNav(){
   const navigate = useNavigate();
@@ -17,22 +17,29 @@ export function EmpLoginNav(){
   }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("Token"); // 🔐 Borra el token
-    sessionStorage.removeItem("User"); // 🔐 Borra la sesión
-    navigate("/employee"); // 🔁 Redirige al login
+    sessionStorage.removeItem("Token"); 
+    sessionStorage.removeItem("User"); 
+    navigate("/employee");
   };
-
+  const handleHome = () => {
+    navigate("/employee/:menu");
+  }
 
   return(
     <nav className="z-3 align-items-start min-vw-100 navbar navbar-expand-lg bg-body-tertiary m-0 p-0 ">
       <div className="container-fluid navbar-custom d-flex justify-content-between align-items-center">
-  <NavLink className="navbar-brand" to="#">LOGO</NavLink>
+  <NavLink className="navbar-brand" to="/employee/menu"><img className={styles.empNavImage}
+          src="/public/logotipo.png"
+          alt="Dunas de Oro"
+        /></NavLink>
 
   <div className="d-flex align-items-center gap-3">
     {userName && <span className="fw-bold">Bienvenido, {userName}</span>}
-    <Button variant="outline-danger" onClick={handleLogout}>
-      Cerrar sesión
-    </Button>
+    {userName && (
+      <Button variant="outline-danger" onClick={handleLogout}>
+        Cerrar sesión
+      </Button>
+    )}
   </div>
 </div>
 
