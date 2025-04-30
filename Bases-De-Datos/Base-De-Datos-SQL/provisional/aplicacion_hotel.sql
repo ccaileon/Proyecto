@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-04-2025 a las 19:18:07
+-- Tiempo de generación: 30-04-2025 a las 16:54:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -203,16 +203,17 @@ CREATE TABLE `reservation` (
   `res_file_two` int(11) DEFAULT NULL,
   `res_file_three` int(11) DEFAULT NULL,
   `res_add_points` int(5) NOT NULL,
-  `res_guest_id` int(11) DEFAULT NULL
+  `res_guest_id` int(11) DEFAULT NULL,
+  `res_state` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
 -- Volcado de datos para la tabla `reservation`
 --
 
-INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`, `res_guest_id`) VALUES
-(25, NULL, 25, 1, '2025-05-07', '2025-05-08', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Sin alergias', 0, NULL, NULL, NULL, 0, 19),
-(26, NULL, 36, 1, '2025-04-09', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Galletas y Zumitos.', 0, NULL, NULL, NULL, 0, 20);
+INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`, `res_guest_id`, `res_state`) VALUES
+(25, NULL, 25, 1, '2025-05-07', '2025-05-08', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Sin alergias', 0, NULL, NULL, NULL, 0, 19, 'pendiente'),
+(26, NULL, 36, 1, '2025-04-09', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Galletas y Zumitos.', 0, NULL, NULL, NULL, 0, 20, 'pendiente');
 
 -- --------------------------------------------------------
 

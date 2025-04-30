@@ -62,7 +62,7 @@ export default function EmpRooms() {
                     Jacuzzi: {room.room_has_jacuzzi ? "Sí" : "No"}<br />
                     Balcón: {room.room_has_balcony ? "Sí" : "No"}<br />
                     Servicio incluido: {room.room_has_service ? "Sí" : "No"}<br />
-                    🛏️ Habitaciones de este tipo: <strong>{room.count}</strong>
+                    Habitaciones de este tipo: <strong>{room.count}</strong>
                   </Card.Text>
                 </Card.Body>
               </Card>
