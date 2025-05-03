@@ -295,12 +295,14 @@ const createReservation = (req, res) => {
 
           Reservation.create(data, (err, result) => {
             if (err) {
-              return res
-                .status(500)
-                .json({ error: "Error creando reserva", details: err.message });
+              return res.status(500).json({
+                error: "Error creando reserva",
+                details: err.message,
+              });
             }
 
             const res_id = result.insertId;
+
             const sqlInvoice = `
               INSERT INTO invoice (
                 invoice_res_id, invoice_total_price,
@@ -320,17 +322,49 @@ const createReservation = (req, res) => {
                 invoiceData.invoice_points_used || 0,
                 clientId,
               ],
-              (err, result) => {
+              (err) => {
                 if (err) {
                   return res
                     .status(500)
                     .json({ error: "Error guardando factura" });
                 }
 
+                // ➕ Calcular puntos ganados
+                const puntosGanados =
+                  Math.floor(invoiceData.invoice_total_price / 100) * 10;
+
+                // 🔄 Actualizar la reserva con los puntos
+                connection.query(
+                  "UPDATE reservation SET res_add_points = ? WHERE res_id = ?",
+                  [puntosGanados, res_id],
+                  (err) => {
+                    if (err)
+                      console.error(
+                        "❌ Error al guardar puntos en reserva:",
+                        err
+                      );
+                  }
+                );
+
+                // 🔄 Acumular puntos en la tabla account
+                connection.query(
+                  "UPDATE account SET account_points = account_points + ? WHERE account_client_id = ?",
+                  [puntosGanados, clientId],
+                  (err) => {
+                    if (err)
+                      console.error(
+                        "❌ Error acumulando puntos en account:",
+                        err
+                      );
+                  }
+                );
+
                 res.status(201).json({
                   message: "✅ Reserva creada correctamente para cliente",
                   reservationId: res_id,
                   clientId,
+                  puntosGanados,
+
                 });
               }
             );
@@ -375,6 +409,65 @@ const updateReservation = (req, res) => {
     if (err)
       return res.status(500).json({ error: "Error actualizando reserva" });
     res.json({ message: "✅ Reserva actualizada correctamente" });
+  });
+};
+const updateReservationStatus = (req, res) => {
+  const { id } = req.params;
+  const { status, employeeId } = req.body;
+
+  // Validación de datos requeridos
+  if (!status || !employeeId) {
+    return res.status(400).json({ error: "Estado y empleado requeridos" });
+  }
+
+  let updateQuery = "";
+  let values = [];
+
+  // Lógica para cada tipo de estado
+  switch (status) {
+    case "checkin":
+      updateQuery = `
+        UPDATE reservation 
+        SET res_is_checkin = 1, res_checkin_by = ? 
+        WHERE res_id = ?
+      `;
+      values = [employeeId, id];
+      break;
+
+    case "checkout":
+      updateQuery = `
+        UPDATE reservation 
+        SET res_is_checkout = 1, res_checkout_by = ? 
+        WHERE res_id = ?
+      `;
+      values = [employeeId, id];
+      break;
+
+    case "closed":
+      updateQuery = `
+        UPDATE reservation 
+        SET res_is_closed = 1 
+        WHERE res_id = ?
+      `;
+      values = [id];
+      break;
+
+    default:
+      return res.status(400).json({ error: "Estado inválido" });
+  }
+
+  // Ejecutar la consulta SQL
+  connection.query(updateQuery, values, (err, result) => {
+    if (err) {
+      console.error("❌ Error actualizando estado:", err);
+      return res.status(500).json({ error: "Error al actualizar estado" });
+    }
+
+    // Confirmar éxito y devolver datos actualizados de la reserva
+    res.json({
+      message: `✅ Estado actualizado a ${status}`,
+      updatedReservation: { id, status, employeeId },
+    });
   });
 };
 
@@ -443,4 +536,6 @@ module.exports = {
   deleteReservation,
   getMyReservations,
   getClientReservations,
+  updateReservationStatus,
+
 };

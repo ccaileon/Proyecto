@@ -50,7 +50,6 @@ const createEmployee = async (req, res) => {
     !emp_doc_id ||
     !emp_name ||
     !emp_surname_one ||
-    !emp_surname_two ||
     !emp_telephone ||
     !emp_email ||
     !emp_password ||
@@ -68,7 +67,7 @@ const createEmployee = async (req, res) => {
       emp_doc_id,
       emp_name,
       emp_surname_one,
-      emp_surname_two,
+      emp_surname_two || null,
       emp_telephone,
       emp_email,
       emp_manager_id || null,

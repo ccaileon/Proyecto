@@ -174,10 +174,43 @@ const createClient = async (req, res) => {
   }
 };
 
+const getClientProfile = (req, res) => {
+  const clientId = req.user?.client_id;
+
+  if (!clientId) {
+    return res.status(401).json({ error: "Token inválido o expirado" });
+  }
+
+  const sql = `
+    SELECT 
+      c.client_id, 
+      c.client_name, 
+      c.client_email, 
+      a.account_points 
+    FROM client c
+    JOIN account a ON c.client_id = a.account_client_id
+    WHERE c.client_id = ?
+  `;
+
+  connection.query(sql, [clientId], (err, results) => {
+    if (err) {
+      console.error("❌ Error obteniendo perfil del cliente:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Cliente no encontrado" });
+    }
+
+    res.json(results[0]);
+  });
+};
+
 module.exports = {
   getClients,
   getClientById,
   createClient,
   updateClient,
   deleteClient,
+  getClientProfile,
 };

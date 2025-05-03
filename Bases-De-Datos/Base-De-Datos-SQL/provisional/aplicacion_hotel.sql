@@ -3,7 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2025 a las 16:54:28
+-- Tiempo de generación: 03-05-2025 a las 18:45:38
+
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,7 +41,7 @@ CREATE TABLE `account` (
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
 (15, '$2b$10$kqe6za5bKkNwGlawPZageOO/xIMQCA4rzNQAdASz.Vi1nGjwnd7Wa', 0),
 (16, '$2b$10$4fN5oxbRgctjp/OdSHcri.riTUDM6HA6hRuDGKTQoJ9WL3Z7Pzmou', 0),
-(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 0);
+(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 70);
 
 -- --------------------------------------------------------
 
@@ -67,6 +68,34 @@ INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_n
 (15, '', '', 'Prueba', '1', '', 612345678, 'prueba1@gmail.com'),
 (16, '', '', 'Prueba', '2', '', 612345678, 'prueba2@gmail.com'),
 (17, '', '', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `msg_id` int(11) NOT NULL,
+  `msg_name` varchar(100) DEFAULT NULL,
+  `msg_surname` varchar(100) DEFAULT NULL,
+  `msg_email` varchar(150) DEFAULT NULL,
+  `msg_subject` varchar(150) DEFAULT NULL,
+  `msg_content` text DEFAULT NULL,
+  `msg_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`msg_id`, `msg_name`, `msg_surname`, `msg_email`, `msg_subject`, `msg_content`, `msg_date`) VALUES
+(1, 'Lola', 'Lolita', 'lola@gmail.com', 'soporte', 'Me gustaria reservar para un dia el servicio de SPA y me gustaria saber como se gestiona.', '2025-05-03 12:51:12'),
+(2, 'Lola', 'Lolita', 'lola@gmail.com', 'soporte', 'Me gustaria reservar para un dia el servicio de SPA y me gustaria saber como se gestiona.', '2025-05-03 12:54:26'),
+(3, 'Sheila', 'Sheila', 'sheila@gmail.com', 'soporte', 'Quiero informacion sobre la Excursión en Kayak', '2025-05-03 12:57:30'),
+(4, 'lola', 'loli', 'lola@gmail.com', 'consulta', 'asfssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdfgsgdftrhtrjtrjrtjtrjrjtrjr', '2025-05-03 12:58:15'),
+(5, 'ewqe', 'asd', 'asd@gmail.com', 'consulta', 'danwisncoancoewncvwienoiv', '2025-05-03 13:14:52'),
+(6, 'ewqe', 'asd', 'asd@gmail.com', 'consulta', 'danwisncoancoewncvwienoiv', '2025-05-03 13:16:41');
 
 -- --------------------------------------------------------
 
@@ -129,7 +158,16 @@ CREATE TABLE `guest` (
 
 INSERT INTO `guest` (`guest_id`, `guest_name`, `guest_lastname`, `guest_email`, `guest_phone`, `guest_preferences`) VALUES
 (19, 'Eva', 'Martín', 'eva@gmail.com', '123456789', 'doble'),
-(20, 'Eduard', 'Prueba2', 'eduard@gmail.com', '123456789', 'doble');
+(20, 'Eduard', 'Prueba2', 'eduard@gmail.com', '123456789', 'doble'),
+(21, 'Pepe', 'Prueba', 'pepe@gmail.com', '123456789', 'doble'),
+(22, 'Pepi', 'Prueba', 'pepi@gmail.com', '123456789', 'individual'),
+(23, 'Prueba3', 'Pruebita', 'prueba3@gmail.com', '123456788', 'individual'),
+(24, 'Eva', 'Martín', 'eva@gmail.com', '123456789', 'doble'),
+(25, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '666999888', 'doble'),
+(26, 'Lola', 'Lolita', 'lola@gmail.com', '123456789', 'doble'),
+(27, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'individual'),
+(28, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'doble'),
+(29, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'individual');
 
 -- --------------------------------------------------------
 
@@ -174,8 +212,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`invoice_id`, `invoice_code_transact`, `invoice_details`, `invoice_pay_method`, `invoice_points_used`, `invoice_total_price`, `invoice_date`, `invoice_res_id`, `invoice_client_id`, `invoice_guest_id`) VALUES
-(1, NULL, 'Habitación doble, 2 adultos, 0 niños, 5 noches', 'tarjeta', 0, 605.00, '2025-04-04', 25, NULL, 19),
-(2, NULL, 'Habitación plus, 2 adultos, 0 niños, 3 noches', 'tarjeta', 0, 363.00, '2025-04-04', 26, NULL, 20);
+(14, NULL, 'Habitación plus, 2 adultos, 0 niños, 6 noches', 'tarjeta', 0, 726.00, '2025-05-03', 38, 17, NULL);
 
 -- --------------------------------------------------------
 
@@ -197,23 +234,22 @@ CREATE TABLE `reservation` (
   `res_is_closed` tinyint(1) NOT NULL,
   `res_checkin_by` int(6) NOT NULL,
   `res_checkout_by` int(11) DEFAULT NULL,
-  `res_observations` text NOT NULL,
+  `res_observations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `res_wants_double` tinyint(1) NOT NULL,
   `res_file_one` int(11) DEFAULT NULL,
   `res_file_two` int(11) DEFAULT NULL,
   `res_file_three` int(11) DEFAULT NULL,
-  `res_add_points` int(5) NOT NULL,
-  `res_guest_id` int(11) DEFAULT NULL,
-  `res_state` varchar(150) DEFAULT NULL
+  `res_guest_id` int(11) DEFAULT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
 -- Volcado de datos para la tabla `reservation`
 --
 
-INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_add_points`, `res_guest_id`, `res_state`) VALUES
-(25, NULL, 25, 1, '2025-05-07', '2025-05-08', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Sin alergias', 0, NULL, NULL, NULL, 0, 19, 'pendiente'),
-(26, NULL, 36, 1, '2025-04-09', '2025-04-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Galletas y Zumitos.', 0, NULL, NULL, NULL, 0, 20, 'pendiente');
+INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
+(38, 17, 36, 1, '2025-05-11', '2025-05-17', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Me gustria añadirle una botella de vino', 0, NULL, NULL, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -339,6 +375,12 @@ ALTER TABLE `client`
   ADD PRIMARY KEY (`client_id`);
 
 --
+-- Indices de la tabla `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`msg_id`);
+
+--
 -- Indices de la tabla `employee`
 --
 ALTER TABLE `employee`
@@ -414,6 +456,12 @@ ALTER TABLE `client`
   MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
+-- AUTO_INCREMENT de la tabla `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `msg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT de la tabla `employee`
 --
 ALTER TABLE `employee`
@@ -423,7 +471,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT de la tabla `guest`
 --
 ALTER TABLE `guest`
-  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `hotel`
@@ -435,13 +483,13 @@ ALTER TABLE `hotel`
 -- AUTO_INCREMENT de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `room`
