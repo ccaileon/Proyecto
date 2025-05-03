@@ -364,6 +364,7 @@ const createReservation = (req, res) => {
                   reservationId: res_id,
                   clientId,
                   puntosGanados,
+
                 });
               }
             );
@@ -536,4 +537,5 @@ module.exports = {
   getMyReservations,
   getClientReservations,
   updateReservationStatus,
+
 };

@@ -4,6 +4,7 @@ import ScrollToTop from "./utils/ScrollToTop.js";
 // -- CLIENTES --
 // -- Navegación y Footer --
 import Menu from "./components/Menu.jsx"
+import Search from "./components/Search.jsx";
 import Footer from "./components/Footer.jsx"
 import AvisoLegal from "./pages/customers/terminosLegales/avisoLegal/AvisoLegal.jsx";
 import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivacidad/PoliticaPrivacidad.jsx";
@@ -49,12 +50,14 @@ function Layout() {
     "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones", "datosReserva"
   ];
 
-  return (
-    <>
-      <ScrollToTop />
-      {/* Mostramos el menú público solo si la ruta actual está en la lista */}
-      {rutasConMenu.some(ruta => location.pathname.startsWith(ruta))&& <Menu />} 
+    const mostrarMenu = rutasConMenu.some(ruta => location.pathname.startsWith(ruta));
 
+  return (
+     <>
+      <ScrollToTop />
+      {mostrarMenu && <Menu />}
+      {mostrarMenu && <Search />}
+      
       <div className="pages-container">
         <Routes>
           <Route path="/" element={<Inicio />} />

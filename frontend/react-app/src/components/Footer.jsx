@@ -31,6 +31,7 @@ function Footer() {
           <p className="p-white">912 34 56 78<br />info@dunasdeoro.com</p>
         </Col>
       </Row>
+      <hr />
 <div className='footer-terminos'> 
       <Row className="d-flex justify-content-center text-center">
         <Col md={4}>

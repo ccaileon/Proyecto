@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";  // Importar useEffect para realizar la acción al cargar el componente
+import { useState, useEffect } from "react"; 
 import { Form } from "react-bootstrap";
 import VentanaPago from "./VentanaPago";
 

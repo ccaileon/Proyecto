@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { Container, Table } from "react-bootstrap";
 
 export default function EmpReservationsList({ data, onRowClick }) {
-  // 🔥 Función para formatear fechas sin librerías externas
   const formatDate = (isoDate) => {
     if (!isoDate) return "Fecha inválida";
     const date = new Date(isoDate);
@@ -11,10 +10,10 @@ export default function EmpReservationsList({ data, onRowClick }) {
   const formattedData = data.map(res => ({
     idReserva: res.res_id?.toString() || res.idReserva,
     idRoom: res.res_room_id?.toString() || res.idRoom,
-    nameRes: res.client_name || res.nameRes || `Cliente ${res.res_client_id}`,
+    nameRes: res.client_name || res.guest_name + " " + res.guest_lastname|| `Cliente ${res.res_client_id}`,
     dateIn: formatDate(res.res_checkin || res.dateIn),
     dateOut: formatDate(res.res_checkout || res.dateOut),
-    state: res.state
+    state: res.res_state
   }));
 
   return (

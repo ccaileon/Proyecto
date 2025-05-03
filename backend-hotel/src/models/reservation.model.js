@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 const Reservation = {
   getAll: (callback) => {
-    db.query("SELECT * FROM reservation", callback);
+    db.query("SELECT * FROM reservation LEFT JOIN client ON client.client_id = res_client_id LEFT JOIN guest ON guest.guest_id = res_guest_id LEFT JOIN room ON room.room_id = res_room_id", callback);
   },
 
   getById: (id, callback) => {
@@ -11,6 +11,7 @@ const Reservation = {
       [id],
       callback
     );
+
   },
 
   create: (data, callback) => {
@@ -18,8 +19,8 @@ const Reservation = {
       INSERT INTO reservation (
         res_client_id, res_guest_id, res_room_id, res_room_hotel_id,
         res_checkin, res_checkout, res_is_closed,
-        res_checkin_by, res_checkout_by, res_observations
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        res_checkin_by, res_checkout_by, res_observations, res_state
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
@@ -33,6 +34,7 @@ const Reservation = {
       data.res_checkin_by || null,
       data.res_checkout_by || null,
       data.res_observations || "",
+	  data.res_state || "pending",
     ];
 
     db.query(sql, values, callback);

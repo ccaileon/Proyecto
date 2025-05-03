@@ -33,7 +33,6 @@ function Search() {
     return () => document.removeEventListener("mousedown", handleDateClick);
   }, []);
 
-  // Mostrar en inputs
   const formatDate = (date) => {
     const localDate = new Date(date);
     localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
@@ -43,7 +42,6 @@ function Search() {
     return `${day}/${month}/${year}`;
   };
 
-  // Enviar a la URL
   const toISOStringDate = (date) => {
     const d = new Date(date);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
@@ -54,65 +52,69 @@ function Search() {
     const checkIn = toISOStringDate(state[0].startDate);
     const checkOut = toISOStringDate(state[0].endDate);
     const { adultos, ninos } = huespedes;
-  
-    // ✅ Guardar en sessionStorage para que estén disponibles en el checkout
+
     sessionStorage.setItem("checkin", checkIn);
     sessionStorage.setItem("checkout", checkOut);
-  
+
     console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
-  
+
     navigate(`/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adultos}&children=${ninos}`);
   };
-  
 
   return (
-    <Container className="buscador">
-      <Row className="buscador">
-        <Col xs={2}>
-          <Form.Label htmlFor="checkin" className="d-block input search">
-            <h4>Llegada</h4>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Seleccionar fecha"
-            onClick={() => handleDateClick('checkin')}
-            value={state[0].startDate ? formatDate(state[0].startDate) : ''}
-            readOnly
-          />
-        </Col>
-
-        <Col xs={2}>
-          <Form.Label htmlFor="checkout" className="d-block">
-            <h4>Salida</h4>
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Seleccionar fecha"
-            onClick={() => handleDateClick('checkout')}
-            value={formatDate(state[0].endDate)}
-            readOnly
-          />
-        </Col>
-
-        <HuespedesSelector huespedes={huespedes} setHuespedes={setHuespedes} />
-
-        <Col xs={2}>     
-          <Button className="btn mt-3" onClick={handleSearch}>
-            Buscar
-          </Button>
-        </Col>
-      </Row>
+    <Container fluid className="buscador">
+      <Form className="w-100">
+        <Row className="align-items-end flex-wrap gy-3">
+          <Col xs={12} sm={6} md={3}>
+            <Form.Group className="d-flex align-items-center gap-2">
+              <Form.Label className="mb-0 label"><h5 className="mb-0">Llegada</h5></Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Seleccionar fecha"
+                onClick={() => handleDateClick('checkin')}
+                value={state[0].startDate ? formatDate(state[0].startDate) : ''}
+                readOnly
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} sm={6} md={3}>
+            <Form.Group className="d-flex align-items-center gap-2">
+              <Form.Label className="mb-0 label"><h5 className="mb-0">Salida</h5></Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Seleccionar fecha"
+                onClick={() => handleDateClick('checkout')}
+                value={formatDate(state[0].endDate)}
+                readOnly
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} sm={6} md={3}>
+            <Form.Group className="d-flex align-items-center gap-2">
+              <Form.Label className="mb-0 label"><h5 className="mb-0">Huéspedes</h5></Form.Label>
+              <div className="w-100">
+                <HuespedesSelector huespedes={huespedes} setHuespedes={setHuespedes} />
+              </div>
+            </Form.Group>
+          </Col>
+          <Col xs={12} sm={6} md={3}>
+            <Button className="w-100" onClick={handleSearch}>
+              Buscar
+            </Button>
+          </Col>
+        </Row>
+      </Form>
 
       {showCalendar && (
-        <div ref={calendarRef} className="calendar-container">
+        <div ref={calendarRef} className="calendar-container mt-3">
           <DateRange
             editableDateInputs={true}
             onChange={item => setState([item.selection])}
             moveRangeOnFirstSelection={false}
             ranges={state}
-            showDateDisplay={false} 
+            showDateDisplay={false}
           />
-          <Button className="btn-listo" onClick={() => setShowCalendar(false)}>Listo</Button>
+          <Button className="btn-listo mt-2" onClick={() => setShowCalendar(false)}>Listo</Button>
         </div>
       )}
     </Container>
@@ -120,4 +122,3 @@ function Search() {
 }
 
 export default Search;
-

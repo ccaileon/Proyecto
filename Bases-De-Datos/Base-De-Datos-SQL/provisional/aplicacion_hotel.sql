@@ -4,6 +4,7 @@
 --
 -- Servidor: 127.0.0.1
 -- Tiempo de generación: 03-05-2025 a las 18:45:38
+
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -239,6 +240,7 @@ CREATE TABLE `reservation` (
   `res_file_two` int(11) DEFAULT NULL,
   `res_file_three` int(11) DEFAULT NULL,
   `res_guest_id` int(11) DEFAULT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
@@ -247,6 +249,7 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
 (38, 17, 36, 1, '2025-05-11', '2025-05-17', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Me gustria añadirle una botella de vino', 0, NULL, NULL, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
