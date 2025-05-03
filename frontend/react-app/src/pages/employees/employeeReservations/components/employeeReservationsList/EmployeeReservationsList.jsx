@@ -8,16 +8,13 @@ export default function EmpReservationsList({ data, onRowClick }) {
     const date = new Date(isoDate);
     return date.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
   };
-
   const formattedData = data.map(res => ({
     idReserva: res.res_id?.toString() || res.idReserva,
     idRoom: res.res_room_id?.toString() || res.idRoom,
     nameRes: res.client_name || res.nameRes || `Cliente ${res.res_client_id}`,
     dateIn: formatDate(res.res_checkin || res.dateIn),
     dateOut: formatDate(res.res_checkout || res.dateOut),
-    state: res.res_is_closed !== undefined 
-      ? (res.res_is_closed ? "Cerrada" : "Activa")
-      : res.state
+    state: res.state
   }));
 
   return (

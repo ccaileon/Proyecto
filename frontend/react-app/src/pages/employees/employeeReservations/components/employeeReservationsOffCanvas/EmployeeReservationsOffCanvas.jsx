@@ -1,20 +1,55 @@
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { Offcanvas, Form, Button, Row, Col } from 'react-bootstrap';
+import axios from "axios";
 
 export function EmpReservationOffCanvas({ show, onHide, reservation }) {
-  if (!reservation) return null;
+    // 🔄 Cargar todas las reservas al montar el componente
+    const [reservaCargada, setReservaCargada] = useState(null);
+    const [dateIn, setDateIn] = useState(null);
+    const [dateOut, setDateOut] = useState(null);
+    const formatDate = (isoDate) => {
+      if (!isoDate) return "Fecha inválida";
+      const date = new Date(isoDate);
+      return date.toLocaleDateString("en-CA", { year: "numeric" , month: "2-digit", day: "2-digit"});
+    };
+    useEffect(() => {      
+      const fetchReservation = async () => {  
+        if (!reservation?.idReserva) return;
+          const token = sessionStorage.getItem("Token");
+          const response = await fetch(`http://localhost:3000/api/reservations/${reservation.idReserva}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          if (!response.ok) {
+            throw new Error("No se pudo obtener la reserva");
+          }
+          const data = await response.json();
+          setReservaCargada(data);
+          setDateIn(formatDate(data.res_checkin))
+          setDateOut(formatDate(data.res_checkout))
+          console.log(data)
+          console.log(dateIn)
+          console.log(dateOut)
+      };
 
-  const handleSaveChanges = () => {
-    // Lógica para guardar los cambios realizados en la reserva
-    onHide();
-  };
-
+      fetchReservation();
+    }, [reservation])
+      
+    const handleSaveChanges = () => {
+      // Lógica para guardar los cambios realizados en la reserva
+      onHide();
+    };
+  if (!reservation || !reservation.idReserva || !reservaCargada) {
+      return null; // o un loader/spinner bonito
+  }    
   return (
     <Offcanvas show={show} onHide={onHide} placement="end" className="w-100">
       <Offcanvas.Header className="border-bottom" closeButton>
-        <Col xs="2" className=""><Offcanvas.Title>Reserva número: {reservation.idReserva}</Offcanvas.Title>
+        <Col xs="2" className="m-1"><Offcanvas.Title>Reserva número:{reservaCargada?.res_id || ""}</Offcanvas.Title>
         </Col>
-        <Col xs="2"><Offcanvas.Title>Estado: Pendiente</Offcanvas.Title>
+        <Col xs="2" className="m-1"><Offcanvas.Title>Estado: {reservaCargada?.state || ""}</Offcanvas.Title>
         </Col>
       </Offcanvas.Header>
       <Offcanvas.Body>
@@ -39,25 +74,19 @@ export function EmpReservationOffCanvas({ show, onHide, reservation }) {
         <Col xs="auto">
           <Form.Group controlId="formNameClient" className=" align-items-center">
             <Form.Label className="me-2">Nombre de cliente:</Form.Label>
-            <Form.Control type="text" defaultValue="Pepe" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_name || ""} readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formSurnameOneClient" className="align-items-center">
             <Form.Label className="me-2">1º apellido:</Form.Label>
-            <Form.Control type="text" defaultValue="Martínez" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_surname_one || ""} readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formSurnameTwoClient" className="align-items-center">
             <Form.Label className="me-2">2º apellido:</Form.Label>
-            <Form.Control type="text" defaultValue="Herrero" readOnly />
-          </Form.Group>
-        </Col>
-        <Col xs="auto">
-          <Form.Group controlId="formNacClient" className="align-items-center">
-            <Form.Label className="me-2">Nacionalidad:</Form.Label>
-            <Form.Control type="text" defaultValue="Español" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_surname_two || ""} readOnly />
           </Form.Group>
         </Col>
       </Row>
@@ -65,31 +94,31 @@ export function EmpReservationOffCanvas({ show, onHide, reservation }) {
         <Col xs="auto">
           <Form.Group controlId="formTypeDoc">
             <Form.Label className="me-2">Tipo de documento:</Form.Label>
-            <Form.Control type="text" defaultValue="DNI" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_doc_type || ""} readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formIdDoc">
             <Form.Label className="me-2">Nº documento:</Form.Label>
-            <Form.Control type="text" defaultValue="49811244F" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_doc_id || ""} readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formPrefix">
             <Form.Label className="me-2">Prefijo:</Form.Label>
-            <Form.Control type="text" defaultValue="0034" readOnly />
+            <Form.Control type="text" defaultValue="NO ESTA DEFINIDO" readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formPhoneNum">
             <Form.Label className="me-2">Número de contacto:</Form.Label>
-            <Form.Control type="text" defaultValue="620601093" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_telephone || ""} readOnly />
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formEmail">
             <Form.Label className="me-2">Email de contacto:</Form.Label>
-            <Form.Control type="text" defaultValue="pepe9@gmail.com" readOnly />
+            <Form.Control type="text" defaultValue={reservaCargada?.client_email || ""} readOnly />
           </Form.Group>
         </Col>
       </Row>
@@ -98,30 +127,44 @@ export function EmpReservationOffCanvas({ show, onHide, reservation }) {
         <Col xs="auto">
           <Form.Group controlId="formRoomId">
             <Form.Label className="me-2">Habitación asignada:</Form.Label>
-            <Form.Control type="text" defaultValue="125"/>
+            <Form.Control type="text" defaultValue={reservaCargada?.res_room_id || ""}/>
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formRoom">
             <Form.Label className="me-2">Tipo de habitación:</Form.Label>
-            <Form.Control type="text" defaultValue="Habitación estándar" readOnly/>
+            <Form.Control type="text" defaultValue={reservaCargada?.room_type || ""} readOnly/>
           </Form.Group>
         </Col>
         <Col xs="auto">
           <Form.Group controlId="formRoom">
             <Form.Label className="me-2">Preferencia cama:</Form.Label>
-            <Form.Control type="text" defaultValue="Doble" readOnly/>
+            <Form.Control type="text" defaultValue={reservaCargada?.res_wants_double === 1 ? "Si" : "No"} readOnly/>
           </Form.Group>
         </Col>
         <Row>
           <Form.Group controlId="formObersvations">
             <Form.Label className="me-2">Observaciones:</Form.Label>
-            <Form.Control type="text" defaultValue="-Quiere petalos de rosa y channel número cinco esparcidos por las sábanas" readOnly/>
+            <Form.Control type="text" defaultValue={reservaCargada?.res_observations || ""}readOnly/>
           </Form.Group>
         </Row>
       </Row>
-      <Row className="align-items-center border-bottom pb-3">
+      <Row className="align-items-center pb-3">
         <h3>Gestión de reserva:</h3>
+        <Col xs="auto">
+          <Form.Group controlId="formDateCheckin">
+            <Form.Label className="me-2">Fecha checkin:</Form.Label>
+            <Form.Control type="date" value={dateIn || ""} onChange={(e) => setDateIn(e.target.value)}/>
+          </Form.Group>
+        </Col>
+        <Col xs="auto">
+          <Form.Group controlId="formDateCheckout">
+            <Form.Label className="me-2">fecha checkout:</Form.Label>
+            <Form.Control type="date" value={dateOut || ""} onChange={(e) => setDateOut(e.target.value)}/>
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row className="align-items-center border-bottom pb-3">
         <Col xs="auto">
           <Form.Group controlId="formDocumentOne">
             <Form.Label className="me-2">Subir documento 1:</Form.Label>
@@ -152,10 +195,5 @@ EmpReservationOffCanvas.propTypes = {
   onHide: PropTypes.func.isRequired,
   reservation: PropTypes.shape({
     idReserva: PropTypes.string.isRequired,
-    idRoom: PropTypes.string.isRequired,
-    nameRes: PropTypes.string.isRequired,
-    dateIn: PropTypes.string.isRequired,
-    dateOut: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
   }),
 };

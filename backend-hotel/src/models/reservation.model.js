@@ -6,7 +6,7 @@ const Reservation = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM reservation WHERE res_id = ?", [id], callback);
+    db.query("SELECT * FROM reservation FULL JOIN client ON client.client_id = res_client_id LEFT JOIN room ON room.room_id = res_room_id WHERE res_id = ?", [id], callback);
   },
 
   create: (data, callback) => {
