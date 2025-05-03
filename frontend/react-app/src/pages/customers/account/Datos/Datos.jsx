@@ -25,12 +25,13 @@ function Datos() {
           <p><strong>Tarjetas guardadas:</strong></p>
           <Card style={{ width: '18rem' }}>
             <Card.Body>
-              <Card.Text>
-                <p><strong>Titular:</strong></p>
-                <p>Nombre y Apellidos BBDD</p>
-                <p><strong>Núm. Tarjeta:</strong></p>
-                <p>XXXX 9087 BBDD</p>
-              </Card.Text>
+            <Card.Text as="div">
+  <div><strong>Titular:</strong></div>
+  <div>Nombre y Apellidos BBDD</div>
+  <div><strong>Núm. Tarjeta:</strong></div>
+  <div>XXXX 9087 BBDD</div>
+</Card.Text>
+
               <Button variant="btn">Eliminar</Button>
             </Card.Body>
           </Card>

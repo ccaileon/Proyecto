@@ -1,17 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getClients,
-  createClient,
-  getClientById,
-  updateClient,
-  deleteClient,
-} = require("../controllers/clients.controller");
+const verifyToken = require("../../middlewares/verifyToken");
+const clientController = require("../controllers/clients.controller");
 
-router.get("/", getClients); // Get all clients
-router.get("/:id", getClientById); // Get client by ID
-router.post("/", createClient); // Create a new client
-router.put("/:id", updateClient); // Update client by ID
-router.delete("/:id", deleteClient); // Delete client by ID
+// Nueva ruta protegida
+router.get("/me", verifyToken, clientController.getClientProfile);
+
+router.get("/", clientController.getClients);
+router.get("/:id", clientController.getClientById);
+router.post("/", clientController.createClient);
+router.put("/:id", clientController.updateClient);
+router.delete("/:id", clientController.deleteClient);
 
 module.exports = router;

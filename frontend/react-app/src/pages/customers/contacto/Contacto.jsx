@@ -20,11 +20,44 @@ function Contacto() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-   // AÑADIR API
+  
+    try {
+      const response = await fetch("http://localhost:3000/api/contact/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          surname: formData.surname,
+          email: formData.email,
+          subject: formData.reason,
+          content: formData.message,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert("✅ Mensaje enviado correctamente");
+        setFormData({
+          name: '',
+          surname: '',
+          email: '',
+          message: '',
+          reason: ''
+        });
+      } else {
+        alert("❌ Error: " + data.message);
+      }
+    } catch (error) {
+      console.error("❌ Error al enviar el mensaje:", error);
+      alert("❌ No se pudo enviar el mensaje. Inténtelo más tarde.");
+    }
   };
+  
 
   return(
 <div>

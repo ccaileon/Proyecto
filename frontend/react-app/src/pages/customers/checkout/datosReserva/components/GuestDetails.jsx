@@ -24,7 +24,7 @@ function GuestDetails() {
         name: client.name || "",
         surname_one: client.surname_one || "",
         surname_two: client.surname_two || "",
-        phone: client.phone || "",
+        phone: client.telephone || "",
         email: client.email || "",
         bed_type: "", // Aquí puedes dejarlo vacío, ya que no se obtiene de sessionStorage
         comment: "" // Similarmente, aquí puedes dejarlo vacío

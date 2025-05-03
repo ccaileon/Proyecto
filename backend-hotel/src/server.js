@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth.routes");
 const db = require("./config/db");
 const net = require("net");
 const app = express();
+const contactRoutes = require("./routes/contact.routes");
 
 app.use(cors());
 app.use(express.json()); // Allows JSON requests
@@ -25,6 +26,7 @@ app.use("/api/reservations", reservationRoutes);
 app.use("/api/employees", employeesRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/contact", contactRoutes);
 
 // API main route to avoid "Cannot GET /api" error
 app.get("/api", (req, res) => {

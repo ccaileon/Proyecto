@@ -16,63 +16,67 @@ const VentanaPago = ({ guestData }) => {
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-
-    // Validar que los campos del invitado estén completos
+  
     if (!guestData.surname_one || !guestData.email || !guestData.phone || !guestData.bed_type) {
       alert("Por favor, completa todos los datos del invitado.");
       setSending(false);
       return;
     }
-
+  
     try {
-      // Suponiendo que los datos de reserva están guardados en sessionStorage
       const roomId = sessionStorage.getItem("selectedRoomId");
       const hotelId = sessionStorage.getItem("hotelId") || 1;
-      
       const checkin = sessionStorage.getItem("checkin");
       const checkout = sessionStorage.getItem("checkout");
-      console.log("🕓 Fechas recibidas:", checkin, checkout);
-
-      const empId = sessionStorage.getItem("employeeId") || 2; // por ahora fijo o que venga de login admin
-
-      
+      const empId = sessionStorage.getItem("employeeId") || 2;
+  
       const reservaResumen = JSON.parse(sessionStorage.getItem("reservaData"));
       const noches = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
       const adults = Number(reservaResumen?.adults || 0);
       const children = Number(reservaResumen?.children || 0);
       const subtotal = (adults * 50 + children * 25) * noches;
       const total = subtotal * 1.21;
-
+  
       const payload = {
-  guest_name: guestData.name,
-  guest_lastname: guestData.surname_one || "Sin Apellido",
-  guest_email: guestData.email || "no-email@hotel.com",
-  guest_phone: guestData.phone || "000000000",
-  guest_preferences: guestData.bed_type || "individual",
-  res_observations: guestData.comment || "",
-  res_room_id: Number(roomId),
-  res_room_hotel_id: Number(hotelId),
-  res_checkin: checkin,
-  res_checkout: checkout,
-  res_checkin_by: Number(empId),
-  res_checkout_by: Number(empId),
-  invoiceData: {
-    invoice_total_price: total.toFixed(2),
-    invoice_details: `Habitación ${reservaResumen.room.room_type}, ${adults} adultos, ${children} niños, ${noches} noches`,
-    invoice_pay_method: "tarjeta",
-    invoice_points_used: 0
-  }
-};
-
-      
-
+        res_room_id: Number(roomId),
+        res_room_hotel_id: Number(hotelId),
+        res_checkin: checkin,
+        res_checkout: checkout,
+        res_checkin_by: Number(empId),
+        res_checkout_by: Number(empId),
+        res_observations: guestData.comment || "",
+        invoiceData: {
+          invoice_total_price: total.toFixed(2),
+          invoice_details: `Habitación ${reservaResumen.room.room_type}, ${adults} adultos, ${children} niños, ${noches} noches`,
+          invoice_pay_method: "tarjeta",
+          invoice_points_used: 0
+        }
+      };
+  
+      const token = sessionStorage.getItem("clientToken");
+      const isClient = !!token;
+  
+      let endpoint = "http://localhost:3000/api/reservations/guest";
+      let headers = {};
+  
+      if (isClient) {
+        endpoint = "http://localhost:3000/api/reservations/client";
+        headers = {
+          Authorization: `Bearer ${token}`,
+        };
+      } else {
+        // Si es invitado, agregar sus datos personales
+        payload.guest_name = guestData.name;
+        payload.guest_lastname = guestData.surname_one || "Sin Apellido";
+        payload.guest_email = guestData.email || "no-email@hotel.com";
+        payload.guest_phone = guestData.phone || "000000000";
+        payload.guest_preferences = guestData.bed_type || "individual";
+      }
+  
       console.log("📦 Payload que se enviará al backend:", payload);
-      console.log("🛰️ Enviando payload al backend:", JSON.stringify(payload, null, 2));
-
-
-      const response = await axios.post("http://localhost:3000/api/reservations/guest", payload);
+      const response = await axios.post(endpoint, payload, { headers });
+  
       console.log("✅ Reserva completada:", response.data);
-
       alert("✅ Reserva confirmada correctamente");
       handleClose();
     } catch (error) {
@@ -82,6 +86,7 @@ const VentanaPago = ({ guestData }) => {
       setSending(false);
     }
   };
+  
 
   return (
     <div>

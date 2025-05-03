@@ -170,10 +170,35 @@ npm install --legacy-peer-deps
 
 ---
 
+## 🆕 Funcionalidades Implementadas
+
+### 📩 Envío de Consultas desde el Formulario de Contacto
+
+- Los clientes (registrados o no) pueden enviar un mensaje desde la página de contacto.
+- Estos mensajes se almacenan en la tabla `contact_messages` de la base de datos.
+- Están disponibles para que los empleados puedan visualizarlos posteriormente desde el panel de administración.
+
+### 🧾 Sistema de Reservas
+
+- Se puede reservar como **invitado** (guest) o como **cliente registrado** (client).
+- Las reservas se guardan en la tabla `reservation` y su correspondiente factura en la tabla `invoice`.
+- Para los clientes registrados, se les puede asignar un empleado que gestiona el `checkin` y `checkout`.
+
+### 🎁 Sistema de Puntos de Recompensa
+
+- Por cada **100€** pagados en una reserva, se otorgan **10 puntos**.
+- Los puntos se acumulan en la tabla `account`, que relaciona al cliente con su saldo de puntos.
+- Estos puntos podrán usarse como **descuento** (ej. 100 puntos = 5% de descuento) en futuras versiones.
+
+### 👤 Visualización de Puntos Acumulados
+
+- Los clientes registrados pueden ver sus puntos acumulados desde la sección **"Recompensas"** en su perfil.
+- Se accede a través del endpoint protegido `GET /api/clients/me` usando JWT.
+
+---
+
 ## 📜 Licencia
 
 Este proyecto es de código abierto y está bajo la **Licencia MIT**.
 
 ---
-
-📌 **Listo!** Ahora ya tienes un backend funcional y conectado con MySQL. 🚀

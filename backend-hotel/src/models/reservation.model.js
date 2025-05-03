@@ -6,7 +6,11 @@ const Reservation = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM reservation FULL JOIN client ON client.client_id = res_client_id LEFT JOIN room ON room.room_id = res_room_id WHERE res_id = ?", [id], callback);
+    db.query(
+      "SELECT * FROM reservation FULL JOIN client ON client.client_id = res_client_id LEFT JOIN room ON room.room_id = res_room_id WHERE res_id = ?",
+      [id],
+      callback
+    );
   },
 
   create: (data, callback) => {
@@ -22,7 +26,7 @@ const Reservation = {
       data.res_client_id || null,
       data.res_guest_id || null,
       data.res_room_id,
-      data.res_room_hotel_id,
+      data.res_room_hotel_id, // Asegúrate de incluir el hotel
       data.res_checkin,
       data.res_checkout,
       data.res_is_closed || 0,
@@ -37,7 +41,7 @@ const Reservation = {
   update: (id, data, callback) => {
     const sql = `
       UPDATE reservation SET 
-        res_client_id = ?, res_guest_id = ?, res_room_id = ?, res_room_hotel_id = ?,
+        res_client_id = ?, res_guest_id = ?, res_room_id = ?, res_room_hotel_id = ?,  // Incluir hotel
         res_checkin = ?, res_checkout = ?, res_is_closed = ?, 
         res_checkin_by = ?, res_checkout_by = ?, res_observations = ?
       WHERE res_id = ?
@@ -47,7 +51,7 @@ const Reservation = {
       data.res_client_id || null,
       data.res_guest_id || null,
       data.res_room_id,
-      data.res_room_hotel_id,
+      data.res_room_hotel_id, // Incluir el hotel
       data.res_checkin,
       data.res_checkout,
       data.res_is_closed || 0,
