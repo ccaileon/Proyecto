@@ -1,0 +1,32 @@
+.contenedor-login-registro {
+  max-width: 600px;
+}
+
+.contenedor-login-registro h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.contenedor-login-registro p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .contenedor-login-registro {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .contenedor-login-registro h1 {
+    font-size: 1.8rem;
+  }
+
+  .contenedor-login-registro p {
+    font-size: 1rem;
+  }
+
+  .contenedor-login-registro .btn {
+    width: 100%;
+  }
+}

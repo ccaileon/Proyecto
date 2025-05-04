@@ -1,27 +1,26 @@
 import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import 'react-date-range/dist/styles.css'; 
-import 'react-date-range/dist/theme/default.css'; 
-
-import './header.css'; 
+import './header.css';
 
 function Header() {
-
-
-
-  // Efecto Paralelaje
-  useEffect(() => {
+useEffect(() => {
+    const cabecera = document.querySelector(".cabecera");
+  
     const handleScroll = () => {
-      let scrollPosition = window.scrollY;
-      let cabecera = document.querySelector(".cabecera");
-
-      if (cabecera) {
-        let newBackgroundPosition = scrollPosition * -0.5 + "px";
-        cabecera.style.backgroundPosition = "center " + newBackgroundPosition;
+      const scrollY = window.scrollY;
+      if (window.innerWidth > 768 && cabecera) {
+ 
+        cabecera.style.backgroundPositionY = `${-scrollY * 0.2}px`;
+      } else {
+     
+        if (cabecera) {
+          cabecera.style.backgroundPositionY = "center top"; // Fondo fijo en móviles
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -39,10 +38,8 @@ function Header() {
               <h2>Spa</h2>
             </div>
           </Col>
-         </Row>
-</Container>
-          
-  
+        </Row>
+      </Container>
     </header>
   );
 }

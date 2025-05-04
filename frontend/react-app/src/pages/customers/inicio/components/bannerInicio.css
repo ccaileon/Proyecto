@@ -21,7 +21,7 @@
 }
 
 @media (max-width: 768px) {
-  .banner-habitaciones {
+  .banner-inicio {
     padding: 8% 1rem;
     background-attachment: scroll;
     text-align: center;
@@ -45,8 +45,8 @@
   }
 
   .contenido-banner .btn {
-    width: 100%;
-    margin-top: 1rem;
+    margin: 1rem auto 0 auto; 
+    width: fit-content;
   }
 }
 

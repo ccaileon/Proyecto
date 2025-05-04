@@ -67,7 +67,7 @@ function Contacto() {
 <p className="text-center"><b>Envíenos su mensaje y le contactaremos en un plazo máximo de 24 horas.</b></p>
   <Form onSubmit={handleSubmit} className="formulario-contacto">
         <Row>
-          <Col md={6}>
+          <Col xs={12} md={6}>
             <Form.Group controlId="formName">
               <Form.Control
                 type="text"
@@ -81,7 +81,7 @@ function Contacto() {
             </Form.Group>
           </Col>
 
-            <Col md={6}>
+            <Col xs={12} md={6}>
             <Form.Group controlId="formSurname">
               <Form.Control
                 type="text"
@@ -97,7 +97,7 @@ function Contacto() {
  </Row>
     
  <Row>
-        <Col md={6}>
+        <Col xs={12} md={6}>
             <Form.Group controlId="formEmail">
               <Form.Control
                 type="email"
@@ -111,7 +111,7 @@ function Contacto() {
             </Form.Group>
           </Col>
 
-          <Col md={6}>
+          <Col xs={12} md={6}>
 <Form.Group controlId="formReason">
           <Form.Control
             as="select"
@@ -125,7 +125,7 @@ function Contacto() {
             <option value="consulta">Consulta</option>
             <option value="soporte">Reservar un servicio</option>
             <option value="sugerencia">Sugerencia</option>
-            <option value="sugerencia">Quejas y Reclamaciones</option>
+            <option value="queja">Quejas y Reclamaciones</option>
             <option value="otros">Otros</option>
           </Form.Control>
         </Form.Group>

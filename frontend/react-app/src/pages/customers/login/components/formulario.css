@@ -1,3 +1,56 @@
-.formulario-inicio {
-width: 80%;
+/* Ajustes generales para el contenedor del formulario */
+.formulario-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 2rem; /* Espaciado superior e inferior */
 }
+
+/* Estilo del formulario */
+.formulario-inicio {
+  width: 100%;
+}
+
+.formulario-inicio input {
+  margin-bottom: 1rem; /* Margen entre campos */
+}
+
+.formulario-inicio .text-danger {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .formulario-container {
+    padding: 1rem; 
+  }
+
+  .formulario-inicio {
+    padding: 1rem; 
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .formulario-inicio input {
+    font-size: 1rem;
+  }
+
+
+  .formulario-inicio .text-danger {
+    font-size: 0.9rem;
+  }
+
+  /* Párrafo de enlace debajo del formulario */
+  p {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  /* Ajustes de margen entre campos de formulario */
+  .formulario-inicio .form-group {
+    margin-bottom: 0.5rem;
+  }
+}
+

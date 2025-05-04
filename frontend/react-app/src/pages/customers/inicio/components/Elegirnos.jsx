@@ -14,30 +14,30 @@ function Elegirnos() {
       <Container className="contenedor-row">
         <Row className="justify-content-center">
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/relax.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/relax.png" width="10%" className="me-4" />
             <h4><b>Espacio Tranquilo</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/desayuno.png" width="10%" className="me-4" />
             <h4><b>Desayuno Incluído</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/wifi.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/wifi.png" width="10%" className="me-4" />
             <h4><b>Wifi Gratuíto</b></h4>
           </Col>
         </Row>
 
         <Row className="justify-content-center">
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/restaurante.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/restaurante.png" width="10%" className="me-4" />
             <h4><b>Restaurante</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/playa.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/playa.png" width="10%" className="me-4" />
             <h4><b>Playa a pocos metros</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/experiencias.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/experiencias.png" width="10%" className="me-4" />
             <h4><b>Experiencias Únicas</b></h4>
           </Col>
         </Row>
@@ -48,7 +48,7 @@ function Elegirnos() {
             <h4><b>Para toda la Familia</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">
-            <img src="src/assets/icons/excelencia.png" width="10%" className="me-4 icon" />
+            <img src="src/assets/icons/excelencia.png" width="10%" className="me-4" />
             <h4><b>Excelencia</b></h4>
           </Col>
           <Col md={4} className="d-flex align-items-center">

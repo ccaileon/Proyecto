@@ -26,12 +26,22 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Responsive solo para contacto */
 @media (max-width: 768px) {
   .contenedor-contacto {
     padding-top: 3em;
     padding-bottom: 5em;
     background-position: center 30%;
+  }
+
+   .formulario-contacto input,
+  .formulario-contacto select,
+  .formulario-contacto textarea {
+    font-size: 1rem;
+  }
+
+  .formulario-contacto button {
+    font-size: 1.1rem;
+    padding: 0.6em 2em;
   }
 
   .contenedor-contacto h1 {
