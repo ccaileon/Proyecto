@@ -1,30 +1,44 @@
-.nav-link{
+.nav-link {
   font-family: "Petrona-Regular";
   color: #293E44;
   font-size: 1.2rem;
-  background-color: rgba(255, 0, 0, 0);
-}
-
-.menu {
-  position: relative !important; 
-  top: 0;
-  width: 100%;
+  background-color: transparent;
 }
 
 .nav-link:hover {
-  color:#528796;
-  background-color: #293e4400;
+  color: #528796;
+  background-color: transparent;
 }
 
 .nav-link.active {
-  color: #528796!important;
-
+  color: #528796 !important;
 }
 
-.user-icon {
-  content: url("public/user.png"); /* Imagen normal */
+.menu {
+  position: relative !important;
+  top: 0;
+  width: 100%;
+  padding: 0;
 }
 
+/* Ícono de usuario */
 .user-icon:hover {
-  content: url("public/user-hover.png"); /* Imagen al pasar el ratón */
+  content: url("/user-hover.png");
+}
+
+/* Dispositivos Móviles */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+  }
+
+  .nav-link {
+    margin-bottom: 0.5rem;
+  }
+
+  .user-icon {
+    margin-top: 1rem;
+  }
 }

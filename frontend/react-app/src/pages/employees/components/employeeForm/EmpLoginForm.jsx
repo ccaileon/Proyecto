@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Container, Form, Col, Button, Alert } from "react-bootstrap";
 import axios from "axios";
-import "./empLoginForm.css";
+import "./empLoginForm.module.css";
 
 const EmpLoginForm = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();

@@ -54,58 +54,59 @@ function FormularioRegistro() {
     <Container className="mt-5 mb-5">
       <h1 className="text-center">Formulario de Registro</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="mt-4">
-        <Form.Group controlId="formNombre">
-          <Form.Control 
-            type="text" 
-            placeholder="Nombre *"
-            {...register("nombre", { required: "Este campo es obligatorio" })} 
-          />
-          {errors.nombre && <p className="text-danger">{errors.nombre.message}</p>}
-        </Form.Group>
+      <Form.Group controlId="formNombre" className="mt-2">
+  <Form.Control 
+    type="text" 
+    placeholder="Nombre *"
+    {...register("nombre", { required: "Este campo es obligatorio" })} 
+  />
+  {errors.nombre && <p className="text-danger">{errors.nombre.message}</p>}
+</Form.Group>
 
-        <Form.Group controlId="formPrimerApellido">
-          <Form.Control 
-            type="text" 
-            placeholder="Primer Apellido *"
-            {...register("primerApellido", { required: "Este campo es obligatorio" })} 
-          />
-          {errors.primerApellido && <p className="text-danger">{errors.primerApellido.message}</p>}
-        </Form.Group>
+<Form.Group controlId="formPrimerApellido" className="mt-2">
+  <Form.Control 
+    type="text" 
+    placeholder="Primer Apellido *"
+    {...register("primerApellido", { required: "Este campo es obligatorio" })} 
+  />
+  {errors.primerApellido && <p className="text-danger">{errors.primerApellido.message}</p>}
+</Form.Group>
 
-        <Form.Group controlId="formSegundoApellido">
-          <Form.Control 
-            type="text" 
-            placeholder="Segundo Apellido"
-            {...register("segundoApellido")} 
-          />
-        </Form.Group>
+<Form.Group controlId="formSegundoApellido" className="mt-2">
+  <Form.Control 
+    type="text" 
+    placeholder="Segundo Apellido"
+    {...register("segundoApellido")} 
+  />
+</Form.Group>
 
-        <Form.Group controlId="formTelefono">
-          <Form.Control 
-            type="tel" 
-            placeholder="Teléfono *"
-            {...register("telefono", { required: "Este campo es obligatorio" })} 
-          />
-          {errors.telefono && <p className="text-danger">{errors.telefono.message}</p>}
-        </Form.Group>
+<Form.Group controlId="formTelefono" className="mt-2">
+  <Form.Control 
+    type="tel" 
+    placeholder="Teléfono *"
+    {...register("telefono", { required: "Este campo es obligatorio" })} 
+  />
+  {errors.telefono && <p className="text-danger">{errors.telefono.message}</p>}
+</Form.Group>
 
-        <Form.Group controlId="formCorreo">
-          <Form.Control 
-            type="email" 
-            placeholder="Correo Electrónico *"
-            {...register("correo", { required: "Este campo es obligatorio" })} 
-          />
-          {errors.correo && <p className="text-danger">{errors.correo.message}</p>}
-        </Form.Group>
+<Form.Group controlId="formCorreo" className="mt-2">
+  <Form.Control 
+    type="email" 
+    placeholder="Correo Electrónico *"
+    {...register("correo", { required: "Este campo es obligatorio" })} 
+  />
+  {errors.correo && <p className="text-danger">{errors.correo.message}</p>}
+</Form.Group>
 
-        <Form.Group controlId="formContraseña">
-          <Form.Control 
-            type="password" 
-            placeholder="Contraseña *"
-            {...register("clave", { required: "Este campo es obligatorio" })} 
-          />
-          {errors.contraseña && <p className="text-danger">{errors.contraseña.message}</p>}
-        </Form.Group>
+<Form.Group controlId="formContraseña" className="mt-2">
+  <Form.Control 
+    type="password" 
+    placeholder="Contraseña *"
+    {...register("clave", { required: "Este campo es obligatorio" })} 
+  />
+  {errors.contraseña && <p className="text-danger">{errors.contraseña.message}</p>}
+</Form.Group>
+
 
         <Button variant="primary" type="submit" className="mt-4 w-100">
           Registrarme

@@ -1,13 +1,10 @@
 .cabecera {
-  margin: 0!important;
-  padding: 0!important;
-background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)),url('src/assets/img/imgInicio/cabecera-index.jpg');
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;
-background-position: center 30%;
-height: 90vh;
-transition: background-position 0.3s ease-out;
+  position: relative;
+  background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)), url('src/assets/img/imgInicio/cabecera-index.jpg');
+  background-size: 120%; /* Usamos 120% para pantallas grandes */
+  background-position: center top; /* Mantén la imagen centrada al principio */
+  height: 90vh;
+  transition: background-position 0.5s ease-out;
 }
 
 header h1 {
@@ -22,55 +19,24 @@ header .h2-white {
   font-size: 5vw;
 }
 
-header h3 {
-  font-size: 1.8vw;
-}
-
-header h4 {
-  font-size: 1.4vw;
-}
-
 header .col-8 {
   padding-left: 5em;
   padding-top: 6em;
 }
 
-header .col-4 {
-  background-color: #fffbf9a4;
-  border-radius: 15%;
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
- margin-top: 6%;
- width: 23%;
- height: auto;
-}
+/* Dispositivos móviles */
+@media (max-width: 768px) {
+  .cabecera {
+    background-size: cover; 
+    background-position: center center;
+  }
 
-header .row {
-   padding-left: 4em;
-   padding-right: 4em;
-}
+  header h1 {
+    font-size: 5rem !important;
+  }
 
-
-header .col {
-  margin-top: 1em;
-}
-
-header .contenedor-select {
-margin-top: 1em;
-}
-
-header .custom-select {
-margin-top: 1em;
-}
-
-header .col-3 {
-margin-left: 1em;
-margin-right: 1em;
-}
-
-header .btn {
-  margin-top: 1em;
-   margin-bottom: 1em;
-  font-size: 1.2vw;
-
+  header h2,
+  header .h2-white {
+    font-size: 2.5rem !important;
+  }
 }
