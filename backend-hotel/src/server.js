@@ -11,6 +11,17 @@ const net = require("net");
 const app = express();
 const contactRoutes = require("./routes/contact.routes");
 
+const fs = require("fs");
+const path = require("path");
+
+const uploadDir = path.resolve("uploads", "reservations");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+  console.log("📁 Carpeta creada: uploads/reservations");
+} else {
+  console.log("📁 Carpeta ya existe: uploads/reservations");
+}
+
 app.use(cors());
 app.use(express.json()); // Allows JSON requests
 
