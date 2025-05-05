@@ -41,31 +41,53 @@ const updateClient = (req, res) => {
     client_email,
   } = req.body;
 
+  // Validar al menos un campo para actualizar
   if (
-    !client_doc_type ||
-    !client_doc_id ||
-    !client_name ||
-    !client_surname_one ||
-    !client_surname_two ||
-    !client_telephone ||
+    !client_doc_type &&
+    !client_doc_id &&
+    !client_name &&
+    !client_surname_one &&
+    !client_surname_two &&
+    !client_telephone &&
     !client_email
   ) {
-    console.log("❌ Faltan datos en la solicitud");
-    return res.status(400).json({ error: "All fields are required" });
+    return res.status(400).json({ error: "No hay datos para actualizar" });
   }
 
-  const sql =
-    "UPDATE client SET client_doc_type = ?, client_doc_id = ?, client_name = ?, client_surname_one = ?, client_surname_two = ?, client_telephone = ?, client_email = ? WHERE client_id = ?";
-  const values = [
-    client_doc_type,
-    client_doc_id,
-    client_name,
-    client_surname_one,
-    client_surname_two,
-    client_telephone,
-    client_email,
-    clientId,
-  ];
+  let fields = [];
+  let values = [];
+
+  if (client_doc_type !== undefined) {
+    fields.push("client_doc_type = ?");
+    values.push(client_doc_type);
+  }
+  if (client_doc_id !== undefined) {
+    fields.push("client_doc_id = ?");
+    values.push(client_doc_id);
+  }
+  if (client_name !== undefined) {
+    fields.push("client_name = ?");
+    values.push(client_name);
+  }
+  if (client_surname_one !== undefined) {
+    fields.push("client_surname_one = ?");
+    values.push(client_surname_one);
+  }
+  if (client_surname_two !== undefined) {
+    fields.push("client_surname_two = ?");
+    values.push(client_surname_two);
+  }
+  if (client_telephone !== undefined) {
+    fields.push("client_telephone = ?");
+    values.push(client_telephone);
+  }
+  if (client_email !== undefined) {
+    fields.push("client_email = ?");
+    values.push(client_email);
+  }
+
+  const sql = `UPDATE client SET ${fields.join(", ")} WHERE client_id = ?`;
+  values.push(clientId);
 
   connection.query(sql, values, (err, results) => {
     if (err) {
@@ -75,7 +97,7 @@ const updateClient = (req, res) => {
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "Client not found" });
     }
-    return res.json({ message: "Client successfully updated" });
+    return res.json({ message: "✅ Cliente actualizado correctamente" });
   });
 };
 

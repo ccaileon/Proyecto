@@ -13,7 +13,14 @@ export default function EmpReservationsList({ data, onRowClick }) {
     nameRes: res.client_name || res.guest_name + " " + res.guest_lastname|| `Cliente ${res.res_client_id}`,
     dateIn: formatDate(res.res_checkin || res.dateIn),
     dateOut: formatDate(res.res_checkout || res.dateOut),
-    state: res.res_state
+    state: res.res_is_closed
+  ? "Reserva Cerrada"
+  : res.res_is_checkout
+  ? "Check Out Realizado"
+  : res.res_is_checkin
+  ? "Check In Realizado"
+  : "Pendiente"
+
   }));
 
   return (

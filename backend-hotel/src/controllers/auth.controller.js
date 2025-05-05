@@ -91,16 +91,15 @@ const login = (req, res) => {
 const employeeLogin = (req, res) => {
   const { emp_email, emp_password } = req.body;
 
-  console.log("📩 Employee login request received:", {
-    emp_email,
-    emp_password,
-  });
-
   if (!emp_email || !emp_password) {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  const sql = `SELECT emp_id, emp_name, emp_surname_one, emp_password FROM employee WHERE emp_email = ?`;
+  const sql = `
+    SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role 
+    FROM employee 
+    WHERE emp_email = ?
+  `;
 
   connection.query(sql, [emp_email], async (err, results) => {
     if (err) {
@@ -114,29 +113,30 @@ const employeeLogin = (req, res) => {
 
     const employee = results[0];
 
-    // Compare passwords
+    console.log("📥 Email recibido:", emp_email);
+    console.log("🔐 Contraseña recibida:", emp_password);
+    console.log("🔐 Contraseña guardada:", employee.emp_password);
+
     const passwordMatch = await bcrypt.compare(
       emp_password,
       employee.emp_password
     );
-    console.log("🔍 Password comparison result:", passwordMatch);
+    console.log("🔍 passwordMatch:", passwordMatch);
 
-    //if (!passwordMatch) {
-      //return res.status(401).json({ error: "Invalid email or password" });
-    //}
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
 
-    // **Generate JWT token**
     const token = jwt.sign(
       {
-        id: employee.emp_id,
-        name: employee.emp_name,
-        email: emp_email,
+        emp_id: employee.emp_id,
+        emp_email: emp_email,
+        emp_role: employee.emp_role,
       },
-      process.env.JWT_SECRET || "claveUltraSecreta", // cambia esto por una variable segura
+      process.env.JWT_SECRET || "claveUltraSecreta",
       { expiresIn: "2h" }
     );
 
-    // **Log the token for debugging purposes**
     res.json({
       message: "Login successful",
       token,
@@ -145,6 +145,7 @@ const employeeLogin = (req, res) => {
         name: employee.emp_name,
         surname: employee.emp_surname_one,
         email: emp_email,
+        role: employee.emp_role,
       },
     });
   });
