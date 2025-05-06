@@ -207,6 +207,12 @@ npm install --legacy-peer-deps
 
 - Si el archivo ya existe en el sistema, no se subirá de nuevo.
 
+### 📥 Subida y Descarga de Archivos en Reservas
+
+- Los empleados pueden subir hasta 3 archivos asociados a cada reserva.
+- Los archivos se almacenan físicamente en `/uploads/reservations` y se referencian en la base de datos.
+- Desde el panel de gestión, los documentos pueden ser descargados con un clic en el icono correspondiente.
+
 ### 👥 Gestión de Tipos de Empleados
 
 - El sistema permite la gestión de tipos de empleados dentro de la plataforma, diferenciando entre empleados estándar (Staff) y gerentes (Managers).
@@ -236,3 +242,162 @@ npm install --legacy-peer-deps
 - Al guardar los cambios, se actualizan en la base de datos y se reflejan inmediatamente en el sistema.
 
 ---
+
+## 🛏️ Gestión de Habitaciones
+
+El sistema permite a los empleados con rol **manager** visualizar, filtrar y modificar el estado de las habitaciones del hotel.
+
+### 🔎 Funcionalidades disponibles
+
+- **Listar habitaciones**: Se muestran todas las habitaciones agrupadas por tipo.
+- **Filtrar por estado**: Se puede filtrar por:
+  - Todas
+  - Habilitadas
+  - Deshabilitadas
+- **Habilitar/Deshabilitar** habitaciones: Solo disponible para usuarios con rol `manager`.
+
+### 🔐 Requisitos
+
+- Autenticación mediante token JWT.
+- El token debe guardarse en `sessionStorage` como `Token`.
+- El usuario debe tener el rol `manager` guardado como `User` en `sessionStorage`.
+
+### 📦 Endpoints utilizados
+
+#### GET `/api/rooms`
+
+- Retorna todas las habitaciones habilitadas (por defecto).
+- El backend permite adaptar la consulta para incluir todas si es necesario.
+
+#### PUT `/api/rooms/:id/enable`
+
+- Habilita la habitación con ID específico.
+
+#### PUT `/api/rooms/:id/disable`
+
+- Deshabilita la habitación con ID específico.
+
+### 🧠 Lógica de React
+
+- El componente `EmpRooms` obtiene el listado de habitaciones y las agrupa por tipo.
+- Al hacer clic en los botones de acción, se envía una petición `PUT` para cambiar el estado de la habitación.
+- La vista se actualiza automáticamente tras cada acción.
+
+---
+
+# 🏨 Gestión de Empleados - Backend Hotel
+
+Este documento explica cómo crear empleados de tipo **staff** o **manager** en el sistema del hotel, así como qué hacer si no hay empleados creados y necesitas obtener un token de autorización.
+
+---
+
+## 🔒 Requisitos previos
+
+- Tener el backend corriendo: `npm start`
+- Tener una base de datos MySQL funcional y configurada.
+- Tener configurado el archivo `.env` con una variable `JWT_SECRET`.
+- Usar herramientas como **Thunder Client** o **Postman.**
+
+---
+
+## 📅 Crear empleados staff o manager
+
+### 1. Endpoint
+
+```
+POST http://localhost:3000/api/employees
+```
+
+### 2. Headers requeridos
+
+```http
+Authorization: Bearer <token_de_manager_o_superadmin>
+Content-Type: application/json
+```
+
+### 3. JSON de ejemplo (crear manager):
+
+```json
+{
+  "emp_doc_id": "12345678A",
+  "emp_name": "Ana",
+  "emp_surname_one": "Pérez",
+  "emp_surname_two": "López",
+  "emp_telephone": 600123456,
+  "emp_email": "ana.manager@email.com",
+  "emp_password": "admin1234",
+  "emp_manager_id": null,
+  "emp_hotel_id": "1",
+  "emp_role": "manager"
+}
+```
+
+### 4. JSON de ejemplo (crear staff):
+
+```json
+{
+  "emp_doc_id": "23456789B",
+  "emp_name": "Juan",
+  "emp_surname_one": "García",
+  "emp_surname_two": "Martínez",
+  "emp_telephone": 666987321,
+  "emp_email": "juan.staff@email.com",
+  "emp_password": "staff1234",
+  "emp_manager_id": 1,
+  "emp_hotel_id": "1",
+  "emp_role": "staff"
+}
+```
+
+### ⚠️ Reglas importantes:
+
+- El campo `emp_role` debe ser "manager" o "staff".
+- Si `emp_role` es **staff**, el campo `emp_manager_id` **es obligatorio**.
+- El `emp_manager_id` debe referenciar a **emp_id** del empleado existente con rol `manager`.
+- Si `emp_role` es **manager**, puedes dejar `emp_manager_id` como `null`.
+
+---
+
+## ⚡️ Inicio de sesión de empleados
+
+### Endpoint
+
+```
+POST http://localhost:3000/api/employees/login
+```
+
+### Ejemplo JSON
+
+```json
+{
+  "emp_email": "ana.manager@email.com",
+  "emp_password": "admin1234"
+}
+```
+
+Este login te devolverá un token JWT en caso de éxito, que puedes usar para todas las operaciones protegidas.
+
+---
+
+## ❓ ¿No hay ningún empleado en la base de datos?
+
+### Usa el superusuario de emergencia
+
+El backend incluye un acceso “root” embebido, para casos donde no existan empleados.
+
+### Credenciales root:
+
+```json
+{
+  "emp_email": "root@admin.com",
+  "emp_password": "root1234"
+}
+```
+
+Este usuario genera un token con rol `"superadmin"`, con el cual puedes:
+
+- Crear empleados
+- Habilitar/deshabilitar habitaciones
+- Realizar operaciones como si fueras manager
+
+Este usuario **no está en la base de datos**, solo existe como emergencia en el login.

@@ -10,6 +10,7 @@ const db = require("./config/db");
 const net = require("net");
 const app = express();
 const contactRoutes = require("./routes/contact.routes");
+const shiftRoutes = require("./routes/shift.routes");
 
 const fs = require("fs");
 const path = require("path");
@@ -38,6 +39,9 @@ app.use("/api/employees", employeesRoutes);
 app.use("/api/clients", clientsRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
+
+// API route for shifts
+app.use("/api/shifts", shiftRoutes);
 
 // API main route to avoid "Cannot GET /api" error
 app.get("/api", (req, res) => {

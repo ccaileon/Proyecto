@@ -52,7 +52,7 @@ export default function EmpReservations() {
         show={showOffcanvas}
         onHide={handleCloseOffcanvas}
         reservation={selectedReservation}
-        onUpdate={fetchReservations} // ✅ Ahora se recarga automáticamente
+        onUpdate={fetchReservations} // Recargar reservas después de editar o eliminar
       />
     </Container>
   );

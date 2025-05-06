@@ -91,15 +91,30 @@ const login = (req, res) => {
 const employeeLogin = (req, res) => {
   const { emp_email, emp_password } = req.body;
 
+  if (emp_email === "root@admin.com" && emp_password === "root1234") {
+    const token = jwt.sign(
+      { emp_id: 0, emp_email, emp_role: "superadmin" },
+      process.env.JWT_SECRET || "claveUltraSecreta",
+      { expiresIn: "15m" }
+    );
+    return res.json({
+      message: "✅ Login root exitoso",
+      token,
+      user: {
+        id: 0,
+        name: "Root",
+        surname: "Admin",
+        email: emp_email,
+        role: "superadmin",
+      },
+    });
+  }
+
   if (!emp_email || !emp_password) {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  const sql = `
-    SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role 
-    FROM employee 
-    WHERE emp_email = ?
-  `;
+  const sql = `SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role FROM employee WHERE emp_email = ?`;
 
   connection.query(sql, [emp_email], async (err, results) => {
     if (err) {
@@ -112,29 +127,30 @@ const employeeLogin = (req, res) => {
     }
 
     const employee = results[0];
-
-    console.log("📥 Email recibido:", emp_email);
-    console.log("🔐 Contraseña recibida:", emp_password);
-    console.log("🔐 Contraseña guardada:", employee.emp_password);
-
     const passwordMatch = await bcrypt.compare(
       emp_password,
       employee.emp_password
     );
-    console.log("🔍 passwordMatch:", passwordMatch);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
+    // ✅ REGISTRAR NUEVO TURNO EN TABLA shift (shift_id autoincrement)
+    const now = new Date();
+    const insertShift = `INSERT INTO shift (shift_emp_id, shift_date_in) VALUES (?, ?)`;
+    connection.query(insertShift, [employee.emp_id, now], (shiftErr) => {
+      if (shiftErr) {
+        console.error("❌ Error al registrar el turno:", shiftErr);
+        // No interrumpimos el login si falla
+      }
+    });
+
+    // ✅ Generar y enviar token
     const token = jwt.sign(
-      {
-        emp_id: employee.emp_id,
-        emp_email: emp_email,
-        emp_role: employee.emp_role,
-      },
+      { emp_id: employee.emp_id, emp_email, emp_role: employee.emp_role },
       process.env.JWT_SECRET || "claveUltraSecreta",
-      { expiresIn: "2h" }
+      { expiresIn: "15m" }
     );
 
     res.json({
