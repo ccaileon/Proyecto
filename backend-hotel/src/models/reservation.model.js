@@ -1,19 +1,31 @@
 const db = require("../config/db");
 
 const Reservation = {
+  // Obtener todas las reservas con info de cliente, invitado y habitación
   getAll: (callback) => {
-    db.query("SELECT * FROM reservation LEFT JOIN client ON client.client_id = res_client_id LEFT JOIN guest ON guest.guest_id = res_guest_id LEFT JOIN room ON room.room_id = res_room_id", callback);
+    const sql = `
+      SELECT * 
+      FROM reservation
+      LEFT JOIN client ON client.client_id = res_client_id
+      LEFT JOIN guest ON guest.guest_id = res_guest_id
+      LEFT JOIN room ON room.room_id = res_room_id
+    `;
+    db.query(sql, callback);
   },
 
+  // Obtener una reserva por ID (falta LEFT JOIN en lugar de FULL JOIN para compatibilidad MySQL)
   getById: (id, callback) => {
-    db.query(
-      "SELECT * FROM reservation FULL JOIN client ON client.client_id = res_client_id LEFT JOIN room ON room.room_id = res_room_id WHERE res_id = ?",
-      [id],
-      callback
-    );
-
+    const sql = `
+      SELECT * 
+      FROM reservation
+      LEFT JOIN client ON client.client_id = res_client_id
+      LEFT JOIN room ON room.room_id = res_room_id
+      WHERE res_id = ?
+    `;
+    db.query(sql, [id], callback);
   },
 
+  // Crear una nueva reserva
   create: (data, callback) => {
     const sql = `
       INSERT INTO reservation (
@@ -22,38 +34,36 @@ const Reservation = {
         res_checkin_by, res_checkout_by, res_observations, res_state
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
-
     const values = [
       data.res_client_id || null,
       data.res_guest_id || null,
       data.res_room_id,
-      data.res_room_hotel_id, // Asegúrate de incluir el hotel
+      data.res_room_hotel_id,
       data.res_checkin,
       data.res_checkout,
       data.res_is_closed || 0,
       data.res_checkin_by || null,
       data.res_checkout_by || null,
       data.res_observations || "",
-	  data.res_state || "pending",
+      data.res_state || "pending",
     ];
-
     db.query(sql, values, callback);
   },
 
+  // Actualizar una reserva por ID
   update: (id, data, callback) => {
     const sql = `
       UPDATE reservation SET 
-        res_client_id = ?, res_guest_id = ?, res_room_id = ?, res_room_hotel_id = ?,  // Incluir hotel
+        res_client_id = ?, res_guest_id = ?, res_room_id = ?, res_room_hotel_id = ?,
         res_checkin = ?, res_checkout = ?, res_is_closed = ?, 
         res_checkin_by = ?, res_checkout_by = ?, res_observations = ?
       WHERE res_id = ?
     `;
-
     const values = [
       data.res_client_id || null,
       data.res_guest_id || null,
       data.res_room_id,
-      data.res_room_hotel_id, // Incluir el hotel
+      data.res_room_hotel_id,
       data.res_checkin,
       data.res_checkout,
       data.res_is_closed || 0,
@@ -62,14 +72,15 @@ const Reservation = {
       data.res_observations || "",
       id,
     ];
-
     db.query(sql, values, callback);
   },
 
+  // Eliminar una reserva
   delete: (id, callback) => {
     db.query("DELETE FROM reservation WHERE res_id = ?", [id], callback);
   },
 
+  // Obtener reservas de un cliente con detalles de habitación y factura
   getClientReservations: (clientId, callback) => {
     const sql = `
       SELECT 
@@ -86,7 +97,6 @@ const Reservation = {
       WHERE r.res_client_id = ?
       ORDER BY r.res_checkin DESC
     `;
-
     db.query(sql, [clientId], callback);
   },
 };

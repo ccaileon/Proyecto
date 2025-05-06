@@ -197,8 +197,42 @@ npm install --legacy-peer-deps
 
 ---
 
-## 📜 Licencia
+### Subida y Gestión de Archivos de Reserva
 
-Este proyecto es de código abierto y está bajo la **Licencia MIT**.
+- Los empleados pueden subir documentos relacionados con las reservas, como archivos PDF, imágenes o documentos.
+
+- Los archivos se gestionan a través de Multer, y se almacenan en la carpeta uploads/reservations/.
+
+- Los archivos se asocian a las reservas de los clientes y se pueden consultar desde la base de datos.
+
+- Si el archivo ya existe en el sistema, no se subirá de nuevo.
+
+### 👥 Gestión de Tipos de Empleados
+
+- El sistema permite la gestión de tipos de empleados dentro de la plataforma, diferenciando entre empleados estándar (Staff) y gerentes (Managers).
+
+- Los gerentes tienen permisos adicionales para gestionar reservas, empleados y realizar tareas administrativas.
+
+- Los empleados estándar tienen permisos más limitados, solo pueden gestionar reservas y ver los detalles de los clientes.
+
+#### 🔄 Modificación de Datos en la Gestión de Reservas
+
+- Los empleados pueden modificar los datos de una reserva desde la interfaz de administración (OffCanvas).
+
+- Los datos que se pueden editar incluyen:
+
+- Estado de la reserva (Pendiente, Check-In, Check-Out, Reserva Cerrada).
+
+- Fecha de Check-In y Check-Out.
+
+- Observaciones de la reserva.
+
+- Información del cliente (nombre, apellidos, documento, teléfono, email).
+
+- Archivos adjuntos relacionados con la reserva (subir documentos como evidencia).
+
+- Habitación asignada a la reserva.
+
+- Al guardar los cambios, se actualizan en la base de datos y se reflejan inmediatamente en el sistema.
 
 ---
