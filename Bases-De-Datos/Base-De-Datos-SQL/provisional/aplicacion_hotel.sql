@@ -3,8 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-05-2025 a las 18:45:38
-
+-- Tiempo de generación: 06-05-2025 a las 20:24:55
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,8 +38,6 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
-(15, '$2b$10$kqe6za5bKkNwGlawPZageOO/xIMQCA4rzNQAdASz.Vi1nGjwnd7Wa', 0),
-(16, '$2b$10$4fN5oxbRgctjp/OdSHcri.riTUDM6HA6hRuDGKTQoJ9WL3Z7Pzmou', 0),
 (17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 70);
 
 -- --------------------------------------------------------
@@ -65,9 +62,7 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(15, '', '', 'Prueba', '1', '', 612345678, 'prueba1@gmail.com'),
-(16, '', '', 'Prueba', '2', '', 612345678, 'prueba2@gmail.com'),
-(17, '', '', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
+(17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -108,20 +103,24 @@ CREATE TABLE `employee` (
   `emp_doc_id` varchar(15) NOT NULL,
   `emp_name` varchar(50) NOT NULL,
   `emp_surname_one` varchar(10) NOT NULL,
-  `emp_surname_two` varchar(10) NOT NULL,
+  `emp_surname_two` varchar(50) DEFAULT NULL,
   `emp_telephone` int(10) NOT NULL,
   `emp_email` varchar(100) NOT NULL,
   `emp_manager_id` int(11) NOT NULL,
   `emp_password` varchar(100) NOT NULL,
-  `emp_hotel_id` varchar(20) NOT NULL
+  `emp_hotel_id` varchar(20) NOT NULL,
+  `emp_role` enum('manager','staff') NOT NULL DEFAULT 'staff'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `employee`
 --
 
-INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`) VALUES
-(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1');
+INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`) VALUES
+(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff'),
+(4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager'),
+(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff'),
+(7, '98765432Z', 'prueba', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 4, '$2a$10$wbMg3iYcMImERZFv6WpqGOEifGw50mt/L1k2ZGxQpEv29utoGhwKm', '1', 'staff');
 
 -- --------------------------------------------------------
 
@@ -151,23 +150,6 @@ CREATE TABLE `guest` (
   `guest_phone` varchar(20) DEFAULT NULL,
   `guest_preferences` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `guest`
---
-
-INSERT INTO `guest` (`guest_id`, `guest_name`, `guest_lastname`, `guest_email`, `guest_phone`, `guest_preferences`) VALUES
-(19, 'Eva', 'Martín', 'eva@gmail.com', '123456789', 'doble'),
-(20, 'Eduard', 'Prueba2', 'eduard@gmail.com', '123456789', 'doble'),
-(21, 'Pepe', 'Prueba', 'pepe@gmail.com', '123456789', 'doble'),
-(22, 'Pepi', 'Prueba', 'pepi@gmail.com', '123456789', 'individual'),
-(23, 'Prueba3', 'Pruebita', 'prueba3@gmail.com', '123456788', 'individual'),
-(24, 'Eva', 'Martín', 'eva@gmail.com', '123456789', 'doble'),
-(25, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '666999888', 'doble'),
-(26, 'Lola', 'Lolita', 'lola@gmail.com', '123456789', 'doble'),
-(27, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'individual'),
-(28, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'doble'),
-(29, 'Eduard', 'Ciprian', 'eduzu@gmail.com', '222333444', 'individual');
 
 -- --------------------------------------------------------
 
@@ -232,15 +214,14 @@ CREATE TABLE `reservation` (
   `res_is_checkin` tinyint(1) NOT NULL,
   `res_is_checkout` tinyint(1) NOT NULL,
   `res_is_closed` tinyint(1) NOT NULL,
-  `res_checkin_by` int(6) NOT NULL,
-  `res_checkout_by` int(11) DEFAULT NULL,
+  `res_checkin_by` int(6) DEFAULT NULL,
+  `res_checkout_by` int(6) DEFAULT NULL,
   `res_observations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `res_wants_double` tinyint(1) NOT NULL,
-  `res_file_one` int(11) DEFAULT NULL,
-  `res_file_two` int(11) DEFAULT NULL,
-  `res_file_three` int(11) DEFAULT NULL,
+  `res_file_one` varchar(255) DEFAULT NULL,
+  `res_file_two` varchar(255) DEFAULT NULL,
+  `res_file_three` varchar(255) DEFAULT NULL,
   `res_guest_id` int(11) DEFAULT NULL
-
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
@@ -248,8 +229,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
-(38, 17, 36, 1, '2025-05-11', '2025-05-17', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Me gustria añadirle una botella de vino', 0, NULL, NULL, NULL, NULL);
-
+(38, 17, 36, 1, '2025-04-20', '2025-04-26', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', 'res_file_two-1746535566029.docx', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -261,62 +241,63 @@ CREATE TABLE `room` (
   `room_id` int(11) NOT NULL,
   `room_hotel_id` int(11) NOT NULL,
   `room_type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `room_capacity` int(1) NOT NULL
+  `room_capacity` int(1) NOT NULL,
+  `room_is_enabled` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
 -- Volcado de datos para la tabla `room`
 --
 
-INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`) VALUES
-(3, 1, 'suite', 4),
-(4, 1, 'suite', 4),
-(21, 1, 'plus-family', 4),
-(22, 1, 'plus-family', 4),
-(23, 1, 'plus-family', 4),
-(24, 1, 'plus-family', 4),
-(25, 1, 'plus-family', 4),
-(26, 1, 'plus-family', 4),
-(27, 1, 'plus-family', 4),
-(28, 1, 'plus-family', 4),
-(29, 1, 'plus-family', 4),
-(30, 1, 'plus-family', 4),
-(31, 1, 'plus-family', 4),
-(32, 1, 'plus-family', 4),
-(33, 1, 'plus-family', 4),
-(34, 1, 'plus-family', 4),
-(35, 1, 'plus-family', 4),
-(36, 1, 'plus', 2),
-(37, 1, 'plus', 2),
-(38, 1, 'plus', 2),
-(39, 1, 'plus', 2),
-(40, 1, 'plus', 2),
-(41, 1, 'plus', 2),
-(42, 1, 'plus', 2),
-(43, 1, 'plus', 2),
-(44, 1, 'plus', 2),
-(45, 1, 'plus', 2),
-(46, 1, 'plus', 2),
-(47, 1, 'plus', 2),
-(48, 1, 'plus', 2),
-(49, 1, 'plus', 2),
-(50, 1, 'plus', 2),
-(51, 1, 'plus', 2),
-(52, 1, 'plus', 2),
-(53, 1, 'plus', 2),
-(54, 1, 'plus', 2),
-(55, 1, 'plus', 2),
-(56, 1, 'suite', 4),
-(57, 1, 'suite', 4),
-(58, 1, 'suite', 4),
-(59, 1, 'standard', 2),
-(60, 1, 'standard-family', 4),
-(61, 1, 'standard', 2),
-(62, 1, 'standard-family', 4),
-(63, 1, 'standard-family', 4),
-(64, 1, 'standard-family', 4),
-(65, 1, 'standard', 2),
-(66, 1, 'standard', 2);
+INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`, `room_is_enabled`) VALUES
+(3, 1, 'suite', 4, 1),
+(4, 1, 'suite', 4, 1),
+(21, 1, 'plus-family', 4, 1),
+(22, 1, 'plus-family', 4, 1),
+(23, 1, 'plus-family', 4, 0),
+(24, 1, 'plus-family', 4, 1),
+(25, 1, 'plus-family', 4, 1),
+(26, 1, 'plus-family', 4, 0),
+(27, 1, 'plus-family', 4, 1),
+(28, 1, 'plus-family', 4, 1),
+(29, 1, 'plus-family', 4, 1),
+(30, 1, 'plus-family', 4, 1),
+(31, 1, 'plus-family', 4, 1),
+(32, 1, 'plus-family', 4, 1),
+(33, 1, 'plus-family', 4, 1),
+(34, 1, 'plus-family', 4, 0),
+(35, 1, 'plus-family', 4, 1),
+(36, 1, 'plus', 2, 1),
+(37, 1, 'plus', 2, 1),
+(38, 1, 'plus', 2, 1),
+(39, 1, 'plus', 2, 1),
+(40, 1, 'plus', 2, 1),
+(41, 1, 'plus', 2, 1),
+(42, 1, 'plus', 2, 1),
+(43, 1, 'plus', 2, 1),
+(44, 1, 'plus', 2, 1),
+(45, 1, 'plus', 2, 0),
+(46, 1, 'plus', 2, 1),
+(47, 1, 'plus', 2, 1),
+(48, 1, 'plus', 2, 1),
+(49, 1, 'plus', 2, 1),
+(50, 1, 'plus', 2, 1),
+(51, 1, 'plus', 2, 1),
+(52, 1, 'plus', 2, 1),
+(53, 1, 'plus', 2, 0),
+(54, 1, 'plus', 2, 1),
+(55, 1, 'plus', 2, 1),
+(56, 1, 'suite', 4, 1),
+(57, 1, 'suite', 4, 1),
+(58, 1, 'suite', 4, 1),
+(59, 1, 'standard', 2, 1),
+(60, 1, 'standard-family', 4, 1),
+(61, 1, 'standard', 2, 1),
+(62, 1, 'standard-family', 4, 1),
+(63, 1, 'standard-family', 4, 1),
+(64, 1, 'standard-family', 4, 1),
+(65, 1, 'standard', 2, 1),
+(66, 1, 'standard', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -325,11 +306,23 @@ INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`) VA
 --
 
 CREATE TABLE `shift` (
+  `shift_id` int(11) NOT NULL,
   `shift_emp_id` int(11) NOT NULL,
   `shift_date_in` datetime(6) NOT NULL,
-  `shift_date_out` datetime(6) NOT NULL,
-  `hours_worked` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
+  `shift_date_out` datetime(6) DEFAULT NULL,
+  `hours_worked` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `shift`
+--
+
+INSERT INTO `shift` (`shift_id`, `shift_emp_id`, `shift_date_in`, `shift_date_out`, `hours_worked`) VALUES
+(1, 2, '2025-05-06 19:50:32.064000', NULL, NULL),
+(2, 2, '2025-05-06 19:51:04.890000', NULL, NULL),
+(3, 4, '2025-05-06 19:57:37.834000', NULL, NULL),
+(4, 4, '2025-05-06 20:07:50.791000', '2025-05-06 20:12:56.909000', 0),
+(5, 4, '2025-05-06 20:24:07.605000', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -437,7 +430,8 @@ ALTER TABLE `room`
 -- Indices de la tabla `shift`
 --
 ALTER TABLE `shift`
-  ADD PRIMARY KEY (`shift_emp_id`);
+  ADD PRIMARY KEY (`shift_id`),
+  ADD KEY `shift_emp_id` (`shift_emp_id`);
 
 --
 -- Indices de la tabla `type_room`
@@ -465,7 +459,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT de la tabla `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `guest`
@@ -496,6 +490,12 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `room`
   MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+
+--
+-- AUTO_INCREMENT de la tabla `shift`
+--
+ALTER TABLE `shift`
+  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
@@ -543,7 +543,7 @@ ALTER TABLE `room`
 -- Filtros para la tabla `shift`
 --
 ALTER TABLE `shift`
-  ADD CONSTRAINT `shift-employee` FOREIGN KEY (`shift_emp_id`) REFERENCES `employee` (`emp_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `shift_ibfk_1` FOREIGN KEY (`shift_emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

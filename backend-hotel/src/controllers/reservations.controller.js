@@ -2,6 +2,7 @@ const Guest = require("../models/guest.model");
 const Reservation = require("../models/reservation.model");
 const connection = require("../config/db");
 const path = require("path");
+const fs = require("fs");
 
 const checkOverlapQuery = `
   SELECT * FROM reservation 
@@ -518,6 +519,45 @@ const getClientReservations = (req, res) => {
   });
 };
 
+const downloadReservationFile = (req, res) => {
+  const reservationId = req.params.id;
+  const field = req.params.field;
+
+  const validFields = ["res_file_one", "res_file_two", "res_file_three"];
+  if (!validFields.includes(field)) {
+    return res.status(400).json({ error: "Campo de archivo no válido." });
+  }
+
+  const sql = `SELECT ?? FROM reservation WHERE res_id = ?`;
+  connection.query(sql, [field, reservationId], (err, results) => {
+    if (err) {
+      console.error("❌ Error en consulta:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+    if (results.length === 0 || !results[0][field]) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado para esta reserva." });
+    }
+
+    const filename = results[0][field];
+    const filePath = path.join(
+      __dirname,
+      "../../uploads/reservations",
+      filename
+    );
+
+    if (!fs.existsSync(filePath)) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado en el servidor." });
+    }
+
+    res.download(filePath, filename);
+  });
+};
+
 module.exports = {
   getReservations,
   getReservationById,
@@ -528,4 +568,5 @@ module.exports = {
   getMyReservations,
   getClientReservations,
   updateReservationStatus,
+  downloadReservationFile,
 };

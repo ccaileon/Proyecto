@@ -3,7 +3,13 @@ const router = express.Router();
 const reservationController = require("../controllers/reservations.controller");
 const verifyToken = require("../../middlewares/verifyToken");
 const verifyManager = require("../../middlewares/verifyManager");
-const upload = require("../../middlewares/upload.middleware"); // 👈 NUEVO
+const upload = require("../../middlewares/upload.middleware");
+const path = require("path");
+const fs = require("fs");
+
+// Middleware para servir archivos estáticos de la carpeta "uploads"
+router.get("/:id/download/:field", verifyToken, reservationController.downloadReservationFile);
+
 
 // 🔐 Reservas para empleados autenticados
 router.get("/", verifyToken, reservationController.getReservations);
@@ -26,7 +32,7 @@ router.put(
   upload.fields([
     { name: "res_file_one", maxCount: 1 },
     { name: "res_file_two", maxCount: 1 },
-    { name: "res_file_three", maxCount: 1 }
+    { name: "res_file_three", maxCount: 1 },
   ]),
   reservationController.updateReservationStatus
 );

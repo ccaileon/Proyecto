@@ -20,6 +20,7 @@
     "react-date-range": "^2.0.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.1.5",
     "react-scroll-parallax": "^3.4.5",
     "simple-parallax-js": "^6.1.1",
