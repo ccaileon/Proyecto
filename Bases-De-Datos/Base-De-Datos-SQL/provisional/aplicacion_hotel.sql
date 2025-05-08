@@ -4,7 +4,6 @@
 --
 -- Servidor: 127.0.0.1
 -- Tiempo de generación: 08-05-2025 a las 19:00:13
--- Tiempo de generación: 05-05-2025 a las 22:53:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -66,8 +65,6 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(15, '', '', 'Prueba', '1', '', 612345678, 'prueba1@gmail.com'),
-(16, '', '', 'Prueba', '2', '', 612345678, 'prueba2@gmail.com'),
 (17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
 
 -- --------------------------------------------------------
@@ -115,17 +112,19 @@ CREATE TABLE `employee` (
   `emp_manager_id` int(11) NOT NULL,
   `emp_password` varchar(100) NOT NULL,
   `emp_hotel_id` varchar(20) NOT NULL,
-  `emp_role` enum('manager','staff') NOT NULL DEFAULT 'staff'
+  `emp_role` enum('manager','staff') NOT NULL DEFAULT 'staff',
+  `emp_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `employee`
 --
 
-INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`) VALUES
-(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff'),
-(4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager'),
-(5, '98765432Z', 'Carlos', 'Díaz', 'Morales', 654987321, 'carlos.diaz@email.com', 4, '$2a$10$2yBosLjT6Ns267tn5Gbz6uPlmQ24QaRILyzE/pgwuyJrGR7LyDi9K', '1', 'staff');
+INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`, `emp_active`) VALUES
+(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff', 0),
+(4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager', 1),
+(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff', 0),
+(7, '98765432Z', 'prueba', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 4, '$2a$10$wbMg3iYcMImERZFv6WpqGOEifGw50mt/L1k2ZGxQpEv29utoGhwKm', '1', 'staff', 0);
 
 -- --------------------------------------------------------
 
@@ -221,13 +220,8 @@ CREATE TABLE `reservation` (
   `res_is_closed` tinyint(1) NOT NULL,
   `res_checkin_by` int(6) DEFAULT NULL,
   `res_checkout_by` int(6) DEFAULT NULL,
-  `res_checkin_by` int(6) DEFAULT NULL,
-  `res_checkout_by` int(6) DEFAULT NULL,
   `res_observations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `res_wants_double` tinyint(1) NOT NULL,
-  `res_file_one` varchar(255) DEFAULT NULL,
-  `res_file_two` varchar(255) DEFAULT NULL,
-  `res_file_three` varchar(255) DEFAULT NULL,
   `res_file_one` varchar(255) DEFAULT NULL,
   `res_file_two` varchar(255) DEFAULT NULL,
   `res_file_three` varchar(255) DEFAULT NULL,
@@ -239,7 +233,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
-(38, 17, 36, 1, '2025-04-23', '2025-04-29', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, NULL, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', NULL, NULL, NULL);
+(38, 17, 36, 1, '2025-04-18', '2025-04-24', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', 'res_file_two-1746535566029.docx', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -465,7 +459,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT de la tabla `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `guest`
