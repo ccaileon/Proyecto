@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation} from "react-router-dom";
-import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
+import Room from '../../habitaciones/components/Room'; 
+import "../../habitaciones/components/room.css";
 
 function RoomSearch() {
   const [resultados, setResultados] = useState([]);
   const location = useLocation();
-  
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -43,61 +44,28 @@ function RoomSearch() {
   return (
     <Container className="mt-4">
       <h2 className="mb-4">Resultados de búsqueda</h2>
-      <Row>
-        {resultados.length > 0 ? (
-          resultados.map((room) => (
-            <Col key={room.room_id} md={4} className="mb-4">
-              <Card>
-                <Card.Img 
-                  variant="top" 
-                  src={`/images/${room.room_type}.jpg`} 
-                  alt={room.room_type} 
-                  style={{ height: "200px", objectFit: "cover" }} 
-                />
-                <Card.Body>
-                  <Card.Title>{room.room_type.replace(/-/g, " ")}</Card.Title>
-                  <Card.Text>
-                    <strong>Capacidad:</strong> {room.room_capacity} personas <br />
-                    <strong>Metros cuadrados:</strong> {room.room_mts_square} m²
-                  </Card.Text>
-                  <Button variant="primary" className="me-2">Ver detalles</Button>
-                  <Button
-  variant="success"
-  onClick={() => {
-    const urlParams = new URLSearchParams(location.search);
-    const checkIn = urlParams.get("checkIn");
-    const checkOut = urlParams.get("checkOut");
-
-    // Guardar en sessionStorage lo que usará OrderSummary.jsx
-    sessionStorage.setItem("reservaData", JSON.stringify({
-      room,
-      checkIn,
-      checkOut,
-      adults: urlParams.get("adults"),
-      children: urlParams.get("children"),
-    }));
-
-    sessionStorage.setItem("selectedRoomId", room.room_id);
-    sessionStorage.setItem("hotelId", room.room_hotel_id || 1);
-    sessionStorage.setItem("checkin", checkIn);
-    sessionStorage.setItem("checkout", checkOut);
-
-    window.location.href = "/checkout";
-  }}
->
-  Reservar
-</Button>
-
-
-
-                </Card.Body>
-              </Card>
+      {resultados.length > 0 ? (
+        resultados.map((room) => (
+         
+          <Row key={room.room_id} className="mb-4">
+            <Col md={12}> 
+            
+              <Room
+                titulo={room.room_type.replace(/-/g, " ")}
+                precio={room.room_price}
+                capacidad={room.room_capacity}
+                descripcion={room.room_description}
+                imagenUrl={`/images/${room.room_type}.jpg`} 
+                tipo={room.room_type}
+              />
             </Col>
-          ))
-        ) : (
-          <p>No se encontraron habitaciones disponibles. Pruebe una fecha diferente o reserve habitaciones separadas para más de 4 huéspedes.</p>
-        )}
-      </Row>
+            <button className="btn">Reservar Estancia</button>
+            <hr />
+          </Row>
+        ))
+      ) : (
+        <p>No se encontraron habitaciones disponibles. Pruebe una fecha diferente o reserve habitaciones separadas para más de 4 huéspedes.</p>
+      )}
     </Container>
   );
 }
