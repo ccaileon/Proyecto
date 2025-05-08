@@ -35,6 +35,9 @@ function FormularioLogin() {
           text: "Bienvenido de nuevo",
           icon: "success",
           confirmButtonText: "Aceptar",
+          customClass: {
+            confirmButton: 'btn'
+          }
         }).then(() => {
           navigate("/"); // Redirigir a otra página después del login
         });
@@ -43,9 +46,12 @@ function FormularioLogin() {
       console.error("❌ Error en el inicio de sesión:", error);
       alert.fire({
         title: "Error",
-        text: "Correo o contraseña incorrectos",
+        text: "Correo o contraseña incorrectos.",
         icon: "error",
-        confirmButtonText: "Intentar de nuevo",
+        confirmButtonText: "Volver",
+        customClass: {
+            confirmButton: 'btn'
+          }
       });
     }
   };

@@ -21,21 +21,19 @@ function Habitaciones() {
 <h1>Habitaciones funcionales y cómodas</h1>
 
 <Room
-  titulo="Habitación Estándar"
   precio={65}
   capacidad={"2 personas"}
   descripcion="Una opción sencilla y acogedora, ideal para quienes buscan comodidad sin complicaciones. Equipada con todo lo esencial para una estancia agradable a un precio accesible."
   imagenUrl="src\assets\img\imgHabitaciones\standard\habitacion-standard.jpg"
-  tipo="economica"
+  tipo="standard"
 />
 <hr />
 <Room
-  titulo="Habitación Familiar"
   capacidad={"4 personas"}
   precio={80}
   descripcion="El espacio perfecto para compartir en familia. Amplia, confortable y equipada con todo lo necesario para una estancia placentera. Disponemos de cunas bajo solicitud."
   imagenUrl="src\assets\img\imgHabitaciones\standardFamily\habitacion-standard-familiar.jpg"
-  tipo="economica"
+  tipo="standard-family"
 />
 </Container>
 </Container>
@@ -43,7 +41,6 @@ function Habitaciones() {
 <Container className="habitaciones">
 <h1>Más espacio, más comodidad</h1>
 <Room
-  titulo="Habitación Brisa"
   precio={100}
   capacidad={"2 personas"}
   descripcion="Un refugio espacioso con un diseño moderno y elegante. Perfecta para quienes buscan un ambiente acogedor con un toque de estilo."
@@ -52,21 +49,18 @@ function Habitaciones() {
 />
 <hr />
 <Room
-  titulo="Habitación Coral"
   precio={100}
   capacidad={"4 personas"}
   descripcion="Un habitación con espacio y camas extra, con un aire elegante y de modernidad. Perfecta para familiar o grupos que buscan una habitación con extra en comfort, lujo y espacio."
   imagenUrl="src\assets\img\imgHabitaciones\plusFamily\habitacion-plus-family.avif"
-  tipo="plus"
+  tipo="plus-family"
 />
-
 </Container>
 
 <Container fluid className="room-container">
 <Container className="habitaciones">
 <h1>La mejor experiencia de alojamiento</h1>
 <Room
-  titulo="Suite Arrecife"
   precio={200}
   capacidad={"2 personas"}
   descripcion="Lujo y confort con vistas al mar. Esta amplia suite cuenta con terraza privada, sala de estar y una cocina totalmente equipada para una experiencia inigualable."
@@ -80,7 +74,7 @@ function Habitaciones() {
   capacidad={"4 personas"}
   descripcion="Nuestra suite más exclusiva, diseñada para quienes buscan el máximo confort. Dispone de dos dormitorios independientes, sala de estar, cocina equipada y una terraza privada con vistas espectaculares."
   imagenUrl="src\assets\img\imgHabitaciones\presidential\habitacion-presidencial.jpg"
-  tipo="suite"
+  tipo="suite-family"
 />
 </Container>
 </Container>

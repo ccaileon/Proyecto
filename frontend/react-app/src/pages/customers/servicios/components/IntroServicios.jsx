@@ -8,7 +8,7 @@ function IntroServicios() {
     <Container className="intro">
       <Row>
         <Col className="col">
-          <img className="imagen" src="src\assets\img\imgServicios\contenido\intro-servicios.jpg" alt="Zona Playa" width="100%" />
+          <img className="img-borde" src="src\assets\img\imgServicios\contenido\intro-servicios.jpg" alt="Zona Playa" width="100%" />
         </Col>
 
         <Col>
