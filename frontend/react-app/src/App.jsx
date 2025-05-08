@@ -33,6 +33,7 @@ import EmployeeMenu from "./pages/employees/employeeMenu/EmployeeMenu.jsx";
 import EmpRooms from "./pages/employees/employeeRooms/EmployeeRooms.jsx";
 import EmpReservations from "./pages/employees/employeeReservations/EmployeeReservations.jsx";
 import EmpReservationsList from "./pages/employees/employeeReservations/components/employeeReservationsList/EmployeeReservationsList.jsx";
+import { EmployeeList } from "./pages/employees/employeeMenu/components/EmployeeList";
 
 // -- Rutas Privadas --
 import PrivateRoute from "./components/PrivateRoute.jsx";
@@ -98,6 +99,7 @@ function App() {
         <Route path="*" element={<Layout />} />
 
         { /* Rutas Privadas Empleado */}
+        <Route path="/employee/menu/employees" element={<EmployeeList />} />
         <Route path="/employee" element={<EmployeeLogin/>}/>
         <Route path="/employee/:menu" element={
           <PrivateRoute><EmployeeMenu /></PrivateRoute>} />

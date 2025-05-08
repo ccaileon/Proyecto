@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-05-2025 a las 20:24:55
+-- Tiempo de generación: 08-05-2025 a las 19:00:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -109,18 +109,19 @@ CREATE TABLE `employee` (
   `emp_manager_id` int(11) NOT NULL,
   `emp_password` varchar(100) NOT NULL,
   `emp_hotel_id` varchar(20) NOT NULL,
-  `emp_role` enum('manager','staff') NOT NULL DEFAULT 'staff'
+  `emp_role` enum('manager','staff') NOT NULL DEFAULT 'staff',
+  `emp_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `employee`
 --
 
-INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`) VALUES
-(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff'),
-(4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager'),
-(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff'),
-(7, '98765432Z', 'prueba', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 4, '$2a$10$wbMg3iYcMImERZFv6WpqGOEifGw50mt/L1k2ZGxQpEv29utoGhwKm', '1', 'staff');
+INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`, `emp_active`) VALUES
+(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff', 0),
+(4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager', 1),
+(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff', 0),
+(7, '98765432Z', 'prueba', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 4, '$2a$10$wbMg3iYcMImERZFv6WpqGOEifGw50mt/L1k2ZGxQpEv29utoGhwKm', '1', 'staff', 0);
 
 -- --------------------------------------------------------
 
@@ -229,7 +230,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
-(38, 17, 36, 1, '2025-04-20', '2025-04-26', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', 'res_file_two-1746535566029.docx', NULL, NULL);
+(38, 17, 36, 1, '2025-04-18', '2025-04-24', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', 'res_file_two-1746535566029.docx', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -310,7 +311,7 @@ CREATE TABLE `shift` (
   `shift_emp_id` int(11) NOT NULL,
   `shift_date_in` datetime(6) NOT NULL,
   `shift_date_out` datetime(6) DEFAULT NULL,
-  `hours_worked` int(11) DEFAULT NULL
+  `hours_worked` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -318,11 +319,7 @@ CREATE TABLE `shift` (
 --
 
 INSERT INTO `shift` (`shift_id`, `shift_emp_id`, `shift_date_in`, `shift_date_out`, `hours_worked`) VALUES
-(1, 2, '2025-05-06 19:50:32.064000', NULL, NULL),
-(2, 2, '2025-05-06 19:51:04.890000', NULL, NULL),
-(3, 4, '2025-05-06 19:57:37.834000', NULL, NULL),
-(4, 4, '2025-05-06 20:07:50.791000', '2025-05-06 20:12:56.909000', 0),
-(5, 4, '2025-05-06 20:24:07.605000', NULL, NULL);
+(47, 4, '2025-05-08 18:59:29.633000', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -495,7 +492,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT de la tabla `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Restricciones para tablas volcadas
