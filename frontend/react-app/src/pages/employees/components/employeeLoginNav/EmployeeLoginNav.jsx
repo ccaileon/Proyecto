@@ -15,15 +15,52 @@ export function EmpLoginNav(){
       setUserName(userData.name);
     }
   }, []);
+  
+  useEffect(() => {
+    const handleUnload = () => {
+      const token = sessionStorage.getItem("Token");
+      const storedUser = sessionStorage.getItem("User");
+  
+      if (!token || !storedUser) return;
+  
+      const user = JSON.parse(storedUser);
+  
+      // Cerrar turno automáticamente al cerrar navegador
+      navigator.sendBeacon(`http://localhost:3000/api/shifts/logout/${user.id}`);
+      console.log("📤 Turno cerrado automáticamente al cerrar el navegador");
+    };
+  
+    window.addEventListener("beforeunload", handleUnload);
+  
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
+  
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("Token"); 
-    sessionStorage.removeItem("User"); 
+  const handleLogout = async () => {
+    const token = sessionStorage.getItem("Token");
+    const storedUser = sessionStorage.getItem("User");
+  
+    if (storedUser && token) {
+      const { id } = JSON.parse(storedUser);
+  
+      try {
+        await fetch(`http://localhost:3000/api/shifts/logout/${id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });        
+      } catch (error) {
+        console.error("❌ Error al cerrar turno:", error);
+      }
+    }
+  
+    sessionStorage.removeItem("Token");
+    sessionStorage.removeItem("User");
     navigate("/employee");
   };
-  const handleHome = () => {
-    navigate("/employee/:menu");
-  }
 
   return(
     <nav className="z-3 align-items-start min-vw-100 navbar navbar-expand-lg bg-body-tertiary m-0 p-0 ">

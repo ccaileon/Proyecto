@@ -128,6 +128,45 @@ const deleteRoom = (req, res) => {
   });
 };
 
+const enableRoom = (req, res) => {
+  const roomId = parseInt(req.params.id, 10);
+  if (isNaN(roomId)) return res.status(400).json({ error: "Invalid room ID" });
+
+  Room.enableRoom(roomId, (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json({ message: "✅ Habitación habilitada correctamente" });
+  });
+};
+
+const disableRoom = (req, res) => {
+  const roomId = parseInt(req.params.id, 10);
+  if (isNaN(roomId)) return res.status(400).json({ error: "Invalid room ID" });
+
+  Room.disableRoom(roomId, (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json({ message: "🚫 Habitación deshabilitada correctamente" });
+  });
+};
+const getEnabledRooms = (req, res) => {
+  Room.getEnabledRooms((err, results) => {
+    if (err) {
+      console.error("❌ Error obteniendo habitaciones habilitadas:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
+};
+
+const getDisabledRooms = (req, res) => {
+  Room.getDisabledRooms((err, results) => {
+    if (err) {
+      console.error("❌ Error obteniendo habitaciones deshabilitadas:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(results);
+  });
+};
+
 module.exports = {
   getRooms,
   getRoomById,
@@ -135,4 +174,8 @@ module.exports = {
   updateRoom,
   deleteRoom,
   searchRooms,
+  enableRoom,
+  disableRoom,
+  getEnabledRooms,
+  getDisabledRooms,
 };

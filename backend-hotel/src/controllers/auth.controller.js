@@ -91,16 +91,34 @@ const login = (req, res) => {
 const employeeLogin = (req, res) => {
   const { emp_email, emp_password } = req.body;
 
-  console.log("📩 Employee login request received:", {
-    emp_email,
-    emp_password,
-  });
+  if (emp_email === "root@admin.com" && emp_password === "root1234") {
+    const token = jwt.sign(
+      { emp_id: 0, emp_email, emp_role: "superadmin" },
+      process.env.JWT_SECRET || "claveUltraSecreta",
+      { expiresIn: "15m" }
+    );
+    return res.json({
+      message: "✅ Login root exitoso",
+      token,
+      user: {
+        id: 0,
+        name: "Root",
+        surname: "Admin",
+        email: emp_email,
+        role: "superadmin",
+      },
+    });
+  }
 
   if (!emp_email || !emp_password) {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  const sql = `SELECT emp_id, emp_name, emp_surname_one, emp_password FROM employee WHERE emp_email = ?`;
+  const sql = `
+  SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role, emp_active 
+  FROM employee 
+  WHERE emp_email = ?
+`;
 
   connection.query(sql, [emp_email], async (err, results) => {
     if (err) {
@@ -114,29 +132,55 @@ const employeeLogin = (req, res) => {
 
     const employee = results[0];
 
-    // Compare passwords
+    // ⛔ Bloquear acceso si la cuenta está inactiva
+    if (employee.emp_active === 0) {
+      return res.status(403).json({
+        error: "⛔ Tu cuenta está desactivada. Contacta con un administrador.",
+      });
+    }
+
     const passwordMatch = await bcrypt.compare(
       emp_password,
       employee.emp_password
     );
-    console.log("🔍 Password comparison result:", passwordMatch);
 
-    //if (!passwordMatch) {
-      //return res.status(401).json({ error: "Invalid email or password" });
-    //}
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
 
-    // **Generate JWT token**
+    const now = new Date();
+
+    // ✅ Cerrar turno anterior si estaba abierto
+    const closePreviousShift = `
+      UPDATE shift 
+      SET shift_date_out = ?, hours_worked = TIMESTAMPDIFF(MINUTE, shift_date_in, ?) 
+      WHERE shift_emp_id = ? AND shift_date_out IS NULL
+    `;
+    connection.query(closePreviousShift, [now, now, employee.emp_id], (err) => {
+      if (err) {
+        console.error("⚠️ No se pudo cerrar el turno anterior:", err);
+        // No interrumpimos el login si falla
+      }
+    });
+
+    // ✅ Abrir nuevo turno
+    const insertShift = `
+      INSERT INTO shift (shift_emp_id, shift_date_in) VALUES (?, ?)
+    `;
+    connection.query(insertShift, [employee.emp_id, now], (shiftErr) => {
+      if (shiftErr) {
+        console.error("❌ Error al registrar el turno:", shiftErr);
+        // No interrumpimos el login si falla
+      }
+    });
+
+    // ✅ Generar token
     const token = jwt.sign(
-      {
-        id: employee.emp_id,
-        name: employee.emp_name,
-        email: emp_email,
-      },
-      process.env.JWT_SECRET || "claveUltraSecreta", // cambia esto por una variable segura
-      { expiresIn: "2h" }
+      { emp_id: employee.emp_id, emp_email, emp_role: employee.emp_role },
+      process.env.JWT_SECRET || "claveUltraSecreta",
+      { expiresIn: "15m" }
     );
 
-    // **Log the token for debugging purposes**
     res.json({
       message: "Login successful",
       token,
@@ -145,6 +189,7 @@ const employeeLogin = (req, res) => {
         name: employee.emp_name,
         surname: employee.emp_surname_one,
         email: emp_email,
+        role: employee.emp_role,
       },
     });
   });

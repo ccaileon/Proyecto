@@ -1,6 +1,8 @@
 const Guest = require("../models/guest.model");
 const Reservation = require("../models/reservation.model");
 const connection = require("../config/db");
+const path = require("path");
+const fs = require("fs");
 
 const checkOverlapQuery = `
   SELECT * FROM reservation 
@@ -364,7 +366,6 @@ const createReservation = (req, res) => {
                   reservationId: res_id,
                   clientId,
                   puntosGanados,
-
                 });
               }
             );
@@ -411,63 +412,54 @@ const updateReservation = (req, res) => {
     res.json({ message: "✅ Reserva actualizada correctamente" });
   });
 };
+
 const updateReservationStatus = (req, res) => {
-  const { id } = req.params;
-  const { status, employeeId } = req.body;
+  const reservationId = req.params.id;
+  const { status, employeeId, checkin, checkout, observations, roomId } =
+    req.body;
 
-  // Validación de datos requeridos
-  if (!status || !employeeId) {
-    return res.status(400).json({ error: "Estado y empleado requeridos" });
-  }
+  const files = req.files;
 
-  let updateQuery = "";
-  let values = [];
+  console.log("📥 Archivos recibidos:", files);
 
-  // Lógica para cada tipo de estado
-  switch (status) {
-    case "checkin":
-      updateQuery = `
-        UPDATE reservation 
-        SET res_is_checkin = 1, res_checkin_by = ? 
-        WHERE res_id = ?
-      `;
-      values = [employeeId, id];
-      break;
+  const res_file_one = files?.res_file_one?.[0]?.filename ?? null;
+  const res_file_two = files?.res_file_two?.[0]?.filename ?? null;
+  const res_file_three = files?.res_file_three?.[0]?.filename ?? null;
 
-    case "checkout":
-      updateQuery = `
-        UPDATE reservation 
-        SET res_is_checkout = 1, res_checkout_by = ? 
-        WHERE res_id = ?
-      `;
-      values = [employeeId, id];
-      break;
+  const updates = {
+    res_is_checkin: status === "checkin" ? 1 : 0,
+    res_is_checkout: status === "checkout" ? 1 : 0,
+    res_is_closed: status === "closed" ? 1 : 0,
+    res_checkin: checkin,
+    res_checkout: checkout,
+    res_observations: observations,
+    res_room_id: roomId,
+    res_checkin_by: status === "checkin" ? employeeId : null,
+    res_checkout_by: status === "checkout" ? employeeId : null,
+  };
 
-    case "closed":
-      updateQuery = `
-        UPDATE reservation 
-        SET res_is_closed = 1 
-        WHERE res_id = ?
-      `;
-      values = [id];
-      break;
+  // Solo agregar campos de archivos si existen
+  if (typeof res_file_one === "string") updates.res_file_one = res_file_one;
+  if (typeof res_file_two === "string") updates.res_file_two = res_file_two;
+  if (typeof res_file_three === "string")
+    updates.res_file_three = res_file_three;
 
-    default:
-      return res.status(400).json({ error: "Estado inválido" });
-  }
+  const fields = Object.keys(updates);
+  const values = Object.values(updates);
 
-  // Ejecutar la consulta SQL
-  connection.query(updateQuery, values, (err, result) => {
+  const sql = `UPDATE reservation SET ${fields
+    .map((field) => `${field} = ?`)
+    .join(", ")} WHERE res_id = ?`;
+
+  values.push(reservationId);
+
+  connection.query(sql, values, (err, results) => {
     if (err) {
-      console.error("❌ Error actualizando estado:", err);
-      return res.status(500).json({ error: "Error al actualizar estado" });
+      console.error("❌ Error actualizando reserva:", err);
+      return res.status(500).json({ error: "Error actualizando reserva" });
     }
 
-    // Confirmar éxito y devolver datos actualizados de la reserva
-    res.json({
-      message: `✅ Estado actualizado a ${status}`,
-      updatedReservation: { id, status, employeeId },
-    });
+    return res.json({ message: "Reserva actualizada correctamente" });
   });
 };
 
@@ -527,6 +519,45 @@ const getClientReservations = (req, res) => {
   });
 };
 
+const downloadReservationFile = (req, res) => {
+  const reservationId = req.params.id;
+  const field = req.params.field;
+
+  const validFields = ["res_file_one", "res_file_two", "res_file_three"];
+  if (!validFields.includes(field)) {
+    return res.status(400).json({ error: "Campo de archivo no válido." });
+  }
+
+  const sql = `SELECT ?? FROM reservation WHERE res_id = ?`;
+  connection.query(sql, [field, reservationId], (err, results) => {
+    if (err) {
+      console.error("❌ Error en consulta:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+    if (results.length === 0 || !results[0][field]) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado para esta reserva." });
+    }
+
+    const filename = results[0][field];
+    const filePath = path.join(
+      __dirname,
+      "../../uploads/reservations",
+      filename
+    );
+
+    if (!fs.existsSync(filePath)) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado en el servidor." });
+    }
+
+    res.download(filePath, filename);
+  });
+};
+
 module.exports = {
   getReservations,
   getReservationById,
@@ -537,5 +568,5 @@ module.exports = {
   getMyReservations,
   getClientReservations,
   updateReservationStatus,
-
+  downloadReservationFile,
 };
