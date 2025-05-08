@@ -114,7 +114,11 @@ const employeeLogin = (req, res) => {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
-  const sql = `SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role FROM employee WHERE emp_email = ?`;
+  const sql = `
+  SELECT emp_id, emp_name, emp_surname_one, emp_password, emp_email, emp_role, emp_active 
+  FROM employee 
+  WHERE emp_email = ?
+`;
 
   connection.query(sql, [emp_email], async (err, results) => {
     if (err) {
@@ -127,6 +131,14 @@ const employeeLogin = (req, res) => {
     }
 
     const employee = results[0];
+
+    // ⛔ Bloquear acceso si la cuenta está inactiva
+    if (employee.emp_active === 0) {
+      return res.status(403).json({
+        error: "⛔ Tu cuenta está desactivada. Contacta con un administrador.",
+      });
+    }
+
     const passwordMatch = await bcrypt.compare(
       emp_password,
       employee.emp_password
@@ -136,9 +148,25 @@ const employeeLogin = (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // ✅ REGISTRAR NUEVO TURNO EN TABLA shift (shift_id autoincrement)
     const now = new Date();
-    const insertShift = `INSERT INTO shift (shift_emp_id, shift_date_in) VALUES (?, ?)`;
+
+    // ✅ Cerrar turno anterior si estaba abierto
+    const closePreviousShift = `
+      UPDATE shift 
+      SET shift_date_out = ?, hours_worked = TIMESTAMPDIFF(MINUTE, shift_date_in, ?) 
+      WHERE shift_emp_id = ? AND shift_date_out IS NULL
+    `;
+    connection.query(closePreviousShift, [now, now, employee.emp_id], (err) => {
+      if (err) {
+        console.error("⚠️ No se pudo cerrar el turno anterior:", err);
+        // No interrumpimos el login si falla
+      }
+    });
+
+    // ✅ Abrir nuevo turno
+    const insertShift = `
+      INSERT INTO shift (shift_emp_id, shift_date_in) VALUES (?, ?)
+    `;
     connection.query(insertShift, [employee.emp_id, now], (shiftErr) => {
       if (shiftErr) {
         console.error("❌ Error al registrar el turno:", shiftErr);
@@ -146,7 +174,7 @@ const employeeLogin = (req, res) => {
       }
     });
 
-    // ✅ Generar y enviar token
+    // ✅ Generar token
     const token = jwt.sign(
       { emp_id: employee.emp_id, emp_email, emp_role: employee.emp_role },
       process.env.JWT_SECRET || "claveUltraSecreta",

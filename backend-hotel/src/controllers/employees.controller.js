@@ -240,10 +240,34 @@ const deleteEmployee = (req, res) => {
   );
 };
 
+const toggleEmployeeActive = (req, res) => {
+  const emp_id = req.params.id;
+
+  const query = `
+    UPDATE employee
+    SET emp_active = NOT emp_active
+    WHERE emp_id = ?
+  `;
+
+  connection.query(query, [emp_id], (err, result) => {
+    if (err) {
+      console.error("❌ Error al actualizar estado del empleado:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Empleado no encontrado" });
+    }
+
+    res.json({ message: "✅ Estado del empleado actualizado correctamente" });
+  });
+};
+
 module.exports = {
   getEmployees,
   getEmployeeById,
   createEmployee,
   updateEmployee,
   deleteEmployee,
+  toggleEmployeeActive,
 };

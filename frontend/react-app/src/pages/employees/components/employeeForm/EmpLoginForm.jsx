@@ -33,9 +33,17 @@ const EmpLoginForm = () => {
             
         } catch (error) {
             console.error("❌ Login error:", error);
-            setLoginError("Invalid email or password. Please try again.");
-              
-        }
+          
+            if (error.response && error.response.status === 403) {
+              // mensaje personalizado del backend
+              setLoginError(error.response.data.error || "⛔ Cuenta desactivada.");
+            } else if (error.response && error.response.status === 401) {
+              setLoginError("❌ Email o contraseña incorrectos.");
+            } else {
+              setLoginError("⚠️ Error inesperado. Intenta nuevamente.");
+            }
+          }
+          
     };
 
     return (
