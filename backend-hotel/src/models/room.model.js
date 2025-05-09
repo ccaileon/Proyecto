@@ -11,7 +11,8 @@ const Room = {
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
-             t.room_has_balcony, t.room_has_service
+             t.room_has_balcony, t.room_has_service,
+             t.room_price
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
       WHERE r.room_capacity >= ?
@@ -43,7 +44,8 @@ const Room = {
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity, r.room_is_enabled,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
-             t.room_has_balcony, t.room_has_service
+             t.room_has_balcony, t.room_has_service,
+             t.room_price
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
     `;
@@ -55,7 +57,8 @@ const Room = {
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
-             t.room_has_balcony, t.room_has_service
+             t.room_has_balcony, t.room_has_service,
+             t.room_price
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
       WHERE r.room_id = ?
@@ -108,12 +111,14 @@ const Room = {
     const sql = "UPDATE room SET room_is_enabled = 0 WHERE room_id = ?";
     connection.query(sql, [id], callback);
   },
+
   getEnabledRooms: (callback) => {
     const sql = `
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
-             t.room_has_balcony, t.room_has_service
+             t.room_has_balcony, t.room_has_service,
+             t.room_price
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
       WHERE r.room_is_enabled = 1
@@ -126,7 +131,8 @@ const Room = {
       SELECT r.room_id, r.room_hotel_id, r.room_type, r.room_capacity,
              CAST(t.room_mts_square AS UNSIGNED) AS room_mts_square, 
              t.room_has_views, t.room_has_jacuzzi,
-             t.room_has_balcony, t.room_has_service
+             t.room_has_balcony, t.room_has_service,
+             t.room_price
       FROM room r
       JOIN type_room t ON r.room_type = t.room_type
       WHERE r.room_is_enabled = 0

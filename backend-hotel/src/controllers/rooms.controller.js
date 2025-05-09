@@ -1,4 +1,5 @@
 const Room = require("../models/room.model");
+const connection = require("../config/db");
 
 const searchRooms = (req, res) => {
   const { checkIn, checkOut, adults, children } = req.query;
@@ -166,6 +167,41 @@ const getDisabledRooms = (req, res) => {
     res.json(results);
   });
 };
+const getRoomTypes = (req, res) => {
+  const sql = "SELECT * FROM type_room";
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("❌ Error al obtener tipos de habitación:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    res.json(results);
+  });
+};
+const updateRoomPrice = (req, res) => {
+  const { type } = req.params;
+  const { price } = req.body;
+
+  if (!price || isNaN(price)) {
+    return res.status(400).json({ error: "Invalid price value" });
+  }
+
+  const sql = "UPDATE type_room SET room_price = ? WHERE room_type = ?";
+
+  connection.query(sql, [price, type], (err, result) => {
+    if (err) {
+      console.error("❌ Error updating room price:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Room type not found" });
+    }
+
+    res.json({ message: "✅ Room price updated successfully" });
+  });
+};
 
 module.exports = {
   getRooms,
@@ -178,4 +214,6 @@ module.exports = {
   disableRoom,
   getEnabledRooms,
   getDisabledRooms,
+  updateRoomPrice,
+  getRoomTypes,
 };

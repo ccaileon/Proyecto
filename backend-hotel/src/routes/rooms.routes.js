@@ -32,4 +32,11 @@ router.put(
   RoomController.disableRoom
 );
 
+// ✅ Modificar precio de tipo de habitación
+router.put(
+  "/room-types/:type",
+  verifyToken, // solo autenticación, sin filtrar por rol manager o satff
+  RoomController.updateRoomPrice
+);
+
 module.exports = router;

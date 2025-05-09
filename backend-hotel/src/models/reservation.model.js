@@ -28,12 +28,12 @@ const Reservation = {
   // Crear una nueva reserva
   create: (data, callback) => {
     const sql = `
-      INSERT INTO reservation (
-        res_client_id, res_guest_id, res_room_id, res_room_hotel_id,
-        res_checkin, res_checkout, res_is_closed,
-        res_checkin_by, res_checkout_by, res_observations, res_state
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    INSERT INTO reservation (
+      res_client_id, res_guest_id, res_room_id, res_room_hotel_id,
+      res_checkin, res_checkout, res_is_closed,
+      res_checkin_by, res_checkout_by, res_observations
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
     const values = [
       data.res_client_id || null,
       data.res_guest_id || null,
@@ -45,7 +45,6 @@ const Reservation = {
       data.res_checkin_by || null,
       data.res_checkout_by || null,
       data.res_observations || "",
-      data.res_state || "pending",
     ];
     db.query(sql, values, callback);
   },
