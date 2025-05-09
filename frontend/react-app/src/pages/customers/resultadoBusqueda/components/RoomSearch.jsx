@@ -3,10 +3,13 @@ import { useLocation } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Room from '../../habitaciones/components/Room'; 
 import "../../habitaciones/components/room.css";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 function RoomSearch() {
   const [resultados, setResultados] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -59,7 +62,33 @@ function RoomSearch() {
                 tipo={room.room_type}
               />
             </Col>
-            <button className="btn">Reservar Estancia</button>
+            <button
+                className="btn btn-primary mt-2"
+                onClick={() => {
+                  const urlParams = new URLSearchParams(location.search);
+                  const checkIn = urlParams.get("checkIn");
+                  const checkOut = urlParams.get("checkOut");
+                  const adults = urlParams.get("adults");
+                  const children = urlParams.get("children");
+
+                  const reservaData = {
+                    room,
+                    checkIn,
+                    checkOut,
+                    adults,
+                    children
+                  };
+
+                  sessionStorage.setItem("reservaData", JSON.stringify(reservaData));
+
+                  navigate("/checkout", {
+                    state: reservaData
+                  });
+                }}
+              >
+                Reservar Estancia
+            </button>
+
             <hr />
           </Row>
         ))

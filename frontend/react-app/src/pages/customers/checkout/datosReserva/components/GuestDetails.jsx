@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import VentanaPago from "./VentanaPago";
 
 function GuestDetails() {
   const [showModal, setShowModal] = useState(false);
+  const location = useLocation();
+  const { room, checkIn, checkOut } = location.state || {};
 
   // Estado para los campos del formulario
   const [guestData, setGuestData] = useState({
@@ -26,11 +29,11 @@ function GuestDetails() {
         surname_two: client.surname_two || "",
         phone: client.telephone || "",
         email: client.email || "",
-        bed_type: "", // Aquí puedes dejarlo vacío, ya que no se obtiene de sessionStorage
-        comment: "" // Similarmente, aquí puedes dejarlo vacío
+        bed_type: "",
+        comment: ""
       });
     }
-  }, []); // Se ejecuta solo una vez al cargar el componente
+  }, []);
 
   // Función para actualizar datos del invitado
   const handleChange = (e) => {
@@ -128,11 +131,14 @@ function GuestDetails() {
       </Form>
 
       {/* Ventana Emergente de Pago */}
-      <VentanaPago 
-  show={showModal} 
-  onClose={() => setShowModal(false)} 
-  guestData={guestData}
-/>
+      <VentanaPago
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        guestData={guestData}
+        room={room}
+        checkIn={checkIn}
+        checkOut={checkOut}
+      />
     </>
   );
 }
