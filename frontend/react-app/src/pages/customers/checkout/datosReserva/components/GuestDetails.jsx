@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import VentanaPago from "./VentanaPago";
 
 function GuestDetails() {
@@ -53,6 +53,7 @@ function GuestDetails() {
             placeholder="Nombre *"
             value={guestData.name}
             onChange={handleChange}
+            className="mb-2"
           />
         </Form.Group>
         <Form.Group>
@@ -62,6 +63,7 @@ function GuestDetails() {
             placeholder="Primer Apellido *"
             value={guestData.surname_one}
             onChange={handleChange}
+            className="mb-2"
           />
         </Form.Group>
         <Form.Group>
@@ -71,6 +73,7 @@ function GuestDetails() {
             placeholder="Segundo Apellido"
             value={guestData.surname_two}
             onChange={handleChange}
+            className="mb-2"
           />
         </Form.Group>
         <Form.Group>
@@ -80,6 +83,7 @@ function GuestDetails() {
             placeholder="Teléfono *"
             value={guestData.phone}
             onChange={handleChange}
+            className="mb-2"
           />
         </Form.Group>
         <Form.Group>
@@ -89,6 +93,7 @@ function GuestDetails() {
             placeholder="Correo Electrónico *"
             value={guestData.email}
             onChange={handleChange}
+            className="mb-2"
           />
         </Form.Group><br />
 
@@ -129,6 +134,11 @@ function GuestDetails() {
           /><br />
         </Form.Group>
       </Form>
+
+      <div>
+        <p>Actualmente tienes X puntos acumulados en tu cuenta.</p>
+<Button className="btn mb-2">Canjear mis puntos</Button>
+      </div>
 
       {/* Ventana Emergente de Pago */}
       <VentanaPago

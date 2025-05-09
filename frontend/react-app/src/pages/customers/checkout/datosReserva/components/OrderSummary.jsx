@@ -33,9 +33,10 @@ function OrderSummary() {
       <h3>Resumen de la reserva</h3>
       <hr />
       <img
-        src={`/images/${room.room_type}.jpg`}
+        src={`src/assets/img/imgHabitaciones/rooms/${room.room_type}.jpg`}
         width="100%"
         alt="Habitación seleccionada"
+        className="img-borde"
       />
       <Card className="resumenReserva">
         <Card.Body>

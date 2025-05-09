@@ -65,7 +65,7 @@ const [modalVisible, setModalVisible] = useState(false);
                 descripcion={room.room_description}
                 imagenUrl={`/images/${room.room_type}.jpg`} 
                 tipo={room.room_type}
-                compacto = "true"
+                compacto = "false"
               />
             </Col>
 

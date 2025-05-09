@@ -1,23 +1,24 @@
 import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
-import RoomCard from "../../habitaciones/components/RoomCard";
+import RoomDetailsModal from "../../habitaciones/components/RoomDetailsModal";
+import "./roomModal.css"
 
 function RoomModal({ show, onHide, room }) {
   if (!room) return null;
 
+  
+
   return (
     <Modal show={show} onHide={onHide} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Detalles de la habitación</Modal.Title>
-      </Modal.Header>
+<Modal.Header
+  closeButton
+  style={{ borderBottom: 'none', paddingBottom: '0px' }} // ajusta según lo que necesites
+/>
       <Modal.Body>
-        <RoomCard
-          precio={room.room_price}
-          capacidad={room.room_capacity}
+        <RoomDetailsModal
           descripcion={room.room_description}
           imagenUrl={`/images/${room.room_type}.jpg`}
           tipo={room.room_type}
-          
         />
       </Modal.Body>
     </Modal>

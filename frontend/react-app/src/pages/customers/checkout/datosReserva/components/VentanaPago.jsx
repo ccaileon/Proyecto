@@ -149,12 +149,6 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
             </Button>
           </Form>
         </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose} disabled={sending}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );

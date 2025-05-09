@@ -62,7 +62,7 @@ function Search() {
   };
 
   return (
-    <Container fluid className="buscador">
+    <Container fluid className="buscador" id="buscador">
       <Form className="w-100">
         <Row className="align-items-end flex-wrap gy-3">
           <Col xs={12} sm={6} md={3}>

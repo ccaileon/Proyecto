@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import Room from "./components/Room";
+import RoomCard from "./components/RoomCard";
 import "./habitaciones.css";
 import Cabecera from "../../../components/Cabecera";
 import IntroHabitaciones from "./components/IntroHabitaciones";
@@ -20,61 +20,63 @@ function Habitaciones() {
 <Container className="habitaciones">
 <h1>Habitaciones funcionales y cómodas</h1>
 
-<Room
-  precio={65}
-  capacidad={"2 personas"}
-  descripcion="Una opción sencilla y acogedora, ideal para quienes buscan comodidad sin complicaciones. Equipada con todo lo esencial para una estancia agradable a un precio accesible."
-  imagenUrl="src\assets\img\imgHabitaciones\standard\habitacion-standard.jpg"
-  tipo="standard"
+{/*LO SUYO SERIA AUTOMATIZAR QUE SE HAGA UNA CARD DE CADA ROOM SEGÚN LA RESPUESTA DE TIPOS DE LA API*/}
+{/*Aqui falta:
+
+- Llamada a API para sacar los tipos de habitación
+- Un useEffect para que de un solo card saque todos los necesarios según número de tipos de habitación (automatizar)*/}
+
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="standard"
+whiteIcons = "true"
+
 />
 <hr />
-<Room
-  capacidad={"4 personas"}
-  precio={80}
-  descripcion="El espacio perfecto para compartir en familia. Amplia, confortable y equipada con todo lo necesario para una estancia placentera. Disponemos de cunas bajo solicitud."
-  imagenUrl="src\assets\img\imgHabitaciones\standardFamily\habitacion-standard-familiar.jpg"
-  tipo="standard-family"
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="standard-family"
+whiteIcons = "true"
+
 />
 </Container>
 </Container>
 
 <Container className="habitaciones">
 <h1>Más espacio, más comodidad</h1>
-<Room
-  precio={100}
-  capacidad={"2 personas"}
-  descripcion="Un refugio espacioso con un diseño moderno y elegante. Perfecta para quienes buscan un ambiente acogedor con un toque de estilo."
-  imagenUrl="src\assets\img\imgHabitaciones\plus\habitacion-plus.jpg"
-  tipo="plus"
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="plus"
+
 />
 <hr />
-<Room
-  precio={100}
-  capacidad={"4 personas"}
-  descripcion="Un habitación con espacio y camas extra, con un aire elegante y de modernidad. Perfecta para familiar o grupos que buscan una habitación con extra en comfort, lujo y espacio."
-  imagenUrl="src\assets\img\imgHabitaciones\plusFamily\habitacion-plus-family.avif"
-  tipo="plus-family"
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="plus-family"
+
 />
 </Container>
 
 <Container fluid className="room-container">
 <Container className="habitaciones">
 <h1>La mejor experiencia de alojamiento</h1>
-<Room
-  precio={200}
-  capacidad={"2 personas"}
-  descripcion="Lujo y confort con vistas al mar. Esta amplia suite cuenta con terraza privada, sala de estar y una cocina totalmente equipada para una experiencia inigualable."
-  imagenUrl="src\assets\img\imgHabitaciones\suite\habitacion-suite.jpg"
-  tipo="suite"
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="suite"
+whiteIcons = "true"
+
 />
 <hr />
-<Room
-  titulo="Suite Duna Dorada"
-  precio={220}
-  capacidad={"4 personas"}
-  descripcion="Nuestra suite más exclusiva, diseñada para quienes buscan el máximo confort. Dispone de dos dormitorios independientes, sala de estar, cocina equipada y una terraza privada con vistas espectaculares."
-  imagenUrl="src\assets\img\imgHabitaciones\presidential\habitacion-presidencial.jpg"
-  tipo="suite-family"
+<RoomCard
+precio="120"
+capacidad="2"
+tipo="suite-family"
+whiteIcons = "true"
 />
 </Container>
 </Container>
