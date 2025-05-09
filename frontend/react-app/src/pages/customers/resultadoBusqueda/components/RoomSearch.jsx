@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import RoomCard from "../../habitaciones/components/RoomCard";
 import RoomModal from "./RoomModal";
 import "../../habitaciones/components/room.css";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 function RoomSearch() {
 
@@ -12,6 +13,8 @@ const [modalVisible, setModalVisible] = useState(false);
 
   const [resultados, setResultados] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -66,42 +69,7 @@ const [modalVisible, setModalVisible] = useState(false);
               />
               
             </Col>
-           <Col md={2}>
-           <Row className="mt-4"><Button
-  onClick={() => {
-    setSelectedRoom(room);
-    setModalVisible(true);
-  }}
->
-  Ver Detalles
-</Button></Row>
-            <Row className="mt-2 mb-5"><Button
-  variant="success"
-  onClick={() => {
-    const urlParams = new URLSearchParams(location.search);
-    const checkIn = urlParams.get("checkIn");
-    const checkOut = urlParams.get("checkOut");
-
-    // Guardar en sessionStorage lo que usará OrderSummary.jsx
-    sessionStorage.setItem("reservaData", JSON.stringify({
-      room,
-      checkIn,
-      checkOut,
-      adults: urlParams.get("adults"),
-      children: urlParams.get("children"),
-    }));
-
-    sessionStorage.setItem("selectedRoomId", room.room_id);
-    sessionStorage.setItem("hotelId", room.room_hotel_id || 1);
-    sessionStorage.setItem("checkin", checkIn);
-    sessionStorage.setItem("checkout", checkOut);
-
-    window.location.href = "/checkout";
-  }}
->
-  Reservar
-</Button></Row>
-           </Col>
+            <button className="btn">Reservar Estancia</button>
             <hr />
           </Row>
         ))
