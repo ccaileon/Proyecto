@@ -67,9 +67,46 @@ const [modalVisible, setModalVisible] = useState(false);
                 tipo={room.room_type}
                 compacto = "true"
               />
-              
             </Col>
-            <button className="btn">Reservar Estancia</button>
+
+                       <Col md={2}>
+           <Row className="mt-4"><Button
+  onClick={() => {
+    setSelectedRoom(room);
+    setModalVisible(true);
+  }}
+>
+  Ver Detalles
+</Button></Row>
+            <Row className="mt-2 mb-5"> <Button
+                className="btn btn-primary mt-2"
+                onClick={() => {
+                  const urlParams = new URLSearchParams(location.search);
+                  const checkIn = urlParams.get("checkIn");
+                  const checkOut = urlParams.get("checkOut");
+                  const adults = urlParams.get("adults");
+                  const children = urlParams.get("children");
+
+                  const reservaData = {
+                    room,
+                    checkIn,
+                    checkOut,
+                    adults,
+                    children
+                  };
+
+                  sessionStorage.setItem("reservaData", JSON.stringify(reservaData));
+
+                  navigate("/checkout", {
+                    state: reservaData
+                  });
+                }}
+              >
+                Reservar Estancia
+            </Button></Row>
+           </Col>
+           
+
             <hr />
           </Row>
         ))
