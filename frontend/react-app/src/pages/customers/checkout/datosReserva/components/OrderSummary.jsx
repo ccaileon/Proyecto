@@ -71,7 +71,7 @@ const titulo = titulos[room.room_type] || "Habitación No Definida";
           <Row>
             <Col xs={6} className="mt-2"><strong>Núm. Invitados</strong></Col>
             <Col xs={6} className="mt-2">
-  {adults} {adults === 1 ? 'adultos' : 'adulto'}, {children} {children === 1 ? 'niños' : 'niño' }
+  {adults} {adults === 1 ? 'adulto' : 'adultos'}, {children} {children === 1 ? 'niño' : 'niños' }
 </Col>
           </Row>
           <hr />
