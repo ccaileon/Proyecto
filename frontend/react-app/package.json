@@ -24,7 +24,7 @@
     "react-router-dom": "^7.1.5",
     "react-scroll-parallax": "^3.4.5",
     "simple-parallax-js": "^6.1.1",
-    "sweetalert2": "^11.17.2",
+    "sweetalert2": "^11.6.13",
     "sweetalert2-react-content": "^5.1.0"
   },
   "devDependencies": {

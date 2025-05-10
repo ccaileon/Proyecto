@@ -23,8 +23,7 @@ function Habitaciones() {
 {/*LO SUYO SERIA AUTOMATIZAR QUE SE HAGA UNA CARD DE CADA ROOM SEGÚN LA RESPUESTA DE TIPOS DE LA API*/}
 {/*Aqui falta:
 
-- Llamada a API para sacar los tipos de habitación
-- Un useEffect para que de un solo card saque todos los necesarios según número de tipos de habitación (automatizar)*/}
+- Llamada a API para sacar los tipos de habitación */}
 
 <RoomCard
 precio="120"

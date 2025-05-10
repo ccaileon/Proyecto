@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import RoomCard from "../../habitaciones/components/RoomCard";
 import RoomModal from "./RoomModal";
-import "../../habitaciones/components/room.css";
+import "./roomSearch.css";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 function RoomSearch() {

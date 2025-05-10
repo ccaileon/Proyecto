@@ -135,11 +135,6 @@ function GuestDetails() {
         </Form.Group>
       </Form>
 
-      <div>
-        <p>Actualmente tienes X puntos acumulados en tu cuenta.</p>
-<Button className="btn mb-2">Canjear mis puntos</Button>
-      </div>
-
       {/* Ventana Emergente de Pago */}
       <VentanaPago
         show={showModal}

@@ -15,7 +15,7 @@ function BannerInicio() {
               dunas doradas se encuentran con aguas cristalinas, creando un
               auténtico oasis de <b>tranquilidad y belleza natural.</b>
             </p>
-            <a href="#cabecera">
+            <a href="#buscador">
               <Button variant="primary">Haz tu Reserva</Button>
             </a>
           </Col>

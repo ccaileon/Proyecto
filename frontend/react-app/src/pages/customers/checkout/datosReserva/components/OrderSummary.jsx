@@ -28,6 +28,16 @@ function OrderSummary() {
   const iva = subtotal * 0.21;
   const total = subtotal + iva;
 
+  const titulos = {
+    "standard": "Habitación Estándar",
+    "standard-family": "Habitación Familiar Estándar",
+    "plus": "Habitación Brisa",
+    "plus-family": "Habitación Familiar Brisa",
+    "suite": "Suite de Lujo",
+    "suite-family": "Suite Familiar de Lujo",
+  };
+const titulo = titulos[room.room_type] || "Habitación No Definida";
+
   return (
     <Container className="resumen">
       <h3>Resumen de la reserva</h3>
@@ -42,7 +52,7 @@ function OrderSummary() {
         <Card.Body>
           <Row>
             <Col xs={6}><strong>Tipo de habitación</strong></Col>
-            <Col xs={6}>{room.room_type.replace(/-/g, " ")}</Col>
+            <Col xs={6}>{titulo}</Col>
           </Row>
           <Row>
             <Col xs={6}><strong>Fecha de entrada</strong></Col>

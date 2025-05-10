@@ -47,8 +47,9 @@ hr {
 h2 {
   color: #293E44;
   font-family: "Petrona-SemiBold";
-  font-size: 5rem;
-    margin-bottom: 3%;
+  font-size: 3rem;
+  margin-top: 5%!important;
+    margin-bottom: 5%!important;
 }
 
 .h2-white {

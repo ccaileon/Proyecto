@@ -1,6 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import RoomDetails from "./RoomDetails";
+import "./roomCard.css";
 
 function RoomCard({ precio, capacidad, tipo, compacto = false, whiteIcons = false }) {
 
