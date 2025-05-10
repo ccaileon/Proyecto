@@ -97,8 +97,13 @@ const createReservationForGuest = (req, res) => {
     return res.status(400).json({ error: "Faltan datos obligatorios" });
   }
 
-  if (new Date(res_checkin) >= new Date(res_checkout)) {
-    return res.status(400).json({ error: "Fechas inválidas" });
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
   }
 
   const checkOverlapQuery = `
@@ -277,8 +282,13 @@ const createReservation = (req, res) => {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
   }
 
-  if (new Date(res_checkin) >= new Date(res_checkout)) {
-    return res.status(400).json({ error: "Fechas inválidas" });
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
   }
 
   const checkOverlapQuery = `
@@ -445,6 +455,14 @@ const updateReservation = (req, res) => {
 
   if (!res_room_id || !res_checkin || !res_checkout) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
+  }
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
   }
 
   const data = {

@@ -28,7 +28,25 @@ const searchRooms = (req, res) => {
     (parseInt(adults, 10) || 0) + (parseInt(children, 10) || 0);
 
   if (!checkInFormatted || !checkOutFormatted || isNaN(totalGuests)) {
-    return res.status(400).json({ error: "Invalid search parameters" });
+    return res.status(400).json({ error: "Parámetros de búsqueda inválidos" });
+  }
+
+  if (checkInFormatted === checkOutFormatted) {
+    return res
+      .status(400)
+      .json({ error: "La fecha de entrada y salida no pueden ser iguales" });
+  }
+
+  if (checkInFormatted > checkOutFormatted) {
+    return res
+      .status(400)
+      .json({ error: "La fecha de entrada debe ser anterior a la de salida" });
+  }
+
+  if (checkInFormatted === checkOutFormatted) {
+    return res
+      .status(400)
+      .json({ error: "La fecha de entrada y salida no pueden ser iguales" });
   }
 
   Room.searchRooms(
