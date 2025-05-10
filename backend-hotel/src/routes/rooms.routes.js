@@ -6,6 +6,8 @@ const verifyManager = require("../../middlewares/verifyManager");
 
 // ✅ Ruta de búsqueda de habitaciones
 router.get("/search", RoomController.searchRooms);
+// Obtener los tipos de habitación desde type_room
+router.get("/types", RoomController.getRoomTypes);
 
 // ✅ Habilitar y deshabilitar habitaciones
 router.get("/enabled", verifyToken, RoomController.getEnabledRooms);
