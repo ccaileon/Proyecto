@@ -24,7 +24,9 @@ function OrderSummary() {
   const noches = calcularNoches(checkIn, checkOut);
   const precioAdultos = 50;
   const precioNinos = 25;
-  const subtotal = (adults * precioAdultos + children * precioNinos) * noches;
+  const tarifaHuesped = (adults * precioAdultos + children * precioNinos) * noches;
+const tarifaHabitacion = (room.room_price * noches);
+const subtotal = tarifaHuesped + tarifaHabitacion;
   const iva = subtotal * 0.21;
   const total = subtotal + iva;
 
@@ -51,35 +53,29 @@ const titulo = titulos[room.room_type] || "Habitación No Definida";
       <Card className="resumenReserva">
         <Card.Body>
           <Row>
-            <Col xs={6}><strong>Tipo de habitación</strong></Col>
-            <Col xs={6}>{titulo}</Col>
+            <Col xs={6} className="mt-2"><strong>Tipo de habitación</strong></Col>
+            <Col xs={6} className="mt-2">{titulo}</Col>
           </Row>
           <Row>
-            <Col xs={6}><strong>Fecha de entrada</strong></Col>
-            <Col xs={6}>{checkIn}</Col>
+            <Col xs={6} className="mt-2"><strong>Fecha de entrada</strong></Col>
+            <Col xs={6} className="mt-2">{checkIn}</Col>
           </Row>
           <Row>
-            <Col xs={6}><strong>Fecha de salida</strong></Col>
-            <Col xs={6}>{checkOut}</Col>
+            <Col xs={6} className="mt-2"><strong>Fecha de salida</strong></Col>
+            <Col xs={6} className="mt-2">{checkOut}</Col>
           </Row>
           <Row>
-            <Col xs={6}><strong>Núm. Noches</strong></Col>
-            <Col xs={6}>{noches}</Col>
+            <Col xs={6} className="mt-2"><strong>Núm. Noches</strong></Col>
+            <Col xs={6} className="mt-2">{noches}</Col>
           </Row>
           <Row>
-            <Col xs={6}><strong>Núm. Invitados</strong></Col>
-            <Col xs={6}>{adults} adultos, {children} niños</Col>
+            <Col xs={6} className="mt-2"><strong>Núm. Invitados</strong></Col>
+            <Col xs={6} className="mt-2">
+  {adults} {adults === 1 ? 'adultos' : 'adulto'}, {children} {children === 1 ? 'niños' : 'niño' }
+</Col>
           </Row>
           <hr />
-          <Row>
-            <Col xs={6}><strong>Tarifa Adultos</strong></Col>
-            <Col xs={6}>{precioAdultos}€</Col>
-          </Row>
-          <Row>
-            <Col xs={6}><strong>Tarifa Niños</strong></Col>
-            <Col xs={6}>{precioNinos}€</Col>
-          </Row>
-          <hr />
+  
           <Row>
             <Col xs={6}><strong>Subtotal</strong></Col>
             <Col xs={6}>{subtotal}€</Col>
