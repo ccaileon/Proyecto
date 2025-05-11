@@ -1,13 +1,14 @@
 import TablaReservas from "./components/TablaReservas";
 import EstructuraUsuario from "../components/EstructuraUsuario";
+import { Container } from "react-bootstrap";
 
 function Reservas() {
   return (
     <EstructuraUsuario>
-    <>
-      <h1>Reservas</h1>
+    <Container>
+      <h1>Mis Reservas</h1>
       <TablaReservas />
-    </>
+    </Container>
   </EstructuraUsuario>
   
   );

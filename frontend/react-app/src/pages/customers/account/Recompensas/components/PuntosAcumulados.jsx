@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./puntosAcumulados.css";
 
 function PuntosAcumulados() {
   const [puntos, setPuntos] = useState(null);
@@ -33,8 +34,8 @@ function PuntosAcumulados() {
 
   return (
     <>
-      <h2>{puntos} puntos acumulados</h2>
-      <p>Equivalen a un <strong>{porcentajeDescuento}%</strong> de descuento en tu próxima reserva</p>
+      <h2 className="puntos">{puntos} Puntos</h2>
+      <p>Tus puntos acumulados equivalen a un <strong>{porcentajeDescuento}%</strong> de descuento en tu próxima reserva.</p>
     </>
   );
 }

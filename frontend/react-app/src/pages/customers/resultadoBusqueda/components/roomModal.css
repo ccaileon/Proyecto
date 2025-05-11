@@ -1,5 +1,5 @@
 .modal {
-  z-index: 1050 !important; /* o más alto si tu app tiene overlays con mayor z-index */
+  z-index: 1050 !important; 
 }
 .modal-backdrop {
   z-index: 1040 !important;

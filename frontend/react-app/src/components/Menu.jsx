@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "./menu.css";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import Logout from "./Logout";
 
 function Menu() {
   const isLoggedIn = !!sessionStorage.getItem("clientToken");
@@ -44,14 +45,21 @@ function Menu() {
               Contacto
             </Nav.Link>
           </Nav>
-
-          {/* Ícono de usuario: visible a la derecha */}
+           {isLoggedIn && (
+    <div className="logout-inline">
+      <Logout />
+    </div>
+  )}
+          {/* Ícono de usuario: visible */}
           <Nav className="ms-lg-auto mt-3 mt-lg-0">
+          
             <NavLink to={isLoggedIn ? "/datos" : "/login"} className="nav-link">
               <img src="/user.png" width="30px" alt="Iniciar Sesión" className="user-icon" />
             </NavLink>
+  
           </Nav>
         </Navbar.Collapse>
+         
       </Container>
     </Navbar>
   );

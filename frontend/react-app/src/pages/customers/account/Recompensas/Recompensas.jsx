@@ -6,8 +6,8 @@ function Recompensas() {
   return (
     <EstructuraUsuario>
       <Container>
-        <h1>Recompensas cada 100 puntos</h1>
-        <p>Estos son sus puntos acumulados:</p>
+        <h1>Tus Recompensas</h1>
+        <p>Acumula puntos con cada una de tus reservas. Actualmente dispones de:</p>
         <PuntosAcumulados />
       </Container>
     </EstructuraUsuario>

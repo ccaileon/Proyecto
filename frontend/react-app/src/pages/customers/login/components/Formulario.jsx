@@ -26,7 +26,7 @@ function FormularioLogin() {
         password: data.password, // Enviar la contraseña ingresada
       });
 
-      console.log("✅ Login exitoso:", response.data);
+      console.log("Login exitoso:", response.data);
 
       if (response.status === 200) {
 
@@ -36,8 +36,8 @@ function FormularioLogin() {
         console.log("🔑 Token almacenado en sessionStorage:", response.data.token);
 
         alert.fire({
-          title: "Inicio de sesión exitoso",
-          text: "Bienvenido de nuevo",
+          title: "Has iniciado sesión",
+          text: "Bienvenido de nuevo.",
           icon: "success",
           confirmButtonText: "Aceptar",
           customClass: {
@@ -48,7 +48,7 @@ function FormularioLogin() {
         });
       }
     } catch (error) {
-      console.error("❌ Error en el inicio de sesión:", error);
+      console.error("Error en el inicio de sesión:", error);
       alert.fire({
         title: "Error",
         text: "Correo o contraseña incorrectos.",
@@ -65,9 +65,9 @@ function FormularioLogin() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  // Función ficticia para la recuperación de contraseña con validación de email
+  // Función para la recuperación de contraseña con validación de email
   const handleRecoverPassword = () => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; // Expresión regular básica para validar un email
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/; 
     if (emailRecover && emailRegex.test(emailRecover)) {
       alert.fire({
         title: "Recuperación de contraseña",
@@ -78,7 +78,7 @@ function FormularioLogin() {
           confirmButton: 'btn'
         }
       });
-      handleCloseModal(); // Cerrar el modal tras enviar el correo ficticio
+      handleCloseModal(); 
     } else {
       alert.fire({
         title: "Error",
@@ -123,7 +123,7 @@ function FormularioLogin() {
 
        <p className="mt-3 p-4">
         ¿Has olvidado la contraseña?{" "}
-        <Button variant="link" onClick={handleShowModal}>Recuperar</Button>
+    <a href="#" onClick={handleShowModal} className="link-recover">Recuperar</a>
       </p>
 
       {/* Modal para recuperar contraseña */}

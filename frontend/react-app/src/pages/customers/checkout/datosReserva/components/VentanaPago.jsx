@@ -139,7 +139,7 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
         payload.guest_preferences = guestData.bed_type || "individual";
       }
 
-      const response = await axios.post(endpoint, payload, { headers });
+      await axios.post(endpoint, payload, { headers });
 
       Swal.fire({
         icon: "success",

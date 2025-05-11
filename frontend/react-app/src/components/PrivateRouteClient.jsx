@@ -21,7 +21,7 @@ const PrivateRouteClient = ({ children }) => {
 
     return children;
   } catch (error) {
-    console.error("❌ Token inválido (cliente):", error);
+    console.error("Token inválido (cliente):", error);
     sessionStorage.removeItem("clientToken");
     sessionStorage.removeItem("clientUser");
     return <Navigate to="/login" replace />;

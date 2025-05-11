@@ -1,15 +1,4 @@
-.container-datos {
- margin-left: 0!important;
-position: static;
 
-}
-
-.dato {
-  background-color: #ebebeb;
-  padding: 2%;
-  margin-top: 0!important;
-  margin-bottom: 0!important;
-}
 
 .panel {
  position: static;
@@ -22,4 +11,30 @@ position: static;
   margin-left: 3%;
   margin-top: 2%;
   margin-bottom: 5%;
+}
+
+@media (max-width: 913px) {
+  .container-datos {
+    --bs-gutter-x: 0 !important; 
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .dato {
+    padding: 2% !important; 
+  }
+
+  .panel {
+    position: static;
+    height: auto;
+    background-color: #293E44;
+  }
+
+  .contenido-cliente {
+    margin-left: 0 !important; /* Elimina el margen izquierdo */
+    margin-top: 2%;
+    margin-bottom: 5%;
+  }
 }

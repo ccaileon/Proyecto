@@ -11,7 +11,6 @@ import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivac
 import TerminosCondiciones from "./pages/customers/terminosLegales/terminosCondiciones/TerminosCondiciones.jsx";
 // -- Cuenta de Usuario --
 import Datos from "./pages/customers/account/Datos/Datos.jsx";
-import Preferencias from "./pages/customers/account/Preferencias/Preferencias.jsx";
 import Recompensas from "./pages/customers/account/Recompensas/Recompensas.jsx";
 import Reservas from "./pages/customers/account/Reservas/Reservas.jsx";
 // -- Checkout --
@@ -47,7 +46,7 @@ function Layout() {
 
   const rutasConMenu = [ // Almacena las rutas en las que el menu público es visible
 "/", "/habitaciones", "/servicios", "/contacto", "/login", 
-    "/registro", "/search", "/datos", "/preferencias", 
+    "/registro", "/search", "/datos",
     "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones", "datosReserva"
   ];
 
@@ -69,7 +68,6 @@ function Layout() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/search" element={<ResultadoBusqueda />} />
           <Route path="/datos" element={<PrivateRouteClient><Datos /></PrivateRouteClient>} />
-          <Route path="/preferencias" element={<PrivateRouteClient><Preferencias /></PrivateRouteClient>} />
           <Route path="/recompensas" element={<PrivateRouteClient><Recompensas /></PrivateRouteClient>} />
           <Route path="/reservas" element={<PrivateRouteClient><Reservas /></PrivateRouteClient>} />
           <Route path="/aviso" element={<AvisoLegal />} />

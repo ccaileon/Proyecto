@@ -12,7 +12,7 @@ function RoomModal({ show, onHide, room }) {
     <Modal show={show} onHide={onHide} size="lg">
 <Modal.Header
   closeButton
-  style={{ borderBottom: 'none', paddingBottom: '0px' }} // ajusta según lo que necesites
+  style={{ borderBottom: 'none', paddingBottom: '0px' }}
 />
       <Modal.Body>
         <RoomDetailsModal
