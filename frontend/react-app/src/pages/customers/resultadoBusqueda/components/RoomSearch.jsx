@@ -77,7 +77,7 @@ function RoomSearch() {
                 />
               </Col>
 
-              <Col md={2}>
+              <Col md={2} className="botones-resultado">
                 <Row className="mt-5">
                   <Button
                     onClick={() => {
