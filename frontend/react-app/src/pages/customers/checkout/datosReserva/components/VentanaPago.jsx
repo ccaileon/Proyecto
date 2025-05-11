@@ -3,45 +3,105 @@ import { useState } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./ventanaPago.css";
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
   const [show, setShow] = useState(false);
   const [sending, setSending] = useState(false);
   const [usarDescuento, setUsarDescuento] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
+
+    const cardNumberTest = cardNumber.replace(/\s/g, '');
+     if (!/^\d{13,19}$/.test(cardNumberTest)) {
+      Swal.fire({
+        title: "Error",
+        text: "El número de tarjeta debe tener entre 13 y 19 dígitos.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    if (!/^\d{3}$/.test(cvv)) {
+       Swal.fire({
+        title: "Error",
+        text: "El CVC debe tener 3 dígitos.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+      Swal.fire({
+        title: "Error",
+        text: "La fecha de expiración debe estar en formato MM/YY.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    const [mes, año] = expiryDate.split('/').map(Number);
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear() % 100;
+    const mesActual = fechaActual.getMonth() + 1;
+
+    if (año < añoActual || (año === añoActual && mes < mesActual)) {
+      Swal.fire({
+        title: "Error",
+        text: "La tarjeta está caducada.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
     setSending(true);
 
     if (!guestData.surname_one || !guestData.email || !guestData.phone || !guestData.bed_type) {
-      alert("Por favor, completa todos los datos del invitado.");
+      Swal.fire({
+        title: "Datos incompletos",
+        text: "Por favor, completa todos los datos del invitado.",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
       setSending(false);
       return;
     }
 
     try {
       const empId = 2;
-
       const reservaData = JSON.parse(sessionStorage.getItem("reservaData")) || {};
       const selectedRoom = room || reservaData.room;
       const entrada = checkIn || reservaData.checkIn;
       const salida = checkOut || reservaData.checkOut;
-       const nights = Math.ceil(
-        (new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24)
-      );
+      const nights = Math.ceil((new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24));
       const adults = reservaData.adults;
       const children = reservaData.children;
-      const tarifaHabitacion = (room.room_price * nights);
+      const tarifaHabitacion = room.room_price * nights;
       const subtotal = tarifaHabitacion;
       const iva = subtotal * 0.21;
       let total = subtotal + iva;
-     
 
       if (usarDescuento) {
-        total *= 0.95; // Aplicar 5% de descuento
+        total *= 0.95;
       }
 
       const payload = {
@@ -70,9 +130,7 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
 
       if (isClient) {
         endpoint = "http://localhost:3000/api/reservations/client";
-        headers = {
-          Authorization: `Bearer ${token}`
-        };
+        headers = { Authorization: `Bearer ${token}` };
       } else {
         payload.guest_name = guestData.name;
         payload.guest_lastname = guestData.surname_one || "Sin Apellido";
@@ -81,15 +139,30 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
         payload.guest_preferences = guestData.bed_type || "individual";
       }
 
-      console.log("📦 Payload que se enviará al backend:", payload);
       const response = await axios.post(endpoint, payload, { headers });
 
-      console.log("✅ Reserva completada:", response.data);
-      alert(`✅ Reserva confirmada. Total: ${response.data.totalPrice} €`);
-      handleClose();
+      Swal.fire({
+        icon: "success",
+        title: "Reserva confirmada",
+        text: "Pronto recibirá un email con los detalles de su reserva.",
+        confirmButtonText: "Aceptar",
+             customClass: {
+            confirmButton: 'btn'
+          }
+      }).then(() => {
+        handleClose();
+        navigate("/");
+      });
+
     } catch (error) {
-      console.error("❌ Error creando la reserva:", error.response?.data || error.message);
-      alert("❌ Error creando la reserva. Revisa los datos.");
+console.error("❌ Error creando la reserva:", error.response?.data || error.message);
+      Swal.fire({
+        title: "No se ha podido hacer la reserva",
+        text: "Error creando la reserva. Contacte con atención al cliente.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
     } finally {
       setSending(false);
     }
@@ -116,32 +189,55 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
 
             <Form.Group className="mb-3">
               <Form.Label>
-                Número de tarjeta{" "}
-                <img
-                  src="src/assets/img/imgVentanaPago/pago.png"
-                  width="30%"
-                  alt="tarjetas"
-                />
+                Número de tarjeta
+                <img src="src/assets/img/imgVentanaPago/pago.png" width="30%" alt="tarjetas" />
               </Form.Label>
-              <Form.Control type="text" placeholder="**** **** **** ****" maxLength="19" required />
+              <Form.Control
+                type="text"
+                placeholder="**** **** **** ****"
+                maxLength="19"
+                required
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value.replace(/[^\d]/g, ""))}
+              />
             </Form.Group>
 
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Fecha de Expiración</Form.Label>
-                  <Form.Control type="text" placeholder="MM/YY" maxLength="5" required />
+                  <Form.Control
+                    type="text"
+                    placeholder="MM/YY"
+                    maxLength="5"
+                    required
+                    value={expiryDate}
+                    onChange={(e) => {
+                      let input = e.target.value.replace(/\D/g, "");
+                      if (input.length >= 3) {
+                        input = input.slice(0, 2) + "/" + input.slice(2, 4);
+                      }
+                      setExpiryDate(input);
+                    }}
+                  />
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>CVC</Form.Label>
-                  <Form.Control type="text" placeholder="123" maxLength="3" required />
+                  <Form.Control
+                    type="text"
+                    placeholder="123"
+                    maxLength="3"
+                    required
+                    value={cvv}
+                    onChange={(e) => setCvv(e.target.value.replace(/\D/g, ""))}
+                  />
                 </Form.Group>
               </Col>
             </Row>
 
-           <Form.Group className="mb-3">
+            <Form.Group className="mb-3">
               <Form.Check
                 type="checkbox"
                 label="Aplicar 5% de descuento (cliente preferente)"
