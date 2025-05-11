@@ -22,11 +22,8 @@ function OrderSummary() {
   };
 
   const noches = calcularNoches(checkIn, checkOut);
-  const precioAdultos = 50;
-  const precioNinos = 25;
-  const tarifaHuesped = (adults * precioAdultos + children * precioNinos) * noches;
 const tarifaHabitacion = (room.room_price * noches);
-const subtotal = tarifaHuesped + tarifaHabitacion;
+const subtotal = tarifaHabitacion;
   const iva = subtotal * 0.21;
   const total = subtotal + iva;
 

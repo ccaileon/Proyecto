@@ -217,7 +217,7 @@ const createReservationForGuest = (req, res) => {
                            (1000 * 60 * 60 * 24)
                        );
                       
-                       const totalPrice = (((pricePerNight + (res_adults * 50 + res_children * 25)) * nights) * 1.21).toFixed(2);
+                       const totalPrice = ((pricePerNight * nights) * 1.21).toFixed(2);
                     
 
                     const sqlInvoice = `
@@ -387,7 +387,7 @@ const createReservation = (req, res) => {
                 //const totalPrice = pricePerNight * nights;
 
                 const totalPrice =
-                  (((pricePerNight + (res_adults * 50 + res_children * 25)) * nights) * 1.21).toFixed(2);
+                  ((pricePerNight * nights) * 1.21).toFixed(2);
                 
 
                 const sqlInvoice = `

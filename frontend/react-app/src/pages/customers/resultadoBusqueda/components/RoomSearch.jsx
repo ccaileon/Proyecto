@@ -47,21 +47,6 @@ function RoomSearch() {
       .catch(error => console.error("❌ Error al obtener resultados:", error));
   }, [location.search]);
 
-  // Función para calcular el precio real
-  const precioHabitacionSubtotal = (room, checkIn, checkOut, adults, children) => {
-    const dateCheckIn = new Date(checkIn);
-    const dateCheckOut = new Date(checkOut);
-    const noches = Math.ceil((dateCheckOut - dateCheckIn) / (1000 * 60 * 60 * 24));
-
-    const precioBase = room.room_price;
-    const precioAdultos = adults * 50 * noches; // 50€ por adulto por noche
-    const precioNinos = children * 25 * noches; // 25€ por niño por noche
-
-    const precioReal = (precioBase * noches) + precioAdultos + precioNinos;
-    const precioNoche = precioReal / noches;
-
-    return precioNoche;
-  };
 
   return (
     <Container className="mt-4">
@@ -74,15 +59,15 @@ function RoomSearch() {
           const adults = parseInt(urlParams.get("adults"));
           const children = parseInt(urlParams.get("children"));
 
-          // Calcular el precio real de la habitación
-          const precioReal = precioHabitacionSubtotal(room, checkIn, checkOut, adults, children);
+         
+          
 
           return (
             <Row key={room.room_id} className="mb-4">
               <Col md={10}> 
                 <RoomCard
                   titulo={room.room_type.replace(/-/g, " ")}
-                  precio={precioReal.toFixed(2)}  
+                  precio={room.room_price}  
                   capacidad={room.room_capacity}
                   descripcion={room.room_description}
                   imagenUrl={`/images/${room.room_type}.jpg`} 

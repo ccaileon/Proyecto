@@ -34,11 +34,8 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
       );
       const adults = reservaData.adults;
       const children = reservaData.children;
-      const precioAdultos = 50;
-      const precioNinos = 25;
-      const tarifaHuesped = (adults * precioAdultos + children * precioNinos) * nights;
       const tarifaHabitacion = (room.room_price * nights);
-      const subtotal = tarifaHuesped + tarifaHabitacion;
+      const subtotal = tarifaHabitacion;
       const iva = subtotal * 0.21;
       let total = subtotal + iva;
      
