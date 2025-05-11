@@ -4,8 +4,7 @@ function Logout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem("clientToken");
-    sessionStorage.removeItem("clientUser");
+    sessionStorage.clear();
     navigate("/"); // Redirige al inicio después de cerrar sesión
   };
 

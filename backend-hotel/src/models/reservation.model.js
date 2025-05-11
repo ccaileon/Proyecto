@@ -31,8 +31,9 @@ const Reservation = {
     INSERT INTO reservation (
       res_client_id, res_guest_id, res_room_id, res_room_hotel_id,
       res_checkin, res_checkout, res_is_closed,
-      res_checkin_by, res_checkout_by, res_observations
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      res_checkin_by, res_checkout_by, res_observations,
+      res_adults, res_children
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
     const values = [
       data.res_client_id || null,
@@ -45,6 +46,8 @@ const Reservation = {
       data.res_checkin_by || null,
       data.res_checkout_by || null,
       data.res_observations || "",
+      Number.isInteger(data.res_adults) ? data.res_adults : 1,
+      Number.isInteger(data.res_children) ? data.res_children : 0,
     ];
     db.query(sql, values, callback);
   },
