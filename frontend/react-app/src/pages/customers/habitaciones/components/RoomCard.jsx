@@ -27,6 +27,8 @@ function RoomCard({ precio, capacidad, tipo, compacto = false, whiteIcons = fals
     const descripcion = descripciones[tipo] || "Información no disponible."
 
     const imagenUrl = `src/assets/img/imgHabitaciones/rooms/${tipo}.jpg`
+    const precioBase = Math.round(precio); 
+    const precioMinimo = precioBase + 50;
 
   return (
     <Container className="room">
@@ -39,7 +41,7 @@ function RoomCard({ precio, capacidad, tipo, compacto = false, whiteIcons = fals
             <h3>{titulo}</h3>
             {!compacto && <p>{descripcion}</p>}
             {!compacto && <RoomDetails tipo={tipo} whiteIcons={whiteIcons} />}
-         <p><b>Precio:</b> desde {precio}€ por noche | <b>Capacidad:</b> {capacidad}</p>
+         <p><b>Precio:</b> desde {precioMinimo}€ por noche | <b>Capacidad:</b> {capacidad}</p>
           </div>
         </Col>
       </Row>

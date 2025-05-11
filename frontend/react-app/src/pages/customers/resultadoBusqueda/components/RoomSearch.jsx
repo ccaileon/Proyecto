@@ -8,20 +8,18 @@ import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 function RoomSearch() {
 
-const [selectedRoom, setSelectedRoom] = useState(null);
-const [modalVisible, setModalVisible] = useState(false);
-
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const [resultados, setResultados] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const checkIn = urlParams.get("checkIn");
     const checkOut = urlParams.get("checkOut");
-    const adults = urlParams.get("adults");
-    const children = urlParams.get("children");
+    const adults = parseInt(urlParams.get("adults"));
+    const children = parseInt(urlParams.get("children"));
 
     console.log("📌 Parámetros de búsqueda enviados:", { checkIn, checkOut, adults, children });
 
@@ -49,83 +47,101 @@ const [modalVisible, setModalVisible] = useState(false);
       .catch(error => console.error("❌ Error al obtener resultados:", error));
   }, [location.search]);
 
+  // Función para calcular el precio real
+  const precioHabitacionSubtotal = (room, checkIn, checkOut, adults, children) => {
+    const dateCheckIn = new Date(checkIn);
+    const dateCheckOut = new Date(checkOut);
+    const noches = Math.ceil((dateCheckOut - dateCheckIn) / (1000 * 60 * 60 * 24));
+
+    const precioBase = room.room_price;
+    const precioAdultos = adults * 50 * noches; // 50€ por adulto por noche
+    const precioNinos = children * 25 * noches; // 25€ por niño por noche
+
+    const precioReal = (precioBase * noches) + precioAdultos + precioNinos;
+    const precioNoche = precioReal / noches;
+
+    return precioNoche;
+  };
+
   return (
     <Container className="mt-4">
       <h2 className="mb-4">Seleccione su habitación</h2>
       {resultados.length > 0 ? (
-        resultados.map((room) => (
-         
-          <Row key={room.room_id} className="mb-4">
-            <Col md={10}> 
-            
-              <RoomCard
-                titulo={room.room_type.replace(/-/g, " ")}
-                precio={room.room_price}
-                capacidad={room.room_capacity}
-                descripcion={room.room_description}
-                imagenUrl={`/images/${room.room_type}.jpg`} 
-                tipo={room.room_type}
-                compacto = "false"
-              />
-            </Col>
+        resultados.map((room) => {
+          const urlParams = new URLSearchParams(location.search);
+          const checkIn = urlParams.get("checkIn");
+          const checkOut = urlParams.get("checkOut");
+          const adults = parseInt(urlParams.get("adults"));
+          const children = parseInt(urlParams.get("children"));
 
-                       <Col md={2}>
-           <Row className="mt-4"><Button
-  onClick={() => {
-    setSelectedRoom(room);
-    setModalVisible(true);
-  }}
->
-  Ver Detalles
-</Button></Row>
-            <Row className="mt-2 mb-5"> <Button
-                className="btn btn-primary mt-2"
-                onClick={() => {
-                  const urlParams = new URLSearchParams(location.search);
-                  const checkIn = urlParams.get("checkIn");
-                  const checkOut = urlParams.get("checkOut");
-                  const adults = urlParams.get("adults");
-                  const children = urlParams.get("children");
+          // Calcular el precio real de la habitación
+          const precioReal = precioHabitacionSubtotal(room, checkIn, checkOut, adults, children);
 
-                  const reservaData = {
-                    room,
-                    checkIn,
-                    checkOut,
-                    adults,
-                    children
-                  };
+          return (
+            <Row key={room.room_id} className="mb-4">
+              <Col md={10}> 
+                <RoomCard
+                  titulo={room.room_type.replace(/-/g, " ")}
+                  precio={precioReal.toFixed(2)}  
+                  capacidad={room.room_capacity}
+                  descripcion={room.room_description}
+                  imagenUrl={`/images/${room.room_type}.jpg`} 
+                  tipo={room.room_type}
+                  compacto="false"
+                  
+                />
+              </Col>
 
-                  sessionStorage.setItem("reservaData", JSON.stringify(reservaData));
+              <Col md={2}>
+                <Row className="mt-5">
+                  <Button
+                    onClick={() => {
+                      setSelectedRoom(room);
+                      setModalVisible(true);
+                    }}
+                  >
+                    Ver Detalles
+                  </Button>
+                </Row>
+                <Row className="mt-2 mb-5"> 
+                  <Button
+                    className="btn btn-primary mt-2"
+                    onClick={() => {
+                      const reservaData = {
+                        room,
+                        checkIn,
+                        checkOut,
+                        adults,
+                        children
+                      };
 
-                  navigate("/checkout", {
-                    state: reservaData
-                  });
-                }}
-              >
-                Reservar Estancia
-            </Button></Row>
-           </Col>
-           
+                      sessionStorage.setItem("reservaData", JSON.stringify(reservaData));
 
-            <hr />
-          </Row>
-        ))
+                      navigate("/checkout", {
+                        state: reservaData
+                      });
+                    }}
+                  >
+                    Reservar Estancia
+                  </Button>
+                 
+                </Row>
+              </Col>
+              <hr />
+            </Row>
+          );
+        })
       ) : (
         <p>No se encontraron habitaciones disponibles. Pruebe una fecha diferente o reserve habitaciones separadas para más de 4 huéspedes.</p>
       )}
 
       <RoomModal
-  show={modalVisible}
-  onHide={() => setModalVisible(false)}
-  room={selectedRoom}
-/>
+        show={modalVisible}
+        onHide={() => setModalVisible(false)}
+        room={selectedRoom}
+      />
     </Container>
-
-
-
   );
-
-  
 }
 
 export default RoomSearch;

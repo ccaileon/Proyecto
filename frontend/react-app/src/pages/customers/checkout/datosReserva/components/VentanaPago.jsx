@@ -29,13 +29,20 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
       const selectedRoom = room || reservaData.room;
       const entrada = checkIn || reservaData.checkIn;
       const salida = checkOut || reservaData.checkOut;
-
-      const pricePerNight = parseFloat(selectedRoom.room_price || 0);
-      const nights = Math.ceil(
+       const nights = Math.ceil(
         (new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24)
       );
+      const adults = reservaData.adults;
+      const children = reservaData.children;
+      const precioAdultos = 50;
+      const precioNinos = 25;
+      const tarifaHuesped = (adults * precioAdultos + children * precioNinos) * nights;
+      const tarifaHabitacion = (room.room_price * nights);
+      const subtotal = tarifaHuesped + tarifaHabitacion;
+      const iva = subtotal * 0.21;
+      let total = subtotal + iva;
+     
 
-      let total = pricePerNight * nights;
       if (usarDescuento) {
         total *= 0.95; // Aplicar 5% de descuento
       }
@@ -48,10 +55,12 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
         res_checkin_by: empId,
         res_checkout_by: empId,
         res_observations: guestData.comment || "",
+        res_adults: adults,
+        res_children: children,
         invoiceData: {
           invoice_total_price: total.toFixed(2),
           invoice_details: `Habitación ${selectedRoom.room_type}, ${nights} noches${usarDescuento ? " (5% descuento aplicado)" : ""}`,
-          invoice_pay_method: "tarjeta",
+          invoice_pay_method: "Tarjeta",
           invoice_points_used: 0
         }
       };
@@ -135,7 +144,7 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
               </Col>
             </Row>
 
-            <Form.Group className="mb-3">
+           <Form.Group className="mb-3">
               <Form.Check
                 type="checkbox"
                 label="Aplicar 5% de descuento (cliente preferente)"

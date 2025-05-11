@@ -84,6 +84,8 @@ const createReservationForGuest = (req, res) => {
     res_checkin_by,
     res_checkout_by,
     res_observations = "",
+    res_adults,
+    res_children,
     invoiceData = {},
   } = req.body;
 
@@ -197,13 +199,26 @@ const createReservationForGuest = (req, res) => {
                         .status(500)
                         .json({ error: "No se pudo obtener el precio" });
                     }
-
+                    
+                    /*
                     const pricePerNight = parseFloat(priceResult[0].room_price);
                     const nights = Math.ceil(
                       (new Date(res_checkout) - new Date(res_checkin)) /
                         (1000 * 60 * 60 * 24)
                     );
-                    const totalPrice = pricePerNight * nights;
+                    const totalPrice = pricePerNight * nights; */
+
+                       const pricePerNight = parseFloat(
+                         priceResult[0].room_price
+                       );
+
+                       const nights = Math.ceil(
+                         (new Date(res_checkout) - new Date(res_checkin)) /
+                           (1000 * 60 * 60 * 24)
+                       );
+                      
+                       const totalPrice = (((pricePerNight + (res_adults * 50 + res_children * 25)) * nights) * 1.21).toFixed(2);
+                    
 
                     const sqlInvoice = `
                     INSERT INTO invoice (
@@ -267,6 +282,8 @@ const createReservation = (req, res) => {
     res_checkin_by,
     res_checkout_by,
     res_observations = "",
+    res_adults,
+    res_children,
     invoiceData = {},
   } = req.body;
 
@@ -367,7 +384,11 @@ const createReservation = (req, res) => {
                   (new Date(res_checkout) - new Date(res_checkin)) /
                     (1000 * 60 * 60 * 24)
                 );
-                const totalPrice = pricePerNight * nights;
+                //const totalPrice = pricePerNight * nights;
+
+                const totalPrice =
+                  (((pricePerNight + (res_adults * 50 + res_children * 25)) * nights) * 1.21).toFixed(2);
+                
 
                 const sqlInvoice = `
                 INSERT INTO invoice (
