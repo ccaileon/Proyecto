@@ -60,7 +60,7 @@ const findAvailablePort = (startPort) => {
     });
 
     server.on("error", () => {
-      //console.log(`Port ${startPort} is in use. Trying ${startPort + 1}...`);
+      console.log(`Port ${startPort} is in use. Trying ${startPort + 1}...`);
       resolve(findAvailablePort(startPort + 1));
     });
   });
@@ -70,6 +70,6 @@ const findAvailablePort = (startPort) => {
 (async () => {
   const PORT = await findAvailablePort(process.env.PORT || 3000);
   app.listen(PORT, () => {
-    //console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 })();
