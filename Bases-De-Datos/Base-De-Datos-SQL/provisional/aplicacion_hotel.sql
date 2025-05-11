@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2025 a las 17:45:59
+-- Tiempo de generación: 11-05-2025 a las 22:41:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,14 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `aplicacion_hotel`
 --
-
--- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS aplicacion_hotel
-  DEFAULT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
--- Usar la base de datos
-USE aplicacion_hotel;
 
 -- --------------------------------------------------------
 
@@ -47,7 +39,8 @@ CREATE TABLE `account` (
 
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
 (17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 140),
-(19, '$2b$10$n6JToE1pPsyDjIkyHW7spO9zsYfXeVAjVg24PmOdvzK.s0JWs2DS6', 140);
+(19, '$2b$10$n6JToE1pPsyDjIkyHW7spO9zsYfXeVAjVg24PmOdvzK.s0JWs2DS6', 140),
+(26, '$2b$10$ehpMf72akXvlcH9ZOopig.GbJrr.F3/byBQeFQfFWXLNTewNr0DF.', 0);
 
 -- --------------------------------------------------------
 
@@ -72,7 +65,8 @@ CREATE TABLE `client` (
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
 (17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com'),
-(19, 'DNI', '12345678L', 'Prueba', 'Nueva', 'Cuenta', 123456789, 'prueba@email.com');
+(19, 'DNI', '12345678L', 'Prueba', 'Nueva', 'Cuenta', 123456789, 'prueba@email.com'),
+(26, '', '', 'Prueba', 'Correo', 'Duplicado', 123456789, 'prueba1@email.com');
 
 -- --------------------------------------------------------
 
@@ -125,7 +119,8 @@ CREATE TABLE `employee` (
 INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`, `emp_active`) VALUES
 (2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff', 1),
 (4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager', 1),
-(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff', 0);
+(6, '12345678Z', 'Eduzu', 'Cip', '', 654987321, 'edu.admin@email.com', 0, '$2a$10$rzLK1Q76S.latY5r1tn9k.w6uzLdtq4gfa1kmmXlneJ8kQ.k860P2', '1', 'staff', 0),
+(8, '98765432P', 'Carlos', 'Pérez', 'López', 600112233, 'carlos.perez@email.com', 4, '$2a$10$R5uM4E/XYetxtrnzDg3lYelkn3GJHLJIM8RDkTo/jkeiMGCEexMai', '1', 'staff', 1);
 
 -- --------------------------------------------------------
 
@@ -342,7 +337,12 @@ INSERT INTO `shift` (`shift_id`, `shift_emp_id`, `shift_date_in`, `shift_date_ou
 (52, 4, '2025-05-09 19:15:51.216000', '2025-05-09 19:19:15.590000', 3.4),
 (53, 4, '2025-05-10 11:12:01.179000', '2025-05-10 14:43:05.743000', 211),
 (54, 4, '2025-05-10 14:43:05.743000', '2025-05-10 14:47:57.924000', 4.86667),
-(55, 4, '2025-05-11 17:40:05.983000', NULL, NULL);
+(55, 4, '2025-05-11 17:40:05.983000', '2025-05-11 19:37:31.293000', 117),
+(56, 2, '2025-05-11 18:31:12.579000', '2025-05-11 18:32:13.881000', 1.01667),
+(57, 4, '2025-05-11 19:37:31.293000', '2025-05-11 19:38:31.902000', 1),
+(58, 4, '2025-05-11 19:38:43.785000', '2025-05-11 19:38:52.862000', 0.15),
+(59, 4, '2025-05-11 19:39:35.011000', '2025-05-11 20:00:16.180000', 20.6833),
+(60, 4, '2025-05-11 22:18:54.739000', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -387,7 +387,8 @@ ALTER TABLE `account`
 -- Indices de la tabla `client`
 --
 ALTER TABLE `client`
-  ADD PRIMARY KEY (`client_id`);
+  ADD PRIMARY KEY (`client_id`),
+  ADD UNIQUE KEY `client_email` (`client_email`);
 
 --
 -- Indices de la tabla `contact_messages`
@@ -399,7 +400,10 @@ ALTER TABLE `contact_messages`
 -- Indices de la tabla `employee`
 --
 ALTER TABLE `employee`
-  ADD PRIMARY KEY (`emp_id`);
+  ADD PRIMARY KEY (`emp_id`),
+  ADD UNIQUE KEY `emp_email` (`emp_email`),
+  ADD UNIQUE KEY `emp_email_2` (`emp_email`),
+  ADD UNIQUE KEY `emp_doc_id` (`emp_doc_id`);
 
 --
 -- Indices de la tabla `employee_reservation_log`
@@ -469,7 +473,7 @@ ALTER TABLE `type_room`
 -- AUTO_INCREMENT de la tabla `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `contact_messages`
@@ -481,7 +485,7 @@ ALTER TABLE `contact_messages`
 -- AUTO_INCREMENT de la tabla `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `emp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `guest`
@@ -517,7 +521,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT de la tabla `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- Restricciones para tablas volcadas
