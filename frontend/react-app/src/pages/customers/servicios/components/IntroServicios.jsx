@@ -1,5 +1,4 @@
 import { Container, Row, Col, Button } from "react-bootstrap";
-import "./introServicios.css";
 import { NavLink } from "react-router-dom";
 
 
