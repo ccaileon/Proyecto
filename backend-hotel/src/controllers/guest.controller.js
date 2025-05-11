@@ -1,23 +1,23 @@
 const Guest = require("../models/guest.model");
 
-// 🔍 Obtener todos los invitados
+// Obtener todos los invitados
 const getGuests = (req, res) => {
   Guest.getAll((err, results) => {
     if (err) {
-      console.error("❌ Error al obtener invitados:", err);
+      console.error("Error al obtener invitados:", err);
       return res.status(500).json({ error: "Error al obtener invitados" });
     }
     res.json(results);
   });
 };
 
-// 🔍 Obtener invitado por ID
+// Obtener invitado por ID
 const getGuestById = (req, res) => {
   const { id } = req.params;
 
   Guest.getById(id, (err, results) => {
     if (err) {
-      console.error("❌ Error al obtener invitado:", err);
+      console.error("Error al obtener invitado:", err);
       return res.status(500).json({ error: "Error al obtener invitado" });
     }
     if (results.length === 0) {
@@ -27,7 +27,7 @@ const getGuestById = (req, res) => {
   });
 };
 
-// ➕ Crear invitado manualmente (opcional)
+//Crear invitado manualmente (opcional)
 const createGuest = (req, res) => {
   const {
     guest_name,
@@ -51,28 +51,28 @@ const createGuest = (req, res) => {
 
   Guest.create(newGuest, (err, result) => {
     if (err) {
-      console.error("❌ Error al crear invitado:", err);
+      console.error("Error al crear invitado:", err);
       return res.status(500).json({ error: "Error al crear invitado" });
     }
 
     res.status(201).json({
-      message: "✅ Invitado creado correctamente",
+      message: "Invitado creado correctamente",
       guestId: result.insertId,
     });
   });
 };
 
-// ❌ Eliminar invitado
+// Eliminar invitado
 const deleteGuest = (req, res) => {
   const { id } = req.params;
 
   Guest.delete(id, (err) => {
     if (err) {
-      console.error("❌ Error al eliminar invitado:", err);
+      console.error("Error al eliminar invitado:", err);
       return res.status(500).json({ error: "Error al eliminar invitado" });
     }
 
-    res.json({ message: "✅ Invitado eliminado correctamente" });
+    res.json({ message: "Invitado eliminado correctamente" });
   });
 };
 

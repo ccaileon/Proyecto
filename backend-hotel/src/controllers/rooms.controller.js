@@ -4,24 +4,24 @@ const connection = require("../config/db");
 const searchRooms = (req, res) => {
   const { checkIn, checkOut, adults, children } = req.query;
 
-  console.log("🔎 Parámetros recibidos:", req.query);
+  //console.log("Parámetros recibidos:", req.query);
 
-  // ✅ Convertir a fechas JS válidas directamente
+  //Convertir a fechas JS válidas directamente
   const checkInDate = new Date(checkIn);
   const checkOutDate = new Date(checkOut);
 
   if (isNaN(checkInDate) || isNaN(checkOutDate)) {
-    console.error("❌ Error: Formato de fecha inválido", checkIn, checkOut);
+    //console.error("Error: Formato de fecha inválido", checkIn, checkOut);
     return res.status(400).json({ error: "Formato de fecha inválido" });
   }
 
   const checkInFormatted = checkInDate.toISOString().split("T")[0];
   const checkOutFormatted = checkOutDate.toISOString().split("T")[0];
 
-  console.log("📌 Fechas convertidas a SQL:", {
+  /*console.log("Fechas convertidas a SQL:", {
     checkInFormatted,
     checkOutFormatted,
-  });
+  });*/
 
   // Convertir a número y validar
   const totalGuests =
@@ -55,11 +55,11 @@ const searchRooms = (req, res) => {
     totalGuests,
     (err, results) => {
       if (err) {
-        console.error("❌ Database error:", err);
+        console.error("Database error:", err);
         return res.status(500).json({ error: "Database error", details: err });
       }
 
-      console.log("📌 Resultados obtenidos:", results);
+      //console.log("Resultados obtenidos:", results);
 
       res.json(results);
     }
@@ -69,7 +69,7 @@ const searchRooms = (req, res) => {
 const getRooms = (req, res) => {
   Room.getAll((err, results) => {
     if (err) {
-      console.error("❌ Database error:", err);
+      console.error("Database error:", err);
       return res.status(500).json({ error: "Database error", details: err });
     }
     res.json(results);
@@ -85,7 +85,7 @@ const getRoomById = (req, res) => {
 
   Room.getById(roomId, (err, results) => {
     if (err) {
-      console.error("❌ Database error:", err);
+      console.error("Database error:", err);
       return res.status(500).json({ error: "Database error", details: err });
     }
 
@@ -100,7 +100,7 @@ const getRoomById = (req, res) => {
 const createRoom = (req, res) => {
   Room.create(req.body, (err, results) => {
     if (err) {
-      console.error("❌ Error creating room:", err);
+      console.error("Error creating room:", err);
       return res.status(400).json({ error: "Database error", details: err });
     }
     res.status(201).json({ id: results.insertId, ...req.body });
@@ -115,7 +115,7 @@ const updateRoom = (req, res) => {
 
   Room.update(roomId, req.body, (err, result) => {
     if (err) {
-      console.error("❌ Error updating room:", err);
+      console.error("Error updating room:", err);
       return res.status(500).json({ error: "Database error", details: err });
     }
 
@@ -135,7 +135,7 @@ const deleteRoom = (req, res) => {
 
   Room.delete(roomId, (err, result) => {
     if (err) {
-      console.error("❌ Error deleting room:", err);
+      console.error("Error deleting room:", err);
       return res.status(500).json({ error: "Database error", details: err });
     }
 
@@ -153,7 +153,7 @@ const enableRoom = (req, res) => {
 
   Room.enableRoom(roomId, (err, result) => {
     if (err) return res.status(500).json({ error: "Database error" });
-    res.json({ message: "✅ Habitación habilitada correctamente" });
+    res.json({ message: "Habitación habilitada correctamente" });
   });
 };
 
@@ -163,13 +163,13 @@ const disableRoom = (req, res) => {
 
   Room.disableRoom(roomId, (err, result) => {
     if (err) return res.status(500).json({ error: "Database error" });
-    res.json({ message: "🚫 Habitación deshabilitada correctamente" });
+    res.json({ message: "Habitación deshabilitada correctamente" });
   });
 };
 const getEnabledRooms = (req, res) => {
   Room.getEnabledRooms((err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo habitaciones habilitadas:", err);
+      console.error("Error obteniendo habitaciones habilitadas:", err);
       return res.status(500).json({ error: "Database error" });
     }
     res.json(results);
@@ -179,7 +179,7 @@ const getEnabledRooms = (req, res) => {
 const getDisabledRooms = (req, res) => {
   Room.getDisabledRooms((err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo habitaciones deshabilitadas:", err);
+      console.error("Error obteniendo habitaciones deshabilitadas:", err);
       return res.status(500).json({ error: "Database error" });
     }
     res.json(results);
@@ -190,7 +190,7 @@ const getRoomTypes = (req, res) => {
 
   connection.query(sql, (err, results) => {
     if (err) {
-      console.error("❌ Error al obtener tipos de habitación:", err);
+      console.error("Error al obtener tipos de habitación:", err);
       return res.status(500).json({ error: "Database error" });
     }
 
@@ -209,7 +209,7 @@ const updateRoomPrice = (req, res) => {
 
   connection.query(sql, [price, type], (err, result) => {
     if (err) {
-      console.error("❌ Error updating room price:", err);
+      console.error("Error updating room price:", err);
       return res.status(500).json({ error: "Database error" });
     }
 
@@ -217,7 +217,7 @@ const updateRoomPrice = (req, res) => {
       return res.status(404).json({ message: "Room type not found" });
     }
 
-    res.json({ message: "✅ Room price updated successfully" });
+    res.json({ message: "Room price updated successfully" });
   });
 };
 

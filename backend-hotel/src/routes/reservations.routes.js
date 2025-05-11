@@ -11,7 +11,7 @@ const fs = require("fs");
 router.get("/:id/download/:field", verifyToken, reservationController.downloadReservationFile);
 
 
-// 🔐 Reservas para empleados autenticados
+//Reservas para empleados autenticados
 router.get("/", verifyToken, reservationController.getReservations);
 router.get("/:id", verifyToken, reservationController.getReservationById);
 router.put(
@@ -37,7 +37,7 @@ router.put(
   reservationController.updateReservationStatus
 );
 
-// 👤 Cliente autenticado: crear y ver sus reservas
+//Cliente autenticado: crear y ver sus reservas
 router.post("/client", verifyToken, reservationController.createReservation);
 router.get(
   "/client/my-reservations",
@@ -45,7 +45,7 @@ router.get(
   reservationController.getMyReservations
 );
 
-// 🌐 Crear reserva como invitado (sin cuenta)
+//Crear reserva como invitado (sin cuenta)
 router.post("/guest", reservationController.createReservationForGuest);
 
 module.exports = router;

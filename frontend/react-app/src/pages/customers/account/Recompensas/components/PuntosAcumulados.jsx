@@ -18,7 +18,7 @@ function PuntosAcumulados() {
         return res.json();
       })
       .then((data) => {
-        console.log("🎯 Datos cliente:", data);
+        //console.log("Datos cliente:", data);
         setPuntos(data.account_points); // ← ahora debe venir desde `account`
       })
       .catch((err) => {

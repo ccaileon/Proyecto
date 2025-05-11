@@ -13,7 +13,7 @@ function FormularioRegistro() {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log("Datos enviados desde el frontend:", data);
+    //console.log("Datos enviados desde el frontend:", data);
 
     const formattedData = {
       client_name: data.nombre,
@@ -26,7 +26,7 @@ function FormularioRegistro() {
 
     try {
       const response = await axios.post("http://localhost:3000/api/clients", formattedData);
-      console.log("Registro efectuado correctamente:", response.data);
+      //console.log("Registro efectuado correctamente:", response.data);
 
       if (response.status === 200 || response.status === 201) {
   
@@ -41,7 +41,7 @@ function FormularioRegistro() {
         }).then((result) => {
           if (result.isConfirmed) {
             navigate("/login");
-            console.log("Redirigiendo al usuario a la página de inicio de sesión");
+            //console.log("Redirigiendo al usuario a la página de inicio de sesión");
           }
         });
       } else {

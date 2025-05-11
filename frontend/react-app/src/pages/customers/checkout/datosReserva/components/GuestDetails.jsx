@@ -18,22 +18,39 @@ function GuestDetails() {
     bed_type: "", // "individual" o "doble"
     comment: ""
   });
+  const [availablePoints, setAvailablePoints] = useState(0);
+  const [selectedPoints, setSelectedPoints] = useState(0);
 
-  // Obtener los datos del usuario del sessionStorage
-  useEffect(() => {
-    const client = JSON.parse(sessionStorage.getItem("clientUser"));
-    if (client) {
-      setGuestData({
-        name: client.name || "",
-        surname_one: client.surname_one || "",
-        surname_two: client.surname_two || "",
-        phone: client.telephone || "",
-        email: client.email || "",
-        bed_type: "",
-        comment: ""
-      });
-    }
-  }, []);
+
+  // 
+ useEffect(() => {
+  const client = JSON.parse(sessionStorage.getItem("clientUser"));
+  if (client) {
+    setGuestData({
+      name: client.name || "",
+      surname_one: client.surname_one || "",
+      surname_two: client.surname_two || "",
+      phone: client.telephone || "",
+      email: client.email || "",
+      bed_type: "",
+      comment: ""
+    });
+  }
+
+  const token = sessionStorage.getItem("clientToken");
+  if (token) {
+    sessionStorage.removeItem("puntosUsados");
+    fetch("http://localhost:3000/api/clients/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setAvailablePoints(data.account_points || 0);
+      })
+      .catch(err => console.error("Error cargando puntos:", err));
+  }
+}, []);
+
 
   // Función para actualizar datos del invitado
   const handleChange = (e) => {
@@ -96,6 +113,47 @@ function GuestDetails() {
             className="mb-2"
           />
         </Form.Group><br />
+
+        {availablePoints >= 100 && (
+  <div className="mb-3 p-3 border rounded">
+    <Form.Label>Usar puntos de fidelidad:</Form.Label>
+
+  {availablePoints >= 200 && (
+  <Form.Check
+    type="checkbox"
+    label="Canjear 200 puntos por 10% de descuento"
+    checked={selectedPoints === 200}
+    onChange={(e) => {
+      if (e.target.checked) {
+        setSelectedPoints(200);
+        sessionStorage.setItem("puntosUsados", 200);
+      } else {
+        setSelectedPoints(0);
+        sessionStorage.removeItem("puntosUsados");
+      }
+    }}
+  />
+)}
+
+{availablePoints >= 100 && availablePoints < 200 && (
+  <Form.Check
+    type="checkbox"
+    label="Canjear 100 puntos por 5% de descuento"
+    checked={selectedPoints === 100}
+    onChange={(e) => {
+      if (e.target.checked) {
+        setSelectedPoints(100);
+        sessionStorage.setItem("puntosUsados", 100);
+      } else {
+        setSelectedPoints(0);
+        sessionStorage.removeItem("puntosUsados");
+      }
+    }}
+  />
+)}
+  </div>
+)}
+
 
         <h1>Preferencias de la Reserva</h1>
         <hr />

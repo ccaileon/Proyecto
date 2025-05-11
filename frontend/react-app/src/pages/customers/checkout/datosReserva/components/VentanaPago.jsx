@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
   const [show, setShow] = useState(false);
   const [sending, setSending] = useState(false);
-  const [usarDescuento, setUsarDescuento] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -86,86 +85,94 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
       return;
     }
 
-    try {
-      const empId = 2;
-      const reservaData = JSON.parse(sessionStorage.getItem("reservaData")) || {};
-      const selectedRoom = room || reservaData.room;
-      const entrada = checkIn || reservaData.checkIn;
-      const salida = checkOut || reservaData.checkOut;
-      const nights = Math.ceil((new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24));
-      const adults = reservaData.adults;
-      const children = reservaData.children;
-      const tarifaHabitacion = room.room_price * nights;
-      const subtotal = tarifaHabitacion;
-      const iva = subtotal * 0.21;
-      let total = subtotal + iva;
+try {
+    const empId = 2;
+    const reservaData = JSON.parse(sessionStorage.getItem("reservaData")) || {};
+    //console.log("reservaData desde sessionStorage:", reservaData);
+    //console.log("Adults:", reservaData.adults, "Children:", reservaData.children);
 
-      if (usarDescuento) {
-        total *= 0.95;
+    const selectedRoom = room || reservaData.room;
+    const entrada = checkIn || reservaData.checkIn;
+    const salida = checkOut || reservaData.checkOut;
+    const nights = Math.ceil((new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24));
+
+    const tarifaHabitacion = selectedRoom.room_price * nights;
+    const subtotal = tarifaHabitacion;
+    const iva = subtotal * 0.21;
+    let total = subtotal + iva;
+
+    const payload = {
+      res_room_id: selectedRoom.room_id,
+      res_room_hotel_id: selectedRoom.room_hotel_id || 1,
+      res_checkin: entrada,
+      res_checkout: salida,
+      res_checkin_by: empId,
+      res_checkout_by: empId,
+      res_observations: guestData.comment || "",
+      res_adults: parseInt(reservaData.adults) || 1,
+      res_children: parseInt(reservaData.children) || 0,
+      invoiceData: {
+        invoice_total_price: total.toFixed(2),
+        invoice_details: `Habitación ${selectedRoom.room_type}, ${nights} noches`,
+        invoice_pay_method: "Tarjeta",
+        invoice_points_used: parseInt(sessionStorage.getItem("puntosUsados")) || 0
       }
+    };
 
-      const payload = {
-        res_room_id: selectedRoom.room_id,
-        res_room_hotel_id: selectedRoom.room_hotel_id || 1,
-        res_checkin: entrada,
-        res_checkout: salida,
-        res_checkin_by: empId,
-        res_checkout_by: empId,
-        res_observations: guestData.comment || "",
-        res_adults: adults,
-        res_children: children,
-        invoiceData: {
-          invoice_total_price: total.toFixed(2),
-          invoice_details: `Habitación ${selectedRoom.room_type}, ${nights} noches${usarDescuento ? " (5% descuento aplicado)" : ""}`,
-          invoice_pay_method: "Tarjeta",
-          invoice_points_used: 0
-        }
-      };
+    const token = sessionStorage.getItem("clientToken");
+    const isClient = !!token;
 
-      const token = sessionStorage.getItem("clientToken");
-      const isClient = !!token;
+    let endpoint = "http://localhost:3000/api/reservations/guest";
+    let headers = {};
 
-      let endpoint = "http://localhost:3000/api/reservations/guest";
-      let headers = {};
-
-      if (isClient) {
-        endpoint = "http://localhost:3000/api/reservations/client";
-        headers = { Authorization: `Bearer ${token}` };
-      } else {
-        payload.guest_name = guestData.name;
-        payload.guest_lastname = guestData.surname_one || "Sin Apellido";
-        payload.guest_email = guestData.email || "no-email@hotel.com";
-        payload.guest_phone = guestData.phone || "000000000";
-        payload.guest_preferences = guestData.bed_type || "individual";
-      }
+    if (isClient) {
+      endpoint = "http://localhost:3000/api/reservations/client";
+      headers = { Authorization: `Bearer ${token}` };
+    } else {
+      payload.guest_name = guestData.name;
+      payload.guest_lastname = guestData.surname_one || "Sin Apellido";
+      payload.guest_email = guestData.email || "no-email@hotel.com";
+      payload.guest_phone = guestData.phone || "000000000";
+      payload.guest_preferences = guestData.bed_type || "individual";
+    }
 
       await axios.post(endpoint, payload, { headers });
 
-      Swal.fire({
-        icon: "success",
-        title: "Reserva confirmada",
-        text: "Pronto recibirá un email con los detalles de su reserva.",
-        confirmButtonText: "Aceptar",
-             customClass: {
-            confirmButton: 'btn'
-          }
-      }).then(() => {
-        handleClose();
-        navigate("/");
+    Swal.fire({
+      icon: "success",
+      title: "Reserva confirmada",
+      text: "Pronto recibirá un email con los detalles de su reserva.",
+      confirmButtonText: "Aceptar",
+      customClass: {
+        confirmButton: 'btn'
+      }
+    }).then(() => {
+      setCardNumber("");
+      setExpiryDate("");
+      setCvv("");
+
+      Object.keys(sessionStorage).forEach(key => {
+        if (!["clientUser", "clientToken"].includes(key)) {
+          sessionStorage.removeItem(key);
+        }
       });
 
-    } catch (error) {
-console.error("❌ Error creando la reserva:", error.response?.data || error.message);
-      Swal.fire({
-        title: "No se ha podido hacer la reserva",
-        text: "Error creando la reserva. Contacte con atención al cliente.",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-        customClass: { confirmButton: "btn" }
-      });
-    } finally {
-      setSending(false);
-    }
+      handleClose();
+      navigate("/");
+    });
+
+  } catch (error) {
+    console.error("Error creando la reserva:", error.response?.data || error.message);
+    Swal.fire({
+      title: "No se ha podido hacer la reserva",
+      text: "Error creando la reserva. Contacte con atención al cliente.",
+      icon: "error",
+      confirmButtonText: "Aceptar",
+      customClass: { confirmButton: "btn" }
+    });
+  } finally {
+    setSending(false);
+  }
   };
 
   return (
@@ -236,15 +243,6 @@ console.error("❌ Error creando la reserva:", error.response?.data || error.mes
                 </Form.Group>
               </Col>
             </Row>
-
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label="Aplicar 5% de descuento (cliente preferente)"
-                checked={usarDescuento}
-                onChange={(e) => setUsarDescuento(e.target.checked)}
-              />
-            </Form.Group>
 
             <Button variant="success" className="w-100" type="submit" disabled={sending}>
               {sending ? "Procesando..." : "Pagar Ahora"}

@@ -21,7 +21,7 @@ function RoomSearch() {
     const adults = parseInt(urlParams.get("adults"));
     const children = parseInt(urlParams.get("children"));
 
-    console.log("Parámetros de búsqueda enviados:", { checkIn, checkOut, adults, children });
+    //console.log("Parámetros de búsqueda enviados:", { checkIn, checkOut, adults, children });
 
     if (!checkIn || !checkOut || !adults) {
       console.warn("⚠️ Faltan parámetros para la búsqueda.");
@@ -31,7 +31,7 @@ function RoomSearch() {
     fetch(`http://localhost:3000/api/rooms/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}&children=${children}`)
       .then(response => response.json())
       .then(data => {
-        console.log("Respuesta del backend:", data);
+        //console.log("Respuesta del backend:", data);
         const uniqueRooms = [];
         const seenTypes = new Set();
 

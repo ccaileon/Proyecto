@@ -56,7 +56,7 @@ function Search() {
     sessionStorage.setItem("checkin", checkIn);
     sessionStorage.setItem("checkout", checkOut);
 
-    console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
+   //console.log("Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
 
     navigate(`/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adultos}&children=${ninos}`);
   };

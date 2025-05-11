@@ -1,6 +1,6 @@
 const connection = require("../config/db");
 
-// 🟢 Registrar fin de turno
+// Registrar fin de turno
 const registerShiftOut = (req, res) => {
   const emp_id = req.params.id;
   const now = new Date();
@@ -70,7 +70,7 @@ const registerShiftOut = (req, res) => {
   });
 };
 
-// 🟢 Registrar inicio de turno
+// Registrar inicio de turno
 const registerShiftIn = (req, res) => {
   const emp_id = req.params.id;
   const now = new Date();
@@ -84,7 +84,7 @@ const registerShiftIn = (req, res) => {
 
   connection.query(checkOpenShift, [emp_id], (err, results) => {
     if (err) {
-      console.error("❌ Error verificando turno abierto:", err);
+      console.error("Error verificando turno abierto:", err);
       return res.status(500).json({ error: "Error verificando turno" });
     }
 
@@ -102,12 +102,12 @@ const registerShiftIn = (req, res) => {
 
     connection.query(insertShift, [emp_id, now], (err, result) => {
       if (err) {
-        console.error("❌ Error iniciando turno:", err);
+        console.error("Error iniciando turno:", err);
         return res.status(500).json({ error: "Error iniciando turno" });
       }
 
       res.status(201).json({
-        message: "✅ Turno iniciado correctamente",
+        message: "Turno iniciado correctamente",
         shiftId: result.insertId,
       });
     });
@@ -140,7 +140,7 @@ const getShiftHistoryByEmployee = (req, res) => {
 
   connection.query(query, params, (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo historial de turnos:", err);
+      console.error("Error obteniendo historial de turnos:", err);
       return res.status(500).json({ error: "Error obteniendo historial" });
     }
 
@@ -225,7 +225,7 @@ LEFT JOIN shift s ON s.shift_emp_id = e.emp_id AND s.shift_date_out IS NOT NULL
 
   connection.query(query, params, (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo resumen de turnos:", err);
+      console.error("Error obteniendo resumen de turnos:", err);
       return res.status(500).json({ error: "Error obteniendo resumen" });
     }
 
