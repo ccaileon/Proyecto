@@ -4,7 +4,7 @@ const connection = require("../config/db");
 const path = require("path");
 const fs = require("fs");
 
-// Consulta para verificar solapamiento de reservas
+//Consulta para verificar solapamiento de reservas
 const checkOverlapQuery = `
   SELECT * FROM reservation 
   WHERE res_room_id = ? 
@@ -17,7 +17,7 @@ const checkOverlapQuery = `
     )
 `;
 
-// 🔎 Obtener todas las reservas
+// Obtener todas las reservas
 const getReservations = (req, res) => {
   const { room, doc_id, name, checkin } = req.query;
 
@@ -57,7 +57,7 @@ const getReservations = (req, res) => {
   });
 };
 
-// 🔍 Obtener reserva por ID
+//Obtener reserva por ID
 const getReservationById = (req, res) => {
   const { id } = req.params;
   Reservation.getById(id, (err, results) => {
@@ -68,9 +68,9 @@ const getReservationById = (req, res) => {
   });
 };
 
-// 🧾 Crear reserva con invitado (sin cuenta)
+//Crear reserva con invitado (sin cuenta)
 const createReservationForGuest = (req, res) => {
-  console.log("Body recibido:", req.body);
+  //console.log("Body recibido:", req.body);
   const {
     guest_name,
     guest_lastname,
@@ -185,7 +185,7 @@ const createReservationForGuest = (req, res) => {
 
                 const res_id = result.insertId;
 
-                // 🔢 Calcular precio total de la reserva
+                //Calcular precio total de la reserva
                 const roomTypeQuery = `
                   SELECT t.room_price 
                   FROM room r 
@@ -246,8 +246,7 @@ const createReservationForGuest = (req, res) => {
                         }
 
                         res.status(201).json({
-                          message:
-                            "✅ Reserva creada correctamente para invitado",
+                          message: "Reserva creada correctamente para invitado",
                           reservationId: res_id,
                           guestId,
                           totalPrice,
@@ -265,7 +264,7 @@ const createReservationForGuest = (req, res) => {
   );
 };
 
-// 🧾 Crear reserva con cliente registrado
+//Crear reserva con cliente registrado
 const createReservation = (req, res) => {
   const {
     res_room_id,
@@ -357,7 +356,7 @@ const createReservation = (req, res) => {
 
             const res_id = result.insertId;
 
-            // 🔢 Calcular precio total de la reserva
+            //Calcular precio total de la reserva
             const roomTypeQuery = `
             SELECT t.room_price 
             FROM room r 
@@ -385,7 +384,7 @@ const createReservation = (req, res) => {
                 const iva = basePrice * 0.21;
                 let totalPrice = basePrice + iva;
 
-                // 💸 Descuento por puntos usados
+                //Descuento por puntos usados
                 const puntosUsados = invoiceData.invoice_points_used || 0;
                 let discount = 0;
 
@@ -422,37 +421,37 @@ const createReservation = (req, res) => {
                         .json({ error: "Error guardando factura" });
                     }
 
-                    // 🎯 Puntos ganados (redondeo clásico)
+                    //Puntos ganados
                     const puntosGanados = Math.round(totalPrice / 100) * 10;
 
-                    // Guardar puntos en reserva
+                    //Guardar puntos en reserva
                     connection.query(
                       "UPDATE reservation SET res_add_points = ? WHERE res_id = ?",
                       [puntosGanados, res_id],
                       (err) => {
                         if (err)
                           console.error(
-                            "❌ Error guardando puntos en reserva:",
+                            "Error guardando puntos en reserva:",
                             err
                           );
                       }
                     );
 
-                    // Actualizar cuenta del cliente (sumar ganados, restar usados)
+                    //Actualizar cuenta del cliente (sumar ganados, restar usados)
                     connection.query(
                       "UPDATE account SET account_points = account_points + ? - ? WHERE account_client_id = ?",
                       [puntosGanados, puntosUsados, clientId],
                       (err) => {
                         if (err)
                           console.error(
-                            "❌ Error actualizando puntos en cuenta:",
+                            "Error actualizando puntos en cuenta:",
                             err
                           );
                       }
                     );
 
                     res.status(201).json({
-                      message: "✅ Reserva creada correctamente para cliente",
+                      message: "Reserva creada correctamente para cliente",
                       reservationId: res_id,
                       clientId,
                       puntosGanados,
@@ -470,7 +469,7 @@ const createReservation = (req, res) => {
   );
 };
 
-// 🧾 Actualizar reserva
+//Actualizar reserva
 const updateReservation = (req, res) => {
   const { id } = req.params;
   const {
@@ -512,11 +511,11 @@ const updateReservation = (req, res) => {
   Reservation.update(id, data, (err) => {
     if (err)
       return res.status(500).json({ error: "Error actualizando reserva" });
-    res.json({ message: "✅ Reserva actualizada correctamente" });
+    res.json({ message: "Reserva actualizada correctamente" });
   });
 };
 
-// 🧾 Actualizar estado de reserva
+//Actualizar estado de reserva
 const updateReservationStatus = (req, res) => {
   const reservationId = req.params.id;
   const { status, employeeId, checkin, checkout, observations, roomId } =
@@ -524,7 +523,7 @@ const updateReservationStatus = (req, res) => {
 
   const files = req.files;
 
-  console.log("📥 Archivos recibidos:", files);
+  //console.log("Archivos recibidos:", files);
 
   const res_file_one = files?.res_file_one?.[0]?.filename ?? null;
   const res_file_two = files?.res_file_two?.[0]?.filename ?? null;
@@ -559,7 +558,7 @@ const updateReservationStatus = (req, res) => {
 
   connection.query(sql, values, (err, results) => {
     if (err) {
-      console.error("❌ Error actualizando reserva:", err);
+      console.error("Error actualizando reserva:", err);
       return res.status(500).json({ error: "Error actualizando reserva" });
     }
 
@@ -567,7 +566,7 @@ const updateReservationStatus = (req, res) => {
   });
 };
 
-// 🧾 Eliminar reserva
+//Eliminar reserva
 const deleteReservation = (req, res) => {
   const { id } = req.params;
 
@@ -592,7 +591,7 @@ const deleteReservation = (req, res) => {
         [res_add_points, res_client_id],
         (err) => {
           if (err) {
-            console.error("❌ Error restando puntos del cliente:", err);
+            console.error("Error restando puntos del cliente:", err);
             // No cortamos aquí para que la reserva igualmente se borre
           }
         }
@@ -605,12 +604,12 @@ const deleteReservation = (req, res) => {
         return res.status(500).json({ error: "Error eliminando reserva" });
       }
 
-      res.json({ message: "✅ Reserva eliminada correctamente" });
+      res.json({ message: "Reserva eliminada correctamente" });
     });
   });
 };
 
-// 🧾 Obtener reservas del cliente
+//Obtener reservas del cliente
 const getMyReservations = (req, res) => {
   const clientId = req.user?.client_id;
 
@@ -636,13 +635,13 @@ const getMyReservations = (req, res) => {
 
   connection.query(sql, [clientId], (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo reservas del cliente:", err);
+      console.error("Error obteniendo reservas del cliente:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
     res.json(results);
   });
 };
-// 🧾 Obtener reservas del cliente (sin token)
+//Obtener reservas del cliente (sin token)
 const getClientReservations = (req, res) => {
   const clientId = req.user?.client_id;
 
@@ -652,13 +651,13 @@ const getClientReservations = (req, res) => {
 
   Reservation.getClientReservations(clientId, (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo reservas del cliente:", err);
+      console.error("Error obteniendo reservas del cliente:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
     res.json(results);
   });
 };
-// 🧾 Descargar archivo de reserva
+//Descargar archivo de reserva
 const downloadReservationFile = (req, res) => {
   const reservationId = req.params.id;
   const field = req.params.field;
@@ -671,7 +670,7 @@ const downloadReservationFile = (req, res) => {
   const sql = `SELECT ?? FROM reservation WHERE res_id = ?`;
   connection.query(sql, [field, reservationId], (err, results) => {
     if (err) {
-      console.error("❌ Error en consulta:", err);
+      console.error("Error en consulta:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
 

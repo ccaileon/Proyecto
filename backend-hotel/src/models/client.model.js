@@ -1,5 +1,3 @@
-// client.model.js
-
 class Client {
   constructor({
     client_id,

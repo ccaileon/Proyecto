@@ -47,7 +47,7 @@ function GuestDetails() {
       .then(data => {
         setAvailablePoints(data.account_points || 0);
       })
-      .catch(err => console.error("❌ Error cargando puntos:", err));
+      .catch(err => console.error("Error cargando puntos:", err));
   }
 }, []);
 

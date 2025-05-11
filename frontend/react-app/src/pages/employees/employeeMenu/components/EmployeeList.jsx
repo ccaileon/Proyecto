@@ -16,7 +16,7 @@ export function EmployeeList() {
       .then((res) => res.json())
       .then((data) => setEmployees(data))
       .catch((err) =>
-        console.error("❌ Error cargando resumen de empleados:", err)
+        console.error("Error cargando resumen de empleados:", err)
       );
   };
 
@@ -39,12 +39,12 @@ export function EmployeeList() {
       if (!response.ok) throw new Error();
 
       alert(
-        `${isActive ? "🔒 Cuenta desactivada" : "✅ Cuenta activada"}: ${empName}`
+        `${isActive ? "Cuenta desactivada" : "Cuenta activada"}: ${empName}`
       );
 
       fetchSummary();
     } catch (error) {
-      alert("❌ No se pudo cambiar el estado del empleado.");
+      alert("No se pudo cambiar el estado del empleado.");
     }
   };
 

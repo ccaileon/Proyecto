@@ -14,7 +14,7 @@ const EmpLoginForm = () => {
 
     const onSubmit = async (data) => {
         setLoginError("");
-        console.log("📩 Original data:", data);
+        //console.log("Original data:", data);
     
         // transformamos a lo que el backend espera
         const loginPayload = {
@@ -24,7 +24,7 @@ const EmpLoginForm = () => {
     
         try {
             const response = await axios.post("http://localhost:3000/api/auth/employee", loginPayload);
-            console.log("✅ Login successful:", response.data);
+            //console.log("Login successful:", response.data);
             
             sessionStorage.setItem("Token", response.data.token);
             sessionStorage.setItem("User", JSON.stringify(response.data.user));
@@ -32,15 +32,15 @@ const EmpLoginForm = () => {
             navigate("/employee/menu");
             
         } catch (error) {
-            console.error("❌ Login error:", error);
+            console.error(" Login error:", error);
           
             if (error.response && error.response.status === 403) {
               // mensaje personalizado del backend
-              setLoginError(error.response.data.error || "⛔ Cuenta desactivada.");
+              setLoginError(error.response.data.error || " Cuenta desactivada.");
             } else if (error.response && error.response.status === 401) {
-              setLoginError("❌ Email o contraseña incorrectos.");
+              setLoginError("Email o contraseña incorrectos.");
             } else {
-              setLoginError("⚠️ Error inesperado. Intenta nuevamente.");
+              setLoginError("Error inesperado. Intenta nuevamente.");
             }
           }
           

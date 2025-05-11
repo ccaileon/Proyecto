@@ -88,8 +88,8 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
 try {
     const empId = 2;
     const reservaData = JSON.parse(sessionStorage.getItem("reservaData")) || {};
-    console.log("🧾 reservaData desde sessionStorage:", reservaData);
-    console.log("👨‍👩‍👧‍👦 Adults:", reservaData.adults, "Children:", reservaData.children);
+    //console.log("reservaData desde sessionStorage:", reservaData);
+    //console.log("Adults:", reservaData.adults, "Children:", reservaData.children);
 
     const selectedRoom = room || reservaData.room;
     const entrada = checkIn || reservaData.checkIn;
@@ -162,7 +162,7 @@ try {
     });
 
   } catch (error) {
-    console.error("❌ Error creando la reserva:", error.response?.data || error.message);
+    console.error("Error creando la reserva:", error.response?.data || error.message);
     Swal.fire({
       title: "No se ha podido hacer la reserva",
       text: "Error creando la reserva. Contacte con atención al cliente.",

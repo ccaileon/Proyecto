@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = "uploads/reservations/";
 
-    // ✅ Asegura que la carpeta existe
+    //Asegura que la carpeta existe
     fs.mkdirSync(dir, { recursive: true });
 
     cb(null, dir);
