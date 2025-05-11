@@ -29,11 +29,11 @@ export default function EmpReservationsFilter({setFilteredData}){
         params
       });
   
-      console.log("✅ Reservas filtradas:", response.data);
+      //console.log("Reservas filtradas:", response.data);
       setFilteredData(response.data); // Actualiza el estado con los datos filtrados
   
     } catch (error) {
-      console.error("❌ Error al buscar reservas:", error);
+      console.error("Error al buscar reservas:", error);
       // Swal.fire("Error", "No se pudieron cargar las reservas", "error");
     }
   };

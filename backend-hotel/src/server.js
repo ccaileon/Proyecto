@@ -18,9 +18,9 @@ const path = require("path");
 const uploadDir = path.resolve("uploads", "reservations");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
-  console.log("📁 Carpeta creada: uploads/reservations");
+  //console.log("Carpeta creada: uploads/reservations");
 } else {
-  console.log("📁 Carpeta ya existe: uploads/reservations");
+  //console.log("Carpeta ya existe: uploads/reservations");
 }
 
 app.use(cors());
@@ -28,7 +28,7 @@ app.use(express.json()); // Allows JSON requests
 
 // Root route
 app.get("/", (req, res) => {
-  res.send("🚀 Welcome to the Hotel API. Use the endpoints under /api");
+  res.send("Welcome to the Hotel API. Use the endpoints under /api");
 });
 
 // API routes
@@ -46,11 +46,11 @@ app.use("/api/shifts", shiftRoutes);
 // API main route to avoid "Cannot GET /api" error
 app.get("/api", (req, res) => {
   res.send(
-    "🚀 Welcome to the API. Use endpoints like /api/rooms, /api/hotels, etc."
+    "Welcome to the API. Use endpoints like /api/rooms, /api/hotels, etc."
   );
 });
 
-// Function to find an available port
+//
 const findAvailablePort = (startPort) => {
   return new Promise((resolve) => {
     const server = net.createServer();
@@ -60,16 +60,16 @@ const findAvailablePort = (startPort) => {
     });
 
     server.on("error", () => {
-      console.log(`⚠️ Port ${startPort} is in use. Trying ${startPort + 1}...`);
+      //console.log(`Port ${startPort} is in use. Trying ${startPort + 1}...`);
       resolve(findAvailablePort(startPort + 1));
     });
   });
 };
 
-// Start the server on an available port
+// Connect to the database
 (async () => {
   const PORT = await findAvailablePort(process.env.PORT || 3000);
   app.listen(PORT, () => {
-    console.log(`✅ Server running on http://localhost:${PORT}`);
+    //console.log(`Server running on http://localhost:${PORT}`);
   });
 })();

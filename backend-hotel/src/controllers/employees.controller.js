@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const getEmployees = (req, res) => {
   connection.query("SELECT * FROM employee", (err, results) => {
     if (err) {
-      console.error("❌ Error fetching employees:", err);
+      console.error("Error fetching employees:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
     res.json(results);
@@ -21,7 +21,7 @@ const getEmployeeById = (req, res) => {
     [empId],
     (err, results) => {
       if (err) {
-        console.error("❌ Error fetching employee:", err);
+        console.error(" Error fetching employee:", err);
         return res.status(500).json({ error: "Internal server error" });
       }
       if (results.length === 0) {
@@ -44,7 +44,7 @@ const createEmployee = async (req, res) => {
     emp_manager_id,
     emp_password,
     emp_hotel_id,
-    emp_role, // 👈 importante: que venga desde el body
+    emp_role,
   } = req.body;
 
   if (
@@ -79,7 +79,7 @@ const createEmployee = async (req, res) => {
       [emp_manager_id],
       async (err, results) => {
         if (err) {
-          console.error("❌ Error verificando manager:", err);
+          console.error("Error verificando manager:", err);
           return res.status(500).json({ error: "Error verificando manager" });
         }
 
@@ -124,17 +124,17 @@ const createEmployee = async (req, res) => {
 
       connection.query(insertSql, values, (err, results) => {
         if (err) {
-          console.error("❌ Error creando empleado:", err);
+          console.error("Error creando empleado:", err);
           return res.status(500).json({ error: "Error interno" });
         }
 
         res.status(201).json({
-          message: "✅ Empleado creado correctamente",
+          message: "Empleado creado correctamente",
           employeeId: results.insertId,
         });
       });
     } catch (err) {
-      console.error("❌ Error en la creación:", err);
+      console.error("Error en la creación:", err);
       return res.status(500).json({ error: "Error interno" });
     }
   }
@@ -185,7 +185,7 @@ const updateEmployee = (req, res) => {
     sql += `, emp_password = ?`;
     bcrypt.hash(emp_password, 10, (err, hashedPassword) => {
       if (err) {
-        console.error("❌ Error hashing password:", err);
+        console.error("Error hashing password:", err);
         return res.status(500).json({ error: "Internal server error" });
       }
       values.push(hashedPassword);
@@ -194,7 +194,7 @@ const updateEmployee = (req, res) => {
 
       connection.query(sql, values, (err, results) => {
         if (err) {
-          console.error("❌ Error updating employee:", err);
+          console.error("Error updating employee:", err);
           return res.status(500).json({ error: "Internal server error" });
         }
         if (results.affectedRows === 0) {
@@ -209,7 +209,7 @@ const updateEmployee = (req, res) => {
 
     connection.query(sql, values, (err, results) => {
       if (err) {
-        console.error("❌ Error updating employee:", err);
+        console.error("Error updating employee:", err);
         return res.status(500).json({ error: "Internal server error" });
       }
       if (results.affectedRows === 0) {
@@ -229,7 +229,7 @@ const deleteEmployee = (req, res) => {
     [empId],
     (err, results) => {
       if (err) {
-        console.error("❌ Error deleting employee:", err);
+        console.error("Error deleting employee:", err);
         return res.status(500).json({ error: "Internal server error" });
       }
       if (results.affectedRows === 0) {
@@ -251,7 +251,7 @@ const toggleEmployeeActive = (req, res) => {
 
   connection.query(query, [emp_id], (err, result) => {
     if (err) {
-      console.error("❌ Error al actualizar estado del empleado:", err);
+      console.error("Error al actualizar estado del empleado:", err);
       return res.status(500).json({ error: "Database error" });
     }
 
@@ -259,7 +259,7 @@ const toggleEmployeeActive = (req, res) => {
       return res.status(404).json({ message: "Empleado no encontrado" });
     }
 
-    res.json({ message: "✅ Estado del empleado actualizado correctamente" });
+    res.json({ message: "Estado del empleado actualizado correctamente" });
   });
 };
 

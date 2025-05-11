@@ -127,7 +127,7 @@ export function EmpReservationOffCanvas({ show, onHide, reservation, onUpdate })
       if (onUpdate) onUpdate();
       onHide();
     } catch (error) {
-      console.error("❌ Error al guardar cambios de estado:", error);
+      console.error("Error al guardar cambios de estado:", error);
     }
   };
 

@@ -100,7 +100,7 @@ let includes;
    </>;
       break;
     default:
-      includes = <p>🏨 Información adicional no disponible.</p>;
+      includes = <p>Información adicional no disponible.</p>;
   }
 
 

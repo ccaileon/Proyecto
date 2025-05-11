@@ -41,7 +41,7 @@ function Contacto() {
       const data = await response.json();
   
       if (response.ok) {
-        alert("✅ Mensaje enviado correctamente");
+        alert("Mensaje enviado correctamente");
         setFormData({
           name: '',
           surname: '',
@@ -50,11 +50,11 @@ function Contacto() {
           reason: ''
         });
       } else {
-        alert("❌ Error: " + data.message);
+        alert("Error: " + data.message);
       }
     } catch (error) {
-      console.error("❌ Error al enviar el mensaje:", error);
-      alert("❌ No se pudo enviar el mensaje. Inténtelo más tarde.");
+      console.error("Error al enviar el mensaje:", error);
+      alert("No se pudo enviar el mensaje. Inténtelo más tarde.");
     }
   };
   

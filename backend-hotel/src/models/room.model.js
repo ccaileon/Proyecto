@@ -3,7 +3,7 @@ const connection = require("../config/db");
 const Room = {
   searchRooms: (checkIn, checkOut, totalGuests, callback) => {
     if (typeof callback !== "function") {
-      console.error("❌ Error: callback no es una función");
+      console.error("Error: callback no es una función");
       return;
     }
 
@@ -28,11 +28,11 @@ const Room = {
 
     const queryParams = [totalGuests, checkIn, checkOut];
 
-    console.log("📌 Ejecutando consulta SQL con valores:", queryParams);
+    //console.log("Ejecutando consulta SQL con valores:", queryParams);
 
     connection.query(sql, queryParams, (err, results) => {
       if (err) {
-        console.error("❌ Error en la consulta SQL:", err);
+        console.error("Error en la consulta SQL:", err);
         return callback(err, null);
       }
       callback(null, results);

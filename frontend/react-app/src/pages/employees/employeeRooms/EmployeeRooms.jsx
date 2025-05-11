@@ -41,9 +41,9 @@ export default function EmpRooms() {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchRooms(); // 🔄 Refrescar
+      fetchRooms(); //Refrescar
     } catch (err) {
-      console.error("❌ Error al cambiar estado:", err);
+      console.error("Error al cambiar estado:", err);
       alert("Error al cambiar el estado de la habitación");
     }
   };

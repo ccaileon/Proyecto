@@ -27,7 +27,7 @@ export function EmpLoginNav(){
   
       // Cerrar turno automáticamente al cerrar navegador
       navigator.sendBeacon(`http://localhost:3000/api/shifts/logout/${user.id}`);
-      console.log("📤 Turno cerrado automáticamente al cerrar el navegador");
+      //console.log("Turno cerrado automáticamente al cerrar el navegador");
     };
   
     window.addEventListener("beforeunload", handleUnload);
@@ -53,7 +53,7 @@ export function EmpLoginNav(){
           },
         });        
       } catch (error) {
-        console.error("❌ Error al cerrar turno:", error);
+        console.error("Error al cerrar turno:", error);
       }
     }
   

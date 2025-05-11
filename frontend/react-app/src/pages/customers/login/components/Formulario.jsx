@@ -18,7 +18,7 @@ function FormularioLogin() {
   const [emailRecover, setEmailRecover] = useState("");
 
   const onSubmit = async (data) => {
-    console.log("📩 Datos enviados al backend:", data);
+    //console.log("Datos enviados al backend:", data);
 
     try {
       const response = await axios.post("http://localhost:3000/api/auth/login", {
@@ -26,14 +26,14 @@ function FormularioLogin() {
         password: data.password, // Enviar la contraseña ingresada
       });
 
-      console.log("✅ Login exitoso:", response.data);
+      //console.log("Login exitoso:", response.data);
 
       if (response.status === 200) {
 
         sessionStorage.setItem("clientToken", response.data.token);
         sessionStorage.setItem("clientUser", JSON.stringify(response.data.user));
         
-        console.log("🔑 Token almacenado en sessionStorage:", response.data.token);
+        //console.log("Token almacenado en sessionStorage:", response.data.token);
 
         alert.fire({
           title: "Inicio de sesión exitoso",
@@ -48,7 +48,7 @@ function FormularioLogin() {
         });
       }
     } catch (error) {
-      console.error("❌ Error en el inicio de sesión:", error);
+      console.error("Error en el inicio de sesión:", error);
       alert.fire({
         title: "Error",
         text: "Correo o contraseña incorrectos.",

@@ -5,7 +5,7 @@ const connection = require("../config/db");
 const login = (req, res) => {
   const { client_email, password } = req.body;
 
-  console.log("📩 Datos recibidos en el login:", { client_email, password });
+  //console.log("Datos recibidos en el login:", { client_email, password });
 
   if (!client_email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -28,35 +28,35 @@ const login = (req, res) => {
 
   connection.query(sql, [client_email], async (err, results) => {
     if (err) {
-      console.error("❌ Error en la consulta SQL:", err);
+      console.error("Error en la consulta SQL:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
 
     if (results.length === 0) {
-      console.warn("⚠️ No se encontró el usuario con el email:", client_email);
+      console.warn("No se encontró el usuario con el email:", client_email);
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
     const user = results[0];
 
-    console.log("🔍 Datos obtenidos de la base de datos:", user);
-    console.log("🔑 Contraseña en texto plano ingresada:", `"${password}"`);
-    console.log(
-      "🔐 Contraseña encriptada en la base de datos:",
+    //console.log("Datos obtenidos de la base de datos:", user);
+    //console.log("Contraseña en texto plano ingresada:", `"${password}"`);
+    /*console.log(
+      "Contraseña encriptada en la base de datos:",
       `"${user.account_passwd}"`
-    );
+    );*/
 
     // **Comparación de la contraseña**
     try {
       const passwordMatch = await bcrypt.compare(password, user.account_passwd);
-      console.log("🔍 Resultado de bcrypt.compare():", passwordMatch);
+      //console.log("Resultado de bcrypt.compare():", passwordMatch);
 
       if (!passwordMatch) {
-        console.warn("⚠️ Contraseña incorrecta para el usuario:", client_email);
+        console.warn("Contraseña incorrecta para el usuario:", client_email);
         return res.status(401).json({ error: "Invalid email or password" });
       }
 
-      console.log("✅ Usuario autenticado correctamente.");
+      //console.log("Usuario autenticado correctamente.");
 
       const token = jwt.sign(
         {
@@ -82,7 +82,7 @@ const login = (req, res) => {
         },
       });
     } catch (error) {
-      console.error("❌ Error en bcrypt.compare():", error);
+      console.error("Error en bcrypt.compare():", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   });
@@ -98,7 +98,7 @@ const employeeLogin = (req, res) => {
       { expiresIn: "15m" }
     );
     return res.json({
-      message: "✅ Login root exitoso",
+      message: "Login root exitoso",
       token,
       user: {
         id: 0,
@@ -122,7 +122,7 @@ const employeeLogin = (req, res) => {
 
   connection.query(sql, [emp_email], async (err, results) => {
     if (err) {
-      console.error("❌ Database error:", err);
+      console.error("Database error:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
 
@@ -132,10 +132,10 @@ const employeeLogin = (req, res) => {
 
     const employee = results[0];
 
-    // ⛔ Bloquear acceso si la cuenta está inactiva
+    //Bloquear acceso si la cuenta está inactiva
     if (employee.emp_active === 0) {
       return res.status(403).json({
-        error: "⛔ Tu cuenta está desactivada. Contacta con un administrador.",
+        error: "Tu cuenta está desactivada. Contacta con un administrador.",
       });
     }
 
@@ -150,7 +150,7 @@ const employeeLogin = (req, res) => {
 
     const now = new Date();
 
-    // ✅ Cerrar turno anterior si estaba abierto
+    //Cerrar turno anterior si estaba abierto
     const closePreviousShift = `
       UPDATE shift 
       SET shift_date_out = ?, hours_worked = TIMESTAMPDIFF(MINUTE, shift_date_in, ?) 
@@ -158,23 +158,23 @@ const employeeLogin = (req, res) => {
     `;
     connection.query(closePreviousShift, [now, now, employee.emp_id], (err) => {
       if (err) {
-        console.error("⚠️ No se pudo cerrar el turno anterior:", err);
+        console.error("No se pudo cerrar el turno anterior:", err);
         // No interrumpimos el login si falla
       }
     });
 
-    // ✅ Abrir nuevo turno
+    //Abrir nuevo turno
     const insertShift = `
       INSERT INTO shift (shift_emp_id, shift_date_in) VALUES (?, ?)
     `;
     connection.query(insertShift, [employee.emp_id, now], (shiftErr) => {
       if (shiftErr) {
-        console.error("❌ Error al registrar el turno:", shiftErr);
+        console.error("Error al registrar el turno:", shiftErr);
         // No interrumpimos el login si falla
       }
     });
 
-    // ✅ Generar token
+    //Generar token
     const token = jwt.sign(
       { emp_id: employee.emp_id, emp_email, emp_role: employee.emp_role },
       process.env.JWT_SECRET || "claveUltraSecreta",

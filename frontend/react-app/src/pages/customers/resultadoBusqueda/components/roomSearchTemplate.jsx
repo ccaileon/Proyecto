@@ -139,7 +139,7 @@ function RoomSearchTemplate({ precio, capacidad, imagenUrl, tipo }) {
       break;
 
     default:
-      includes = <p>🏨 Información adicional no disponible.</p>;
+      includes = <p>Información adicional no disponible.</p>;
   }
 
   return (
