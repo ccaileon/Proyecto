@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-05-2025 a las 20:29:20
+-- Tiempo de generación: 11-05-2025 a las 17:45:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,10 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `aplicacion_hotel`
 --
-CREATE DATABASE IF NOT EXISTS aplicacion_hotel;
-USE aplicacion_hotel;
-
-
 
 -- --------------------------------------------------------
 
@@ -42,7 +38,8 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
-(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 100);
+(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 140),
+(19, '$2b$10$n6JToE1pPsyDjIkyHW7spO9zsYfXeVAjVg24PmOdvzK.s0JWs2DS6', 140);
 
 -- --------------------------------------------------------
 
@@ -66,7 +63,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
+(17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com'),
+(19, 'DNI', '12345678L', 'Prueba', 'Nueva', 'Cuenta', 123456789, 'prueba@email.com');
 
 -- --------------------------------------------------------
 
@@ -89,12 +87,7 @@ CREATE TABLE `contact_messages` (
 --
 
 INSERT INTO `contact_messages` (`msg_id`, `msg_name`, `msg_surname`, `msg_email`, `msg_subject`, `msg_content`, `msg_date`) VALUES
-(1, 'Lola', 'Lolita', 'lola@gmail.com', 'soporte', 'Me gustaria reservar para un dia el servicio de SPA y me gustaria saber como se gestiona.', '2025-05-03 12:51:12'),
-(2, 'Lola', 'Lolita', 'lola@gmail.com', 'soporte', 'Me gustaria reservar para un dia el servicio de SPA y me gustaria saber como se gestiona.', '2025-05-03 12:54:26'),
-(3, 'Sheila', 'Sheila', 'sheila@gmail.com', 'soporte', 'Quiero informacion sobre la Excursión en Kayak', '2025-05-03 12:57:30'),
-(4, 'lola', 'loli', 'lola@gmail.com', 'consulta', 'asfssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdfgsgdftrhtrjtrjrtjtrjrjtrjr', '2025-05-03 12:58:15'),
-(5, 'ewqe', 'asd', 'asd@gmail.com', 'consulta', 'danwisncoancoewncvwienoiv', '2025-05-03 13:14:52'),
-(6, 'ewqe', 'asd', 'asd@gmail.com', 'consulta', 'danwisncoancoewncvwienoiv', '2025-05-03 13:16:41');
+(7, 'PruebaServicio', 'Uno', 'pruebaServicio@email.com', 'consulta', 'Se puede contratar el servicio yaen el hotel?', '2025-05-11 15:35:38');
 
 -- --------------------------------------------------------
 
@@ -122,10 +115,9 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`emp_id`, `emp_doc_id`, `emp_name`, `emp_surname_one`, `emp_surname_two`, `emp_telephone`, `emp_email`, `emp_manager_id`, `emp_password`, `emp_hotel_id`, `emp_role`, `emp_active`) VALUES
-(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff', 0),
+(2, '12345678', 'Juan', 'Pérez', 'Gómez', 987654321, 'juan.perez@email.com', 1, '$2a$10$XOZ5spTY86COtFTk7CMaY.EgF.NH4OQgvpH4sPbLW4lZ92GJnUzyu', '1', 'staff', 1),
 (4, '00000000X', 'Ana', 'López', '', 600123456, 'ana.manager@email.com', 1, '$2b$10$XK2c7Z8VfMZuCBnB4v/OCOSI7TpVMFQY2020dZhG0g1mtTsQE0Nv2', '1', 'manager', 1),
-(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff', 0),
-(7, '98765432Z', 'prueba', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 4, '$2a$10$wbMg3iYcMImERZFv6WpqGOEifGw50mt/L1k2ZGxQpEv29utoGhwKm', '1', 'staff', 0);
+(6, '98765432Z', 'Eduzu', 'Cip', NULL, 654987321, 'eduzu.admin@email.com', 5, '$2a$10$2l3PQVyereI8b4EBkNC1O.6NRdxx4Fk914PH..q3J3i1HzZ1tDP4W', '1', 'staff', 0);
 
 -- --------------------------------------------------------
 
@@ -155,13 +147,6 @@ CREATE TABLE `guest` (
   `guest_phone` varchar(20) DEFAULT NULL,
   `guest_preferences` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `guest`
---
-
-INSERT INTO `guest` (`guest_id`, `guest_name`, `guest_lastname`, `guest_email`, `guest_phone`, `guest_preferences`) VALUES
-(30, 'Laura', 'Sánchez', 'laura@example.com', '622123456', 'Cama doble');
 
 -- --------------------------------------------------------
 
@@ -206,9 +191,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`invoice_id`, `invoice_code_transact`, `invoice_details`, `invoice_pay_method`, `invoice_points_used`, `invoice_total_price`, `invoice_date`, `invoice_res_id`, `invoice_client_id`, `invoice_guest_id`) VALUES
-(14, NULL, 'Habitación plus, 2 adultos, 0 niños, 6 noches', 'tarjeta', 0, 726.00, '2025-05-03', 38, 17, NULL),
-(15, NULL, 'Reserva prueba Thunder', 'tarjeta', 0, 360.00, '2025-05-09', 39, 17, NULL),
-(16, NULL, 'Reserva a nombre de Laura Sánchez', 'tarjeta', 0, 360.00, '2025-05-09', 40, NULL, 30);
+(61, NULL, 'Habitación plus-family, 4 noches', 'Tarjeta', 0, 677.55, '2025-05-11', 85, 19, NULL);
 
 -- --------------------------------------------------------
 
@@ -235,17 +218,18 @@ CREATE TABLE `reservation` (
   `res_file_one` varchar(255) DEFAULT NULL,
   `res_file_two` varchar(255) DEFAULT NULL,
   `res_file_three` varchar(255) DEFAULT NULL,
-  `res_guest_id` int(11) DEFAULT NULL
+  `res_guest_id` int(11) DEFAULT NULL,
+  `res_add_points` int(11) DEFAULT 0,
+  `res_adults` int(11) NOT NULL DEFAULT 1,
+  `res_children` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
 --
 -- Volcado de datos para la tabla `reservation`
 --
 
-INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`) VALUES
-(38, 17, 36, 1, '2025-04-14', '2025-04-20', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Me gustria añadirle una botella de vino', 0, 'res_file_one-1746478139818.docx', 'res_file_two-1746535566029.docx', NULL, NULL),
-(39, 17, 3, 1, '2025-06-15', '2025-06-18', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Cliente repetidor', 0, NULL, NULL, NULL, NULL),
-(40, NULL, 4, 1, '2025-06-20', '2025-06-23', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Llegada sobre las 20h', 0, NULL, NULL, NULL, 30);
+INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_wants_double`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`, `res_add_points`, `res_adults`, `res_children`) VALUES
+(85, 19, 21, 1, '2025-05-20', '2025-05-24', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, NULL, NULL, 'Me gustaria que fuera un habitacion exterior. OK', 0, 'res_file_one-1746978088907.docx', NULL, NULL, NULL, 70, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -284,7 +268,7 @@ INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`, `r
 (34, 1, 'plus-family', 4, 0),
 (35, 1, 'plus-family', 4, 1),
 (36, 1, 'plus', 2, 0),
-(37, 1, 'plus', 2, 1),
+(37, 1, 'plus', 2, 0),
 (38, 1, 'plus', 2, 1),
 (39, 1, 'plus', 2, 1),
 (40, 1, 'plus', 2, 1),
@@ -305,20 +289,20 @@ INSERT INTO `room` (`room_id`, `room_hotel_id`, `room_type`, `room_capacity`, `r
 (55, 1, 'plus', 2, 1),
 (56, 1, 'suite', 4, 1),
 (57, 1, 'suite', 4, 1),
-(58, 1, 'suite', 4, 1),
+(58, 1, 'suite', 4, 0),
 (59, 1, 'standard', 2, 1),
 (60, 1, 'standard-family', 4, 1),
 (61, 1, 'standard', 2, 1),
 (62, 1, 'standard-family', 4, 1),
-(63, 1, 'standard-family', 4, 1),
+(63, 1, 'standard-family', 4, 0),
 (64, 1, 'standard-family', 4, 1),
 (65, 1, 'standard', 2, 1),
 (66, 1, 'standard', 2, 1),
 (67, 1, 'suite-family', 4, 1),
-(68, 1, 'suite-family', 4, 1),
+(68, 1, 'suite-family', 4, 0),
 (69, 1, 'suite-family', 4, 1),
 (70, 1, 'suite-family', 4, 1),
-(71, 1, 'suite-family', 4, 1),
+(71, 1, 'suite-family', 4, 0),
 (72, 1, 'suite-family', 4, 1),
 (73, 1, 'suite-family', 4, 1),
 (74, 1, 'suite-family', 4, 1);
@@ -347,7 +331,10 @@ INSERT INTO `shift` (`shift_id`, `shift_emp_id`, `shift_date_in`, `shift_date_ou
 (49, 4, '2025-05-08 20:35:29.417000', '2025-05-09 12:10:04.614000', 934),
 (50, 4, '2025-05-09 12:10:04.614000', '2025-05-09 16:15:36.689000', 245),
 (51, 4, '2025-05-09 16:15:36.689000', '2025-05-09 19:15:51.216000', 180),
-(52, 4, '2025-05-09 19:15:51.216000', '2025-05-09 19:19:15.590000', 3.4);
+(52, 4, '2025-05-09 19:15:51.216000', '2025-05-09 19:19:15.590000', 3.4),
+(53, 4, '2025-05-10 11:12:01.179000', '2025-05-10 14:43:05.743000', 211),
+(54, 4, '2025-05-10 14:43:05.743000', '2025-05-10 14:47:57.924000', 4.86667),
+(55, 4, '2025-05-11 17:40:05.983000', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -474,13 +461,13 @@ ALTER TABLE `type_room`
 -- AUTO_INCREMENT de la tabla `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `contact_messages`
 --
 ALTER TABLE `contact_messages`
-  MODIFY `msg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `msg_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `employee`
@@ -492,7 +479,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT de la tabla `guest`
 --
 ALTER TABLE `guest`
-  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `guest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `hotel`
@@ -504,13 +491,13 @@ ALTER TABLE `hotel`
 -- AUTO_INCREMENT de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT de la tabla `room`
@@ -522,7 +509,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT de la tabla `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Restricciones para tablas volcadas

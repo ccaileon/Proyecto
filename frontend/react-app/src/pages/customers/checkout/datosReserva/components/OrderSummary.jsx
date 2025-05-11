@@ -4,11 +4,24 @@ import "./orderSummary.css";
 
 function OrderSummary() {
   const [reserva, setReserva] = useState(null);
+  const [puntosUsados, setPuntosUsados] = useState(() => parseInt(sessionStorage.getItem("puntosUsados")) || 0);
 
+
+  // Carga los datos de la reserva desde sessionStorage
   useEffect(() => {
     const data = JSON.parse(sessionStorage.getItem("reservaData"));
     if (data) setReserva(data);
   }, []);
+  // Actualiza los puntos usados cada 300ms
+  useEffect(() => {
+  const interval = setInterval(() => {
+    const puntos = parseInt(sessionStorage.getItem("puntosUsados")) || 0;
+    setPuntosUsados(puntos);
+  }, 300);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   if (!reserva) return <p>Cargando datos...</p>;
 
@@ -22,10 +35,20 @@ function OrderSummary() {
   };
 
   const noches = calcularNoches(checkIn, checkOut);
-const tarifaHabitacion = (room.room_price * noches);
-const subtotal = tarifaHabitacion;
+  const tarifaHabitacion = (room.room_price * noches);
+  const subtotal = tarifaHabitacion;
   const iva = subtotal * 0.21;
-  const total = subtotal + iva;
+  let total = subtotal + iva;
+  let descuento = 0;
+
+  if (puntosUsados === 100) {
+    descuento = total * 0.05;
+  } else if (puntosUsados === 200) {
+    descuento = total * 0.10;
+  }
+
+  total = total - descuento;
+
 
   const titulos = {
     "standard": "Habitación Estándar",
@@ -35,7 +58,7 @@ const subtotal = tarifaHabitacion;
     "suite": "Suite de Lujo",
     "suite-family": "Suite Familiar de Lujo",
   };
-const titulo = titulos[room.room_type] || "Habitación No Definida";
+  const titulo = titulos[room.room_type] || "Habitación No Definida";
 
   return (
     <Container className="resumen">
@@ -75,14 +98,26 @@ const titulo = titulos[room.room_type] || "Habitación No Definida";
   
           <Row>
             <Col xs={6}><strong>Subtotal</strong></Col>
-            <Col xs={6}>{subtotal}€</Col>
+            <Col xs={6}>{subtotal.toFixed(2)}€</Col>
           </Row>
           <Row>
             <Col xs={6}><strong>IVA 21%</strong></Col>
             <Col xs={6}>{iva.toFixed(2)}€</Col>
           </Row>
           <hr />
+                  {puntosUsados > 0 && (
           <Row>
+            <Col xs={6}><strong>Descuento aplicado</strong><br /></Col>
+            <Col xs={6}>- {descuento.toFixed(2)}€</Col>
+            <hr />
+            
+          </Row>
+          
+        )}
+
+        
+          <Row>
+            
             <Col xs={6}><h4><strong>Total</strong></h4></Col>
             <Col xs={6}><h4><strong>{total.toFixed(2)}€</strong></h4></Col>
           </Row>
