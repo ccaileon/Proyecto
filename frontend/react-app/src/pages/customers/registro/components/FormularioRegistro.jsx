@@ -115,14 +115,20 @@ function FormularioRegistro() {
           {emailDuplicado && <p className="text-danger">Este correo ya está registrado</p>}
         </Form.Group>
 
-        <Form.Group controlId="formContraseña" className="mt-2">
-          <Form.Control
-            type="password"
-            placeholder="Contraseña *"
-            {...register("clave", { required: "Este campo es obligatorio" })}
-          />
-          {errors.clave && <p className="text-danger">{errors.clave.message}</p>}
-        </Form.Group>
+    <Form.Group controlId="formClave" className="mt-2">
+  <Form.Control
+    type="password"
+    placeholder="Contraseña *"
+    {...register("clave", {
+      required: "Este campo es obligatorio",
+      minLength: {
+        value: 8,
+        message: "La contraseña debe tener al menos 8 caracteres"
+      }
+    })}
+  />
+  {errors.clave && <p className="text-danger">{errors.clave.message}</p>}
+</Form.Group>
 
         <Button variant="primary" type="submit" className="mt-4 w-100">
           Registrarme
