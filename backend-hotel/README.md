@@ -1,30 +1,30 @@
-# 🏨 Proyecto Backend - API Hotel
+# Proyecto Backend - API Hotel
 
 Este documento proporciona instrucciones para instalar, configurar y ejecutar el backend de la API del hotel, asegurando una correcta conexión con la base de datos y la integración con el frontend.
 
 ---
 
-## 📌 Requisitos Previos
+## Requisitos Previos
 
 Antes de instalar las dependencias y ejecutar el servidor, asegúrate de tener instalado lo siguiente en tu sistema:
 
-✅ **Node.js** (Versión recomendada: **18.x o superior**)  
-✅ **MySQL** (o MariaDB)  
-✅ **Postman** (opcional, para probar la API)  
-✅ **Git** (opcional, para clonar el repositorio)
+**Node.js** (Versión recomendada: **18.x o superior**)  
+ **MySQL** (o MariaDB)  
+ **Postman** (opcional, para probar la API)  
+ **Git** (opcional, para clonar el repositorio)
 
 ---
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
-### **1️⃣ Clonar el repositorio**
+### ** Clonar el repositorio**
 
 ```
 git clone https://github.com/TuUsuario/Proyecto-Hotel.git
 cd Proyecto-Hotel/backend-hotel
 ```
 
-### **2️⃣ Instalar dependencias de Node.js**
+### ** Instalar dependencias de Node.js**
 
 Ejecuta el siguiente comando dentro de la carpeta **backend-hotel**:
 
@@ -32,7 +32,7 @@ Ejecuta el siguiente comando dentro de la carpeta **backend-hotel**:
 npm install
 ```
 
-📦 **Dependencias clave instaladas:**
+**Dependencias clave instaladas:**
 
 - `express` → Framework para manejar peticiones HTTP.
 - `cors` → Permite la comunicación entre frontend y backend.
@@ -42,9 +42,9 @@ npm install
 
 ---
 
-## 🔑 Configuración de la Base de Datos
+## Configuración de la Base de Datos
 
-### **3️⃣ Crear la base de datos en MySQL**
+### ** Crear la base de datos en MySQL**
 
 Abre MySQL y ejecuta:
 
@@ -52,14 +52,14 @@ Abre MySQL y ejecuta:
 CREATE DATABASE aplicacion_hotel;
 ```
 
-📍 **Cargar la estructura desde el archivo SQL**  
+**Cargar la estructura desde el archivo SQL**  
 Si tienes el archivo `aplicacion_hotel.sql`, impórtalo en MySQL con:
 
 ```
 mysql -u root -p aplicacion_hotel < aplicacion_hotel.sql
 ```
 
-### **4️⃣ Configurar la conexión con MySQL**
+### ** Configurar la conexión con MySQL**
 
 En la raíz del backend, hay un archivo **`.env`** donde se configuran las credenciales de la base de datos.  
 Si no existe, créalo y agrega:
@@ -72,11 +72,11 @@ DB_NAME=aplicacion_hotel
 PORT=3000
 ```
 
-📌 **Recuerda:** Si cambias los datos de la base de datos en MySQL, actualízalos aquí.
+**Recuerda:** Si cambias los datos de la base de datos en MySQL, actualízalos aquí.
 
 ---
 
-## 🏗 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 backend-hotel/
@@ -94,9 +94,9 @@ backend-hotel/
 
 ---
 
-## ▶️ Ejecutar el Servidor
+## Ejecutar el Servidor
 
-### **5️⃣ Iniciar el backend**
+### **Iniciar el backend**
 
 Para ejecutar el backend en desarrollo:
 
@@ -112,7 +112,7 @@ Para ejecutar en producción:
 node src/server.js
 ```
 
-### **6️⃣ Verificar que la API está corriendo**
+### **Verificar que la API está corriendo**
 
 Abre tu navegador o por ejemplo Postman, Thunder Client y accede a:
 
@@ -124,7 +124,7 @@ Si todo está correcto, deberías ver un **JSON** con los datos de los hoteles.
 
 ---
 
-## 🔗 Conexión con el Frontend
+## Conexión con el Frontend
 
 Si tienes el frontend desarrollado , sigue estos pasos:
 
@@ -148,21 +148,21 @@ http://localhost:3000
 
 ---
 
-## 🔥 Solución de Errores Comunes
+## Solución de Errores Comunes
 
-🔴 **Error: "Cannot connect to MySQL"**  
-🔹 Revisa que MySQL esté corriendo con:
+**Error: "Cannot connect to MySQL"**  
+ Revisa que MySQL esté corriendo con:
 
 ```
 sudo systemctl start mysql  # En Linux
 net start MySQL             # En Windows
 ```
 
-🔴 **Error: "EADDRINUSE: Address already in use"**  
-🔹 Significa que el puerto **3000** ya está en uso. El servidor automáticamente buscará el siguiente disponible.
+**Error: "EADDRINUSE: Address already in use"**  
+ Significa que el puerto **3000** ya está en uso. El servidor automáticamente buscará el siguiente disponible.
 
-🔴 **Error en instalación de paquetes (`ERESOLVE`)**  
-🔹 Fuerza la instalación con:
+**Error en instalación de paquetes (`ERESOLVE`)**  
+ Fuerza la instalación con:
 
 ```
 npm install --legacy-peer-deps
@@ -170,27 +170,27 @@ npm install --legacy-peer-deps
 
 ---
 
-## 🆕 Funcionalidades Implementadas
+## Funcionalidades Implementadas
 
-### 📩 Envío de Consultas desde el Formulario de Contacto
+### Envío de Consultas desde el Formulario de Contacto
 
 - Los clientes (registrados o no) pueden enviar un mensaje desde la página de contacto.
 - Estos mensajes se almacenan en la tabla `contact_messages` de la base de datos.
 - Están disponibles para que los empleados puedan visualizarlos posteriormente desde el panel de administración.
 
-### 🧾 Sistema de Reservas
+### Sistema de Reservas
 
 - Se puede reservar como **invitado** (guest) o como **cliente registrado** (client).
 - Las reservas se guardan en la tabla `reservation` y su correspondiente factura en la tabla `invoice`.
 - Para los clientes registrados, se les puede asignar un empleado que gestiona el `checkin` y `checkout`.
 
-### 🎁 Sistema de Puntos de Recompensa
+### Sistema de Puntos de Recompensa
 
 - Por cada **100€** pagados en una reserva, se otorgan **10 puntos**.
 - Los puntos se acumulan en la tabla `account`, que relaciona al cliente con su saldo de puntos.
 - Estos puntos podrán usarse como **descuento** (ej. 100 puntos = 5% de descuento) en futuras versiones.
 
-### 👤 Visualización de Puntos Acumulados
+### Visualización de Puntos Acumulados
 
 - Los clientes registrados pueden ver sus puntos acumulados desde la sección **"Recompensas"** en su perfil.
 - Se accede a través del endpoint protegido `GET /api/clients/me` usando JWT.
@@ -207,13 +207,13 @@ npm install --legacy-peer-deps
 
 - Si el archivo ya existe en el sistema, no se subirá de nuevo.
 
-### 📥 Subida y Descarga de Archivos en Reservas
+### Subida y Descarga de Archivos en Reservas
 
 - Los empleados pueden subir hasta 3 archivos asociados a cada reserva.
 - Los archivos se almacenan físicamente en `/uploads/reservations` y se referencian en la base de datos.
 - Desde el panel de gestión, los documentos pueden ser descargados con un clic en el icono correspondiente.
 
-### 👥 Gestión de Tipos de Empleados
+### Gestión de Tipos de Empleados
 
 - El sistema permite la gestión de tipos de empleados dentro de la plataforma, diferenciando entre empleados estándar (Staff) y gerentes (Managers).
 
@@ -221,7 +221,7 @@ npm install --legacy-peer-deps
 
 - Los empleados estándar tienen permisos más limitados, solo pueden gestionar reservas y ver los detalles de los clientes.
 
-#### 🔄 Modificación de Datos en la Gestión de Reservas
+#### Modificación de Datos en la Gestión de Reservas
 
 - Los empleados pueden modificar los datos de una reserva desde la interfaz de administración (OffCanvas).
 
@@ -243,11 +243,11 @@ npm install --legacy-peer-deps
 
 ---
 
-## 🛏️ Gestión de Habitaciones
+## Gestión de Habitaciones
 
 El sistema permite a los empleados con rol **manager** visualizar, filtrar y modificar el estado de las habitaciones del hotel.
 
-### 🔎 Funcionalidades disponibles
+### Funcionalidades disponibles
 
 - **Listar habitaciones**: Se muestran todas las habitaciones agrupadas por tipo.
 - **Filtrar por estado**: Se puede filtrar por:
@@ -256,13 +256,13 @@ El sistema permite a los empleados con rol **manager** visualizar, filtrar y mod
   - Deshabilitadas
 - **Habilitar/Deshabilitar** habitaciones: Solo disponible para usuarios con rol `manager`.
 
-### 🔐 Requisitos
+### Requisitos
 
 - Autenticación mediante token JWT.
 - El token debe guardarse en `sessionStorage` como `Token`.
 - El usuario debe tener el rol `manager` guardado como `User` en `sessionStorage`.
 
-### 📦 Endpoints utilizados
+### Endpoints utilizados
 
 #### GET `/api/rooms`
 
@@ -277,7 +277,7 @@ El sistema permite a los empleados con rol **manager** visualizar, filtrar y mod
 
 - Deshabilita la habitación con ID específico.
 
-### 🧠 Lógica de React
+### Lógica de React
 
 - El componente `EmpRooms` obtiene el listado de habitaciones y las agrupa por tipo.
 - Al hacer clic en los botones de acción, se envía una petición `PUT` para cambiar el estado de la habitación.
@@ -285,13 +285,13 @@ El sistema permite a los empleados con rol **manager** visualizar, filtrar y mod
 
 ---
 
-# 🏨 Gestión de Empleados - Backend Hotel
+# Gestión de Empleados - Backend Hotel
 
 Este documento explica cómo crear empleados de tipo **staff** o **manager** en el sistema del hotel, así como qué hacer si no hay empleados creados y necesitas obtener un token de autorización.
 
 ---
 
-## 🔒 Requisitos previos
+## Requisitos previos
 
 - Tener el backend corriendo: `npm start`
 - Tener una base de datos MySQL funcional y configurada.
@@ -300,7 +300,7 @@ Este documento explica cómo crear empleados de tipo **staff** o **manager** en 
 
 ---
 
-## 📅 Crear empleados staff o manager
+## Crear empleados staff o manager
 
 ### 1. Endpoint
 
@@ -349,7 +349,7 @@ Content-Type: application/json
 }
 ```
 
-### ⚠️ Reglas importantes:
+### Reglas importantes:
 
 - El campo `emp_role` debe ser "manager" o "staff".
 - Si `emp_role` es **staff**, el campo `emp_manager_id` **es obligatorio**.
@@ -358,7 +358,7 @@ Content-Type: application/json
 
 ---
 
-## ⚡️ Inicio de sesión de empleados
+## Inicio de sesión de empleados
 
 ### Endpoint
 
@@ -379,7 +379,7 @@ Este login te devolverá un token JWT en caso de éxito, que puedes usar para to
 
 ---
 
-## ❓ ¿No hay ningún empleado en la base de datos?
+## ¿No hay ningún empleado en la base de datos?
 
 ### Usa el superusuario de emergencia
 
