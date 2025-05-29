@@ -19,7 +19,14 @@ SET time_zone = "+00:00";
 
 --
 -- Base de datos: `aplicacion_hotel`
---
+
+-- Crear la base de datos si no existe
+CREATE DATABASE IF NOT EXISTS aplicacion_hotel
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_general_ci;
+
+-- Usar la base de datos creada
+USE aplicacion_hotel;
 
 -- --------------------------------------------------------
 
