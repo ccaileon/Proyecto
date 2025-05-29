@@ -15,7 +15,7 @@ const registerShiftOut = (req, res) => {
 
   connection.query(findLastOpenShift, [emp_id], (err, results) => {
     if (err) {
-      console.error("❌ Error al buscar turno abierto:", err);
+      console.error(" Error al buscar turno abierto:", err);
       return res.status(500).json({ error: "Error buscando turno abierto" });
     }
 
@@ -51,12 +51,12 @@ const registerShiftOut = (req, res) => {
       [now, minutesWorked, shift_id],
       (err, result) => {
         if (err) {
-          console.error("❌ Error al actualizar turno:", err);
+          console.error(" Error al actualizar turno:", err);
           return res.status(500).json({ error: "Error cerrando el turno" });
         }
 
         res.json({
-          message: "✅ Turno cerrado correctamente",
+          message: " Turno cerrado correctamente",
           worked: {
             hours,
             minutes,
