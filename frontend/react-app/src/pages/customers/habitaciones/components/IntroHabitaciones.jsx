@@ -6,7 +6,7 @@ function IntroHabitaciones() {
     <Container className="intro">
       <Row>
         <Col className="col">
-          <img className="imagen" src="src/assets/img/imgHabitaciones/contenido/intro-habitaciones.jpg" alt="Intro Habitaciones" width="100%"/>
+          <img className="img-borde" src="src/assets/img/imgHabitaciones/contenido/intro-habitaciones.jpg" alt="Intro Habitaciones" width="100%"/>
         </Col>
 
         <Col>

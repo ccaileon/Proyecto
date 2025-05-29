@@ -8,7 +8,7 @@ useEffect(() => {
   
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      if (window.innerWidth > 768 && cabecera) {
+      if (window.innerWidth > 913 && cabecera) {
  
         cabecera.style.backgroundPositionY = `${-scrollY * 0.2}px`;
       } else {

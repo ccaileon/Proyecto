@@ -60,7 +60,7 @@ export default function EmpReservationsList({ data, onRowClick }) {
   );
 }
 
-// 📌 Validación de PropTypes
+//Validación de PropTypes
 EmpReservationsList.propTypes = {
   data: PropTypes.array.isRequired,
   onRowClick: PropTypes.func.isRequired,

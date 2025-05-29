@@ -1,5 +1,6 @@
 import { Container, Accordion } from "react-bootstrap"
 import { NavLink } from "react-router-dom";
+import "./loginRegistro.css";
 
 function LoginRegistro() {
 return(

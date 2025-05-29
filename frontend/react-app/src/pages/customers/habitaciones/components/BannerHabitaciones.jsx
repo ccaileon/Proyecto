@@ -1,6 +1,5 @@
 import "./bannerHabitaciones.css";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 
 function BannerHabitaciones() {
   return (
@@ -13,9 +12,9 @@ function BannerHabitaciones() {
             <p>
               Es el momento de desconectar y disfrutar. Relájate en un entorno único, con el confort y la atención que mereces. 
             </p>
-                      <NavLink to="/contacto">
+<a href="#buscador">
   <Button className="btn">Reservar Estancia</Button>
-</NavLink>
+</a>
           </Col>
         </Row>
       </Container>

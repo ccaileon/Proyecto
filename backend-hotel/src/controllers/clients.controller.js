@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt"); // Importamos bcrypt para hashear la contraseña
 const connection = require("../config/db");
-
+// Importamos la conexión a la base de datos
 const deleteClient = (req, res) => {
   const clientId = req.params.id;
 
@@ -8,7 +8,7 @@ const deleteClient = (req, res) => {
   const deleteAccountSQL = "DELETE FROM account WHERE account_client_id = ?";
   connection.query(deleteAccountSQL, [clientId], (err) => {
     if (err) {
-      console.error("❌ Error deleting account:", err);
+      console.error("Error deleting account:", err);
       return res.status(500).json({ error: "Error deleting account" });
     }
 
@@ -16,7 +16,7 @@ const deleteClient = (req, res) => {
     const deleteClientSQL = "DELETE FROM client WHERE client_id = ?";
     connection.query(deleteClientSQL, [clientId], (err, results) => {
       if (err) {
-        console.error("❌ Error deleting client:", err);
+        console.error("Error deleting client:", err);
         return res.status(500).json({ error: "Error deleting client" });
       }
 
@@ -28,7 +28,7 @@ const deleteClient = (req, res) => {
     });
   });
 };
-
+// Actualizar un cliente
 const updateClient = (req, res) => {
   const clientId = req.params.id;
   const {
@@ -91,33 +91,33 @@ const updateClient = (req, res) => {
 
   connection.query(sql, values, (err, results) => {
     if (err) {
-      console.error("❌ Error updating client:", err);
+      console.error("Error updating client:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
     if (results.affectedRows === 0) {
       return res.status(404).json({ error: "Client not found" });
     }
-    return res.json({ message: "✅ Cliente actualizado correctamente" });
+    return res.json({ message: "Cliente actualizado correctamente" });
   });
 };
-
+// Obtener todos los clientes
 const getClients = (req, res) => {
   connection.query("SELECT * FROM client", (err, results) => {
     if (err) {
-      console.error("❌ Error fetching clients:", err);
+      console.error("Error fetching clients:", err);
       return res.status(500).json({ error: "Internal server error" });
     }
     res.json(results);
   });
 };
-
+// Obtener un cliente por ID
 const getClientById = (req, res) => {
   const clientId = req.params.id;
 
   const sql = "SELECT * FROM client WHERE client_id = ?";
   connection.query(sql, [clientId], (err, results) => {
     if (err) {
-      console.error("❌ Error fetching client:", err);
+      console.error("Error fetching client:", err);
       res.status(500).json({ error: "Internal server error" });
     } else if (results.length === 0) {
       res.status(404).json({ error: "Client not found" });
@@ -127,10 +127,8 @@ const getClientById = (req, res) => {
   });
 };
 
-// 🚀 Aquí agregamos el console.log para depurar
+// Crear un nuevo cliente y su cuenta asociada
 const createClient = async (req, res) => {
-  console.log("🔍 Datos recibidos en el backend:", req.body);
-
   const {
     client_name,
     client_surname_one,
@@ -147,52 +145,72 @@ const createClient = async (req, res) => {
     !client_email ||
     !password
   ) {
-    console.log("❌ Faltan datos obligatorios en la solicitud");
     return res.status(400).json({ error: "Required fields are missing" });
   }
 
   try {
-    // **Paso 1: Hashear la contraseña antes de almacenarla**
+    //Validar si el email ya existe
+    const [emailRows] = await connection
+      .promise()
+      .query("SELECT client_id FROM client WHERE client_email = ?", [
+        client_email,
+      ]);
+
+    if (emailRows.length > 0) {
+      return res.status(409).json({ error: "Este correo ya está registrado" });
+    }
+
+    //Hashear la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("🔑 Hash generado antes de guardarlo:", hashedPassword); // <-- Verificar el hash
 
-    // **Paso 2: Insertar el cliente en la tabla `client`**
-    const sqlClient =
-      "INSERT INTO client (client_name, client_surname_one, client_surname_two, client_telephone, client_email) VALUES (?, ?, ?, ?, ?)";
+    //Insertar cliente
+    const [clientResult] = await connection
+      .promise()
+      .query(
+        "INSERT INTO client (client_name, client_surname_one, client_surname_two, client_telephone, client_email) VALUES (?, ?, ?, ?, ?)",
+        [
+          client_name,
+          client_surname_one,
+          client_surname_two || "",
+          client_telephone,
+          client_email,
+        ]
+      );
 
-    const valuesClient = [
-      client_name,
-      client_surname_one,
-      client_surname_two,
-      client_telephone,
-      client_email,
-    ];
+    const clientId = clientResult.insertId;
 
-    connection.query(sqlClient, valuesClient, (err, results) => {
-      if (err) {
-        console.error("❌ Error creando cliente:", err);
-        return res.status(500).json({ error: "Internal server error" });
+    //Insertar cuenta asociada
+    await connection
+      .promise()
+      .query(
+        "INSERT INTO account (account_client_id, account_passwd, account_points) VALUES (?, ?, ?)",
+        [clientId, hashedPassword, 0]
+      );
+
+    return res
+      .status(201)
+      .json({ message: "Cliente y cuenta creados con éxito" });
+  } catch (err) {
+    console.error("Error en el registro:", err);
+
+    const msg = err.sqlMessage?.toLowerCase() || "";
+
+    if (err.code === "ER_DUP_ENTRY") {
+      if (msg.includes("client_email")) {
+        return res
+          .status(409)
+          .json({ error: "Este correo ya está registrado" });
+      }
+      if (msg.includes("account_client_id")) {
+        return res
+          .status(409)
+          .json({ error: "Este cliente ya tiene una cuenta" });
       }
 
-      const clientId = results.insertId; // Obtenemos el ID del cliente insertado
+      return res.status(409).json({ error: "Valor duplicado" });
+    }
 
-      // **Paso 3: Insertar la cuenta en la tabla `account`**
-      const sqlAccount =
-        "INSERT INTO account (account_client_id, account_passwd, account_points) VALUES (?, ?, ?)";
-
-      const valuesAccount = [clientId, hashedPassword, 0]; // Inicializamos puntos en 0
-
-      connection.query(sqlAccount, valuesAccount, (err, results) => {
-        if (err) {
-          console.error("❌ Error creando cuenta:", err);
-          return res.status(500).json({ error: "Internal server error" });
-        }
-        res.status(201).json({ message: "Cliente y cuenta creados con éxito" });
-      });
-    });
-  } catch (error) {
-    console.error("❌ Error general en el registro:", error);
-    res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -216,7 +234,7 @@ const getClientProfile = (req, res) => {
 
   connection.query(sql, [clientId], (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo perfil del cliente:", err);
+      console.error("Error obteniendo perfil del cliente:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
 

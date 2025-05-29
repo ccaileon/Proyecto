@@ -11,7 +11,6 @@ import PoliticaPrivacidad from "./pages/customers/terminosLegales/politicaPrivac
 import TerminosCondiciones from "./pages/customers/terminosLegales/terminosCondiciones/TerminosCondiciones.jsx";
 // -- Cuenta de Usuario --
 import Datos from "./pages/customers/account/Datos/Datos.jsx";
-import Preferencias from "./pages/customers/account/Preferencias/Preferencias.jsx";
 import Recompensas from "./pages/customers/account/Recompensas/Recompensas.jsx";
 import Reservas from "./pages/customers/account/Reservas/Reservas.jsx";
 // -- Checkout --
@@ -33,6 +32,7 @@ import EmployeeMenu from "./pages/employees/employeeMenu/EmployeeMenu.jsx";
 import EmpRooms from "./pages/employees/employeeRooms/EmployeeRooms.jsx";
 import EmpReservations from "./pages/employees/employeeReservations/EmployeeReservations.jsx";
 import EmpReservationsList from "./pages/employees/employeeReservations/components/employeeReservationsList/EmployeeReservationsList.jsx";
+import { EmployeeList } from "./pages/employees/employeeMenu/components/EmployeeList";
 
 // -- Rutas Privadas --
 import PrivateRoute from "./components/PrivateRoute.jsx";
@@ -46,7 +46,7 @@ function Layout() {
 
   const rutasConMenu = [ // Almacena las rutas en las que el menu público es visible
 "/", "/habitaciones", "/servicios", "/contacto", "/login", 
-    "/registro", "/search", "/datos", "/preferencias", 
+    "/registro", "/search", "/datos",
     "/recompensas", "/reservas", "/aviso", "/privacidad", "/condiciones", "datosReserva"
   ];
 
@@ -68,7 +68,6 @@ function Layout() {
           <Route path="/registro" element={<Registro />} />
           <Route path="/search" element={<ResultadoBusqueda />} />
           <Route path="/datos" element={<PrivateRouteClient><Datos /></PrivateRouteClient>} />
-          <Route path="/preferencias" element={<PrivateRouteClient><Preferencias /></PrivateRouteClient>} />
           <Route path="/recompensas" element={<PrivateRouteClient><Recompensas /></PrivateRouteClient>} />
           <Route path="/reservas" element={<PrivateRouteClient><Reservas /></PrivateRouteClient>} />
           <Route path="/aviso" element={<AvisoLegal />} />
@@ -98,6 +97,7 @@ function App() {
         <Route path="*" element={<Layout />} />
 
         { /* Rutas Privadas Empleado */}
+        <Route path="/employee/menu/employees" element={<EmployeeList />} />
         <Route path="/employee" element={<EmployeeLogin/>}/>
         <Route path="/employee/:menu" element={
           <PrivateRoute><EmployeeMenu /></PrivateRoute>} />

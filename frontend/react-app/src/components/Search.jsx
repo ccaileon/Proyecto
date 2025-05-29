@@ -56,13 +56,13 @@ function Search() {
     sessionStorage.setItem("checkin", checkIn);
     sessionStorage.setItem("checkout", checkOut);
 
-    console.log("🚀 Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
+   //console.log("Parámetros enviados a la URL:", { checkIn, checkOut, adultos, ninos });
 
     navigate(`/search?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adultos}&children=${ninos}`);
   };
 
   return (
-    <Container fluid className="buscador">
+    <Container fluid className="buscador" id="buscador">
       <Form className="w-100">
         <Row className="align-items-end flex-wrap gy-3">
           <Col xs={12} sm={6} md={3}>
@@ -105,18 +105,34 @@ function Search() {
         </Row>
       </Form>
 
-      {showCalendar && (
-        <div ref={calendarRef} className="calendar-container mt-3">
-          <DateRange
-            editableDateInputs={true}
-            onChange={item => setState([item.selection])}
-            moveRangeOnFirstSelection={false}
-            ranges={state}
-            showDateDisplay={false}
-          />
-          <Button className="btn-listo mt-2" onClick={() => setShowCalendar(false)}>Listo</Button>
-        </div>
-      )}
+{showCalendar && (
+  <div ref={calendarRef} className="calendar-container mt-3">
+    <DateRange
+      editableDateInputs={true}
+      onChange={item => {
+        const { startDate, endDate } = item.selection;
+        const today = new Date();
+        const oneDay = 24 * 60 * 60 * 1000;
+
+        // No permitir fechas pasadas
+        const validStartDate = startDate < today ? today : startDate;
+
+        // Asegurar que la fecha de salida sea posterior
+        const validEndDate = endDate <= validStartDate
+          ? new Date(validStartDate.getTime() + oneDay)
+          : endDate;
+
+        setState([{ ...item.selection, startDate: validStartDate, endDate: validEndDate }]);
+      }}
+      moveRangeOnFirstSelection={false}
+      ranges={state}
+      showDateDisplay={false}
+      minDate={new Date()} // Evitar fechas anteriores a la fecha actual
+    />
+    <Button className="btn-listo mt-2" onClick={() => setShowCalendar(false)}>Listo</Button>
+  </div>
+)}
+
     </Container>
   );
 }

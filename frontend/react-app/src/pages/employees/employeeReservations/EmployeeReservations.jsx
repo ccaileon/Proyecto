@@ -11,7 +11,7 @@ export default function EmpReservations() {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
-  // 🔁 Esta función se puede usar para cargar o recargar las reservas
+  // Esta función se puede usar para cargar o recargar las reservas
   const fetchReservations = async () => {
     try {
       const token = sessionStorage.getItem("Token");
@@ -28,7 +28,7 @@ export default function EmpReservations() {
     }
   };
 
-  // 🔄 Cargar al montar el componente
+  //Cargar al montar el componente
   useEffect(() => {
     fetchReservations();
   }, []);
@@ -52,7 +52,7 @@ export default function EmpReservations() {
         show={showOffcanvas}
         onHide={handleCloseOffcanvas}
         reservation={selectedReservation}
-        onUpdate={fetchReservations} // ✅ Ahora se recarga automáticamente
+        onUpdate={fetchReservations} // Recargar reservas después de editar o eliminar
       />
     </Container>
   );

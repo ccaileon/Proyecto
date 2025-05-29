@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Offcanvas, Form, Button, Row, Col } from 'react-bootstrap';
 import axios from "axios";
+import { FaDownload } from "react-icons/fa";
+
 
 const mapEstadoReservaToBackend = (estado) => {
   switch (estado) {
@@ -125,7 +127,7 @@ export function EmpReservationOffCanvas({ show, onHide, reservation, onUpdate })
       if (onUpdate) onUpdate();
       onHide();
     } catch (error) {
-      console.error("❌ Error al guardar cambios de estado:", error);
+      console.error("Error al guardar cambios de estado:", error);
     }
   };
 
@@ -263,24 +265,57 @@ export function EmpReservationOffCanvas({ show, onHide, reservation, onUpdate })
           </Row>
 
           <Row className="align-items-center border-bottom pb-3">
-            <Col xs="auto">
-              <Form.Group>
-                <Form.Label>Subir documento 1:</Form.Label>
-                <Form.Control type="file" onChange={(e) => setFile1(e.target.files[0])} />
-              </Form.Group>
-            </Col>
-            <Col xs="auto">
-              <Form.Group>
-                <Form.Label>Subir documento 2:</Form.Label>
-                <Form.Control type="file" onChange={(e) => setFile2(e.target.files[0])} />
-              </Form.Group>
-            </Col>
-            <Col xs="auto">
-              <Form.Group>
-                <Form.Label>Subir documento 3:</Form.Label>
-                <Form.Control type="file" onChange={(e) => setFile3(e.target.files[0])} />
-              </Form.Group>
-            </Col>
+          <Col xs="auto">
+          <Form.Group>
+            <Form.Label>Subir documento 1:</Form.Label>
+            <Form.Control type="file" onChange={(e) => setFile1(e.target.files[0])} />
+            {reservaCargada?.res_file_one && (
+              <a
+                href={`http://localhost:3000/api/reservations/${reservaCargada.res_id}/download/res_file_one?token=${sessionStorage.getItem("Token")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ms-2 d-inline-block"
+              >
+                <FaDownload title="Descargar documento 1" />
+              </a>
+            )}
+          </Form.Group>
+        </Col>
+
+        <Col xs="auto">
+          <Form.Group>
+            <Form.Label>Subir documento 2:</Form.Label>
+            <Form.Control type="file" onChange={(e) => setFile2(e.target.files[0])} />
+            {reservaCargada?.res_file_two && (
+              <a
+                href={`http://localhost:3000/api/reservations/${reservaCargada.res_id}/download/res_file_two?token=${sessionStorage.getItem("Token")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ms-2 d-inline-block"
+              >
+                <FaDownload title="Descargar documento 2" />
+              </a>
+            )}
+          </Form.Group>
+        </Col>
+
+        <Col xs="auto">
+          <Form.Group>
+            <Form.Label>Subir documento 3:</Form.Label>
+            <Form.Control type="file" onChange={(e) => setFile3(e.target.files[0])} />
+            {reservaCargada?.res_file_three && (
+              <a
+                href={`http://localhost:3000/api/reservations/${reservaCargada.res_id}/download/res_file_three?token=${sessionStorage.getItem("Token")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ms-2 d-inline-block"
+              >
+                <FaDownload title="Descargar documento 3" />
+              </a>
+            )}
+          </Form.Group>
+        </Col>
+
           </Row>
         </Form>
       </Offcanvas.Body>

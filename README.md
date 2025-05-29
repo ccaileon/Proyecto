@@ -2,7 +2,7 @@
 
 Este repositorio contiene el desarrollo del proyecto final del segundo año del Grado Superior de Desarrollo de Aplicaciones Web (DAW).
 
-## 🗂 Estructura del Proyecto
+## Estructura del Proyecto
 
 - `/backend-hotel`: Lógica del servidor con Node.js, Express y Nodemon
   - `src/config`: Configuración de base de datos
@@ -15,12 +15,12 @@ Este repositorio contiene el desarrollo del proyecto final del segundo año del 
 - `/Diseño-Grafico`: Mockups, diseños y recursos visuales
 - `/docs`: Documentación técnica y planificación del proyecto
 
-## 🌿 Ramas
+## Ramas
 
 - `main`: Rama principal y estable del proyecto.
 - `progresos`: Rama de trabajo personal de EduZu para avances y pruebas.
 
-## ✅ Requisitos
+## Requisitos
 
 - Node.js y npm
 - MySQL o MariaDB
@@ -28,27 +28,31 @@ Este repositorio contiene el desarrollo del proyecto final del segundo año del 
 - Bootstrap
 - Nodemon
 
-## 🧪 Instrucciones de uso (modo local)
+## Instrucciones de uso (modo local)
 
 1. Clona el repositorio:
+
    ```bash
    git clone https://github.com/EduZu32/Proyecto.git
    cd Proyecto
    ```
 
 2. Instala las dependencias del backend:
+
    ```bash
    cd backend-hotel
    npm install
    ```
 
 3. Instala las dependencias del frontend:
+
    ```bash
    cd ../frontend
    npm install
    ```
 
 4. Ejecuta el backend con Nodemon:
+
    ```bash
    cd ../backend-hotel
    npx nodemon src/server.js
@@ -62,10 +66,16 @@ Este repositorio contiene el desarrollo del proyecto final del segundo año del 
 
 ---
 
-## 👨‍💻 Autor
+## Autores del Proyecto
+
+**Noelia Cegarra Castillo - Ccaileon**  
+Desarrolladora Web Full-Stack | Estudiante de DAW
 
 **Eduard-Ciprian Apatachioae - EduZu32**  
 Desarrollador Web y Técnico Informático | Estudiante de DAW
+
+**Daniel Mañogil Lasheras - DanielManogilLasheras**  
+Desarrollador Web Full-Stack | Estudiante de DAW
 
 ---
 

@@ -1,7 +1,7 @@
 .buscador {
   position: sticky !important;
   top: 0;
-  z-index: 9999;
+  z-index: 100;
   background-color: #293E44;
   padding: 1rem 2rem;
   font-family: "Petrona-Regular";

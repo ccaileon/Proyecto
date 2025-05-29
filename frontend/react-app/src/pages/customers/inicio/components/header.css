@@ -1,8 +1,8 @@
 .cabecera {
   position: relative;
   background-image: linear-gradient(to right, rgba(215, 198, 189, 0.2), rgba(238, 214, 214, 0.2)), url('src/assets/img/imgInicio/cabecera-index.jpg');
-  background-size: 120%; /* Usamos 120% para pantallas grandes */
-  background-position: center top; /* Mantén la imagen centrada al principio */
+  background-size: 120%; 
+  background-position: center top; 
   height: 90vh;
   transition: background-position 0.5s ease-out;
 }
@@ -24,8 +24,8 @@ header .col-8 {
   padding-top: 6em;
 }
 
-/* Dispositivos móviles */
-@media (max-width: 768px) {
+/* Dispositivos móviles y iPad */
+@media (max-width: 913px) {
   .cabecera {
     background-size: cover; 
     background-position: center center;

@@ -2,7 +2,9 @@ const Guest = require("../models/guest.model");
 const Reservation = require("../models/reservation.model");
 const connection = require("../config/db");
 const path = require("path");
+const fs = require("fs");
 
+//Consulta para verificar solapamiento de reservas
 const checkOverlapQuery = `
   SELECT * FROM reservation 
   WHERE res_room_id = ? 
@@ -15,7 +17,7 @@ const checkOverlapQuery = `
     )
 `;
 
-// 🔎 Obtener todas las reservas
+// Obtener todas las reservas
 const getReservations = (req, res) => {
   const { room, doc_id, name, checkin } = req.query;
 
@@ -55,7 +57,7 @@ const getReservations = (req, res) => {
   });
 };
 
-// 🔍 Obtener reserva por ID
+//Obtener reserva por ID
 const getReservationById = (req, res) => {
   const { id } = req.params;
   Reservation.getById(id, (err, results) => {
@@ -66,9 +68,9 @@ const getReservationById = (req, res) => {
   });
 };
 
-// 🧾 Crear reserva con invitado (sin cuenta)
+//Crear reserva con invitado (sin cuenta)
 const createReservationForGuest = (req, res) => {
-  console.log("Body recibido:", req.body);
+  //console.log("Body recibido:", req.body);
   const {
     guest_name,
     guest_lastname,
@@ -83,6 +85,8 @@ const createReservationForGuest = (req, res) => {
     res_checkin_by,
     res_checkout_by,
     res_observations = "",
+    res_adults,
+    res_children,
     invoiceData = {},
   } = req.body;
 
@@ -96,8 +100,13 @@ const createReservationForGuest = (req, res) => {
     return res.status(400).json({ error: "Faltan datos obligatorios" });
   }
 
-  if (new Date(res_checkin) >= new Date(res_checkout)) {
-    return res.status(400).json({ error: "Fechas inválidas" });
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
   }
 
   const checkOverlapQuery = `
@@ -137,8 +146,9 @@ const createReservationForGuest = (req, res) => {
           guest_preferences,
         ],
         (err, result) => {
-          if (err)
+          if (err) {
             return res.status(500).json({ error: "Error guardando invitado" });
+          }
 
           const guestId = result.insertId;
 
@@ -161,6 +171,8 @@ const createReservationForGuest = (req, res) => {
                 res_checkin_by,
                 res_checkout_by,
                 res_observations,
+                res_adults,
+                res_children,
               };
 
               Reservation.create(data, (err, result) => {
@@ -172,49 +184,75 @@ const createReservationForGuest = (req, res) => {
                 }
 
                 const res_id = result.insertId;
-                const sqlInvoice = `
-                  INSERT INTO invoice (
-                    invoice_code_transact, invoice_details,
-                    invoice_guest_id, invoice_pay_method, invoice_points_used,
-                    invoice_res_id, invoice_total_price, invoice_date
-                  ) VALUES (?, ?, ?, ?, ?, ?, ?, CURDATE())
+
+                //Calcular precio total de la reserva
+                const roomTypeQuery = `
+                  SELECT t.room_price 
+                  FROM room r 
+                  JOIN type_room t ON r.room_type = t.room_type
+                  WHERE r.room_id = ?
                 `;
 
-                console.log("🧾 Preparando datos para la factura:", {
-                  invoice_code_transact: null,
-                  invoice_details: invoiceData.invoice_details,
-                  invoice_guest_id: guestId,
-                  invoice_pay_method: invoiceData.invoice_pay_method,
-                  invoice_points_used: invoiceData.invoice_points_used,
-                  invoice_res_id: res_id,
-                  invoice_total_price: invoiceData.invoice_total_price,
-                });
-
                 connection.query(
-                  sqlInvoice,
-                  [
-                    null,
-                    invoiceData.invoice_details ||
-                      `Reserva a nombre de ${guest_name} ${guest_lastname}`,
-                    guestId,
-                    invoiceData.invoice_pay_method,
-                    invoiceData.invoice_points_used || 0,
-                    res_id,
-                    invoiceData.invoice_total_price,
-                  ],
-                  (err, result) => {
-                    if (err) {
-                      console.error("❌ Error MySQL al guardar factura:", err);
+                  roomTypeQuery,
+                  [res_room_id],
+                  (err, priceResult) => {
+                    if (err || priceResult.length === 0) {
                       return res
                         .status(500)
-                        .json({ error: "Error guardando factura" });
+                        .json({ error: "No se pudo obtener el precio" });
                     }
 
-                    res.status(201).json({
-                      message: "✅ Reserva creada correctamente para invitado",
-                      reservationId: res_id,
-                      guestId,
-                    });
+                    const pricePerNight = parseFloat(priceResult[0].room_price);
+
+                    const nights = Math.ceil(
+                      (new Date(res_checkout) - new Date(res_checkin)) /
+                        (1000 * 60 * 60 * 24)
+                    );
+
+                    const totalPrice = (pricePerNight * nights * 1.21).toFixed(
+                      2
+                    );
+
+                    const sqlInvoice = `
+                    INSERT INTO invoice (
+                      invoice_code_transact, invoice_details,
+                      invoice_guest_id, invoice_pay_method, invoice_points_used,
+                      invoice_res_id, invoice_total_price, invoice_date
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, CURDATE())
+                  `;
+
+                    connection.query(
+                      sqlInvoice,
+                      [
+                        null,
+                        invoiceData.invoice_details ||
+                          `Reserva a nombre de ${guest_name} ${guest_lastname}`,
+                        guestId,
+                        invoiceData.invoice_pay_method,
+                        invoiceData.invoice_points_used || 0,
+                        res_id,
+                        totalPrice,
+                      ],
+                      (err) => {
+                        if (err) {
+                          console.error(
+                            "❌ Error MySQL al guardar factura:",
+                            err
+                          );
+                          return res
+                            .status(500)
+                            .json({ error: "Error guardando factura" });
+                        }
+
+                        res.status(201).json({
+                          message: "Reserva creada correctamente para invitado",
+                          reservationId: res_id,
+                          guestId,
+                          totalPrice,
+                        });
+                      }
+                    );
                   }
                 );
               });
@@ -226,7 +264,7 @@ const createReservationForGuest = (req, res) => {
   );
 };
 
-// 🧾 Crear reserva con cliente registrado
+//Crear reserva con cliente registrado
 const createReservation = (req, res) => {
   const {
     res_room_id,
@@ -237,6 +275,8 @@ const createReservation = (req, res) => {
     res_checkin_by,
     res_checkout_by,
     res_observations = "",
+    res_adults,
+    res_children,
     invoiceData = {},
   } = req.body;
 
@@ -250,6 +290,15 @@ const createReservation = (req, res) => {
     !res_checkout
   ) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
+  }
+
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
   }
 
   const checkOverlapQuery = `
@@ -278,8 +327,9 @@ const createReservation = (req, res) => {
         "SELECT * FROM employee WHERE emp_id = ?",
         [res_checkin_by],
         (err, employeeResult) => {
-          if (err || employeeResult.length === 0)
+          if (err || employeeResult.length === 0) {
             return res.status(400).json({ error: "Empleado no válido" });
+          }
 
           const data = {
             res_client_id: clientId,
@@ -292,6 +342,8 @@ const createReservation = (req, res) => {
             res_checkin_by,
             res_checkout_by,
             res_observations,
+            res_adults,
+            res_children,
           };
 
           Reservation.create(data, (err, result) => {
@@ -304,68 +356,110 @@ const createReservation = (req, res) => {
 
             const res_id = result.insertId;
 
-            const sqlInvoice = `
-              INSERT INTO invoice (
-                invoice_res_id, invoice_total_price,
-                invoice_details, invoice_pay_method,
-                invoice_points_used, invoice_client_id,
-                invoice_date
-              ) VALUES (?, ?, ?, ?, ?, ?, CURDATE())
-            `;
+            //Calcular precio total de la reserva
+            const roomTypeQuery = `
+            SELECT t.room_price 
+            FROM room r 
+            JOIN type_room t ON r.room_type = t.room_type
+            WHERE r.room_id = ?
+          `;
 
             connection.query(
-              sqlInvoice,
-              [
-                res_id,
-                invoiceData.invoice_total_price,
-                invoiceData.invoice_details,
-                invoiceData.invoice_pay_method,
-                invoiceData.invoice_points_used || 0,
-                clientId,
-              ],
-              (err) => {
-                if (err) {
+              roomTypeQuery,
+              [res_room_id],
+              (err, priceResult) => {
+                if (err || priceResult.length === 0) {
                   return res
                     .status(500)
-                    .json({ error: "Error guardando factura" });
+                    .json({ error: "No se pudo obtener el precio" });
                 }
 
-                // ➕ Calcular puntos ganados
-                const puntosGanados =
-                  Math.floor(invoiceData.invoice_total_price / 100) * 10;
-
-                // 🔄 Actualizar la reserva con los puntos
-                connection.query(
-                  "UPDATE reservation SET res_add_points = ? WHERE res_id = ?",
-                  [puntosGanados, res_id],
-                  (err) => {
-                    if (err)
-                      console.error(
-                        "❌ Error al guardar puntos en reserva:",
-                        err
-                      );
-                  }
+                const pricePerNight = parseFloat(priceResult[0].room_price);
+                const nights = Math.ceil(
+                  (new Date(res_checkout) - new Date(res_checkin)) /
+                    (1000 * 60 * 60 * 24)
                 );
 
-                // 🔄 Acumular puntos en la tabla account
+                const basePrice = pricePerNight * nights;
+                const iva = basePrice * 0.21;
+                let totalPrice = basePrice + iva;
+
+                //Descuento por puntos usados
+                const puntosUsados = invoiceData.invoice_points_used || 0;
+                let discount = 0;
+
+                if (puntosUsados === 100) discount = totalPrice * 0.05;
+                else if (puntosUsados === 200) discount = totalPrice * 0.1;
+
+                totalPrice -= discount;
+                totalPrice =
+                  Math.round((totalPrice + Number.EPSILON) * 100) / 100; // 2 decimales reales
+
+                const sqlInvoice = `
+      INSERT INTO invoice (
+        invoice_res_id, invoice_total_price,
+        invoice_details, invoice_pay_method,
+        invoice_points_used, invoice_client_id,
+        invoice_date
+      ) VALUES (?, ?, ?, ?, ?, ?, CURDATE())
+    `;
+
                 connection.query(
-                  "UPDATE account SET account_points = account_points + ? WHERE account_client_id = ?",
-                  [puntosGanados, clientId],
+                  sqlInvoice,
+                  [
+                    res_id,
+                    totalPrice,
+                    invoiceData.invoice_details || "Reserva online",
+                    invoiceData.invoice_pay_method,
+                    puntosUsados,
+                    clientId,
+                  ],
                   (err) => {
-                    if (err)
-                      console.error(
-                        "❌ Error acumulando puntos en account:",
-                        err
-                      );
+                    if (err) {
+                      return res
+                        .status(500)
+                        .json({ error: "Error guardando factura" });
+                    }
+
+                    //Puntos ganados
+                    const puntosGanados = Math.round(totalPrice / 100) * 10;
+
+                    //Guardar puntos en reserva
+                    connection.query(
+                      "UPDATE reservation SET res_add_points = ? WHERE res_id = ?",
+                      [puntosGanados, res_id],
+                      (err) => {
+                        if (err)
+                          console.error(
+                            "Error guardando puntos en reserva:",
+                            err
+                          );
+                      }
+                    );
+
+                    //Actualizar cuenta del cliente (sumar ganados, restar usados)
+                    connection.query(
+                      "UPDATE account SET account_points = account_points + ? - ? WHERE account_client_id = ?",
+                      [puntosGanados, puntosUsados, clientId],
+                      (err) => {
+                        if (err)
+                          console.error(
+                            "Error actualizando puntos en cuenta:",
+                            err
+                          );
+                      }
+                    );
+
+                    res.status(201).json({
+                      message: "Reserva creada correctamente para cliente",
+                      reservationId: res_id,
+                      clientId,
+                      puntosGanados,
+                      puntosUsados,
+                      totalPrice,
+                    });
                   }
                 );
-
-                res.status(201).json({
-                  message: "✅ Reserva creada correctamente para cliente",
-                  reservationId: res_id,
-                  clientId,
-                  puntosGanados,
-                });
               }
             );
           });
@@ -375,6 +469,7 @@ const createReservation = (req, res) => {
   );
 };
 
+//Actualizar reserva
 const updateReservation = (req, res) => {
   const { id } = req.params;
   const {
@@ -392,6 +487,14 @@ const updateReservation = (req, res) => {
   if (!res_room_id || !res_checkin || !res_checkout) {
     return res.status(400).json({ error: "Faltan campos obligatorios" });
   }
+  const diffInMs = new Date(res_checkout) - new Date(res_checkin);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  if (diffInDays <= 0) {
+    return res
+      .status(400)
+      .json({ error: "La reserva debe tener mínimo 1 noche" });
+  }
 
   const data = {
     res_client_id: res_client_id || null,
@@ -408,10 +511,11 @@ const updateReservation = (req, res) => {
   Reservation.update(id, data, (err) => {
     if (err)
       return res.status(500).json({ error: "Error actualizando reserva" });
-    res.json({ message: "✅ Reserva actualizada correctamente" });
+    res.json({ message: "Reserva actualizada correctamente" });
   });
 };
 
+//Actualizar estado de reserva
 const updateReservationStatus = (req, res) => {
   const reservationId = req.params.id;
   const { status, employeeId, checkin, checkout, observations, roomId } =
@@ -419,7 +523,7 @@ const updateReservationStatus = (req, res) => {
 
   const files = req.files;
 
-  console.log("📥 Archivos recibidos:", files);
+  //console.log("Archivos recibidos:", files);
 
   const res_file_one = files?.res_file_one?.[0]?.filename ?? null;
   const res_file_two = files?.res_file_two?.[0]?.filename ?? null;
@@ -454,7 +558,7 @@ const updateReservationStatus = (req, res) => {
 
   connection.query(sql, values, (err, results) => {
     if (err) {
-      console.error("❌ Error actualizando reserva:", err);
+      console.error("Error actualizando reserva:", err);
       return res.status(500).json({ error: "Error actualizando reserva" });
     }
 
@@ -462,14 +566,50 @@ const updateReservationStatus = (req, res) => {
   });
 };
 
+//Eliminar reserva
 const deleteReservation = (req, res) => {
   const { id } = req.params;
-  Reservation.delete(id, (err) => {
-    if (err) return res.status(500).json({ error: "Error eliminando reserva" });
-    res.json({ message: "✅ Reserva eliminada correctamente" });
+
+  // 1. Obtener puntos y cliente vinculados a la reserva
+  const query = `
+    SELECT res_add_points, res_client_id
+    FROM reservation
+    WHERE res_id = ?
+  `;
+
+  connection.query(query, [id], (err, results) => {
+    if (err || results.length === 0) {
+      return res.status(500).json({ error: "Error consultando reserva" });
+    }
+
+    const { res_add_points, res_client_id } = results[0];
+
+    // 2. Si hay cliente, restar los puntos acumulados
+    if (res_client_id && res_add_points > 0) {
+      connection.query(
+        "UPDATE account SET account_points = account_points - ? WHERE account_client_id = ?",
+        [res_add_points, res_client_id],
+        (err) => {
+          if (err) {
+            console.error("Error restando puntos del cliente:", err);
+            // No cortamos aquí para que la reserva igualmente se borre
+          }
+        }
+      );
+    }
+
+    // 3. Eliminar la reserva
+    Reservation.delete(id, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Error eliminando reserva" });
+      }
+
+      res.json({ message: "Reserva eliminada correctamente" });
+    });
   });
 };
 
+//Obtener reservas del cliente
 const getMyReservations = (req, res) => {
   const clientId = req.user?.client_id;
 
@@ -495,13 +635,13 @@ const getMyReservations = (req, res) => {
 
   connection.query(sql, [clientId], (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo reservas del cliente:", err);
+      console.error("Error obteniendo reservas del cliente:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
     res.json(results);
   });
 };
-
+//Obtener reservas del cliente (sin token)
 const getClientReservations = (req, res) => {
   const clientId = req.user?.client_id;
 
@@ -511,13 +651,53 @@ const getClientReservations = (req, res) => {
 
   Reservation.getClientReservations(clientId, (err, results) => {
     if (err) {
-      console.error("❌ Error obteniendo reservas del cliente:", err);
+      console.error("Error obteniendo reservas del cliente:", err);
       return res.status(500).json({ error: "Error interno del servidor" });
     }
     res.json(results);
   });
 };
+//Descargar archivo de reserva
+const downloadReservationFile = (req, res) => {
+  const reservationId = req.params.id;
+  const field = req.params.field;
 
+  const validFields = ["res_file_one", "res_file_two", "res_file_three"];
+  if (!validFields.includes(field)) {
+    return res.status(400).json({ error: "Campo de archivo no válido." });
+  }
+
+  const sql = `SELECT ?? FROM reservation WHERE res_id = ?`;
+  connection.query(sql, [field, reservationId], (err, results) => {
+    if (err) {
+      console.error("Error en consulta:", err);
+      return res.status(500).json({ error: "Error interno del servidor" });
+    }
+
+    if (results.length === 0 || !results[0][field]) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado para esta reserva." });
+    }
+
+    const filename = results[0][field];
+    const filePath = path.join(
+      __dirname,
+      "../../uploads/reservations",
+      filename
+    );
+
+    if (!fs.existsSync(filePath)) {
+      return res
+        .status(404)
+        .json({ error: "Archivo no encontrado en el servidor." });
+    }
+
+    res.download(filePath, filename);
+  });
+};
+
+// Exportar funciones
 module.exports = {
   getReservations,
   getReservationById,
@@ -528,4 +708,5 @@ module.exports = {
   getMyReservations,
   getClientReservations,
   updateReservationStatus,
+  downloadReservationFile,
 };

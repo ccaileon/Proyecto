@@ -3,90 +3,177 @@ import { useState } from "react";
 import { Button, Modal, Form, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import "./ventanaPago.css";
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
-const VentanaPago = ({ guestData }) => {
+const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
   const [show, setShow] = useState(false);
   const [sending, setSending] = useState(false);
+  const [cardNumber, setCardNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  
-  
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
+
+    const cardNumberTest = cardNumber.replace(/\s/g, '');
+     if (!/^\d{13,19}$/.test(cardNumberTest)) {
+      Swal.fire({
+        title: "Error",
+        text: "El número de tarjeta debe tener entre 13 y 19 dígitos.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    if (!/^\d{3}$/.test(cvv)) {
+       Swal.fire({
+        title: "Error",
+        text: "El CVC debe tener 3 dígitos.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+      Swal.fire({
+        title: "Error",
+        text: "La fecha de expiración debe estar en formato MM/YY.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
+    const [mes, año] = expiryDate.split('/').map(Number);
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear() % 100;
+    const mesActual = fechaActual.getMonth() + 1;
+
+    if (año < añoActual || (año === añoActual && mes < mesActual)) {
+      Swal.fire({
+        title: "Error",
+        text: "La tarjeta está caducada.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
     setSending(true);
-  
+
     if (!guestData.surname_one || !guestData.email || !guestData.phone || !guestData.bed_type) {
-      alert("Por favor, completa todos los datos del invitado.");
+      Swal.fire({
+        title: "Datos incompletos",
+        text: "Por favor, completa todos los datos del invitado.",
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
       setSending(false);
       return;
     }
-  
-    try {
-      const roomId = sessionStorage.getItem("selectedRoomId");
-      const hotelId = sessionStorage.getItem("hotelId") || 1;
-      const checkin = sessionStorage.getItem("checkin");
-      const checkout = sessionStorage.getItem("checkout");
-      const empId = sessionStorage.getItem("employeeId") || 2;
-  
-      const reservaResumen = JSON.parse(sessionStorage.getItem("reservaData"));
-      const noches = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
-      const adults = Number(reservaResumen?.adults || 0);
-      const children = Number(reservaResumen?.children || 0);
-      const subtotal = (adults * 50 + children * 25) * noches;
-      const total = subtotal * 1.21;
-  
-      const payload = {
-        res_room_id: Number(roomId),
-        res_room_hotel_id: Number(hotelId),
-        res_checkin: checkin,
-        res_checkout: checkout,
-        res_checkin_by: Number(empId),
-        res_checkout_by: Number(empId),
-        res_observations: guestData.comment || "",
-        invoiceData: {
-          invoice_total_price: total.toFixed(2),
-          invoice_details: `Habitación ${reservaResumen.room.room_type}, ${adults} adultos, ${children} niños, ${noches} noches`,
-          invoice_pay_method: "tarjeta",
-          invoice_points_used: 0
-        }
-      };
-  
-      const token = sessionStorage.getItem("clientToken");
-      const isClient = !!token;
-  
-      let endpoint = "http://localhost:3000/api/reservations/guest";
-      let headers = {};
-  
-      if (isClient) {
-        endpoint = "http://localhost:3000/api/reservations/client";
-        headers = {
-          Authorization: `Bearer ${token}`,
-        };
-      } else {
-        // Si es invitado, agregar sus datos personales
-        payload.guest_name = guestData.name;
-        payload.guest_lastname = guestData.surname_one || "Sin Apellido";
-        payload.guest_email = guestData.email || "no-email@hotel.com";
-        payload.guest_phone = guestData.phone || "000000000";
-        payload.guest_preferences = guestData.bed_type || "individual";
+
+try {
+    const empId = 2;
+    const reservaData = JSON.parse(sessionStorage.getItem("reservaData")) || {};
+    //console.log("reservaData desde sessionStorage:", reservaData);
+    //console.log("Adults:", reservaData.adults, "Children:", reservaData.children);
+
+    const selectedRoom = room || reservaData.room;
+    const entrada = checkIn || reservaData.checkIn;
+    const salida = checkOut || reservaData.checkOut;
+    const nights = Math.ceil((new Date(salida) - new Date(entrada)) / (1000 * 60 * 60 * 24));
+
+    const tarifaHabitacion = selectedRoom.room_price * nights;
+    const subtotal = tarifaHabitacion;
+    const iva = subtotal * 0.21;
+    let total = subtotal + iva;
+
+    const payload = {
+      res_room_id: selectedRoom.room_id,
+      res_room_hotel_id: selectedRoom.room_hotel_id || 1,
+      res_checkin: entrada,
+      res_checkout: salida,
+      res_checkin_by: empId,
+      res_checkout_by: empId,
+      res_observations: guestData.comment || "",
+      res_adults: parseInt(reservaData.adults) || 1,
+      res_children: parseInt(reservaData.children) || 0,
+      invoiceData: {
+        invoice_total_price: total.toFixed(2),
+        invoice_details: `Habitación ${selectedRoom.room_type}, ${nights} noches`,
+        invoice_pay_method: "Tarjeta",
+        invoice_points_used: parseInt(sessionStorage.getItem("puntosUsados")) || 0
       }
-  
-      console.log("📦 Payload que se enviará al backend:", payload);
-      const response = await axios.post(endpoint, payload, { headers });
-  
-      console.log("✅ Reserva completada:", response.data);
-      alert("✅ Reserva confirmada correctamente");
-      handleClose();
-    } catch (error) {
-      console.error("❌ Error creando la reserva:", error.response?.data || error.message);
-      alert("❌ Error creando la reserva. Revisa los datos.");
-    } finally {
-      setSending(false);
+    };
+
+    const token = sessionStorage.getItem("clientToken");
+    const isClient = !!token;
+
+    let endpoint = "http://localhost:3000/api/reservations/guest";
+    let headers = {};
+
+    if (isClient) {
+      endpoint = "http://localhost:3000/api/reservations/client";
+      headers = { Authorization: `Bearer ${token}` };
+    } else {
+      payload.guest_name = guestData.name;
+      payload.guest_lastname = guestData.surname_one || "Sin Apellido";
+      payload.guest_email = guestData.email || "no-email@hotel.com";
+      payload.guest_phone = guestData.phone || "000000000";
+      payload.guest_preferences = guestData.bed_type || "individual";
     }
+
+      await axios.post(endpoint, payload, { headers });
+
+    Swal.fire({
+      icon: "success",
+      title: "Reserva confirmada",
+      text: "Pronto recibirá un email con los detalles de su reserva.",
+      confirmButtonText: "Aceptar",
+      customClass: {
+        confirmButton: 'btn'
+      }
+    }).then(() => {
+      setCardNumber("");
+      setExpiryDate("");
+      setCvv("");
+
+      Object.keys(sessionStorage).forEach(key => {
+        if (!["clientUser", "clientToken"].includes(key)) {
+          sessionStorage.removeItem(key);
+        }
+      });
+
+      handleClose();
+      navigate("/");
+    });
+
+  } catch (error) {
+    console.error("Error creando la reserva:", error.response?.data || error.message);
+    Swal.fire({
+      title: "No se ha podido hacer la reserva",
+      text: "Error creando la reserva. Contacte con atención al cliente.",
+      icon: "error",
+      confirmButtonText: "Aceptar",
+      customClass: { confirmButton: "btn" }
+    });
+  } finally {
+    setSending(false);
+  }
   };
-  
 
   return (
     <div>
@@ -109,27 +196,50 @@ const VentanaPago = ({ guestData }) => {
 
             <Form.Group className="mb-3">
               <Form.Label>
-                Número de tarjeta{" "}
-                <img
-                  src="src/assets/img/imgVentanaPago/pago.png"
-                  width="30%"
-                  alt="tarjetas"
-                />
+                Número de tarjeta
+                <img src="src/assets/img/imgVentanaPago/pago.png" width="30%" alt="tarjetas" />
               </Form.Label>
-              <Form.Control type="text" placeholder="**** **** **** ****" maxLength="19" required />
+              <Form.Control
+                type="text"
+                placeholder="**** **** **** ****"
+                maxLength="19"
+                required
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value.replace(/[^\d]/g, ""))}
+              />
             </Form.Group>
 
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Fecha de Expiración</Form.Label>
-                  <Form.Control type="text" placeholder="MM/YY" maxLength="5" required />
+                  <Form.Control
+                    type="text"
+                    placeholder="MM/YY"
+                    maxLength="5"
+                    required
+                    value={expiryDate}
+                    onChange={(e) => {
+                      let input = e.target.value.replace(/\D/g, "");
+                      if (input.length >= 3) {
+                        input = input.slice(0, 2) + "/" + input.slice(2, 4);
+                      }
+                      setExpiryDate(input);
+                    }}
+                  />
                 </Form.Group>
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>CVC</Form.Label>
-                  <Form.Control type="text" placeholder="123" maxLength="3" required />
+                  <Form.Control
+                    type="text"
+                    placeholder="123"
+                    maxLength="3"
+                    required
+                    value={cvv}
+                    onChange={(e) => setCvv(e.target.value.replace(/\D/g, ""))}
+                  />
                 </Form.Group>
               </Col>
             </Row>
@@ -139,12 +249,6 @@ const VentanaPago = ({ guestData }) => {
             </Button>
           </Form>
         </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose} disabled={sending}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
@@ -161,6 +265,8 @@ VentanaPago.propTypes = {
     email: PropTypes.string.isRequired,
     bed_type: PropTypes.string.isRequired,
     comment: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  room: PropTypes.object,
+  checkIn: PropTypes.string,
+  checkOut: PropTypes.string
 };
-

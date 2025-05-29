@@ -47,8 +47,9 @@ hr {
 h2 {
   color: #293E44;
   font-family: "Petrona-SemiBold";
-  font-size: 5rem;
-    margin-bottom: 3%;
+  font-size: 3rem;
+  margin-top: 5%!important;
+    margin-bottom: 5%!important;
 }
 
 .h2-white {
@@ -103,6 +104,7 @@ font-size: 1.2rem;
   color: white;
 }
 
+
 p {
 font-family: "Petrona-Regular";
 color: #434343;
@@ -119,8 +121,19 @@ margin-bottom: 3%;
 font-size: 1.1rem;
 }
 
-img {
+.img-borde {
   border-radius: 20px;
+}
+
+.img-effect {
+  transition: transform 0.4s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 20px;
+}
+
+.img-effect:hover {
+  transform: scale(1.02) translateY(-5px);
+  box-shadow: 0 10px 20px rgba(11, 11, 11, 0.296);
 }
 
 .terminos {

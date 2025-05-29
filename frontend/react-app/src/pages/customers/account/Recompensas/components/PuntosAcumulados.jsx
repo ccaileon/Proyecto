@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./puntosAcumulados.css";
 
 function PuntosAcumulados() {
   const [puntos, setPuntos] = useState(null);
@@ -17,7 +18,7 @@ function PuntosAcumulados() {
         return res.json();
       })
       .then((data) => {
-        console.log("🎯 Datos cliente:", data);
+        //console.log("Datos cliente:", data);
         setPuntos(data.account_points); // ← ahora debe venir desde `account`
       })
       .catch((err) => {
@@ -33,8 +34,8 @@ function PuntosAcumulados() {
 
   return (
     <>
-      <h2>{puntos} puntos acumulados</h2>
-      <p>Equivalen a un <strong>{porcentajeDescuento}%</strong> de descuento en tu próxima reserva</p>
+      <h2 className="puntos">{puntos} Puntos</h2>
+      <p>Tus puntos acumulados equivalen a un <strong>{porcentajeDescuento}%</strong> de descuento en tu próxima reserva.</p>
     </>
   );
 }

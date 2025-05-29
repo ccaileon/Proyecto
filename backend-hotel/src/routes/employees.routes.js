@@ -9,8 +9,11 @@ const {
   createEmployee,
   updateEmployee,
   deleteEmployee,
+  toggleEmployeeActive
 } = require("../controllers/employees.controller");
 
+
+router.put("/:id/toggle", verifyToken, verifyManager, toggleEmployeeActive);
 router.get("/", verifyToken, verifyManager, getEmployees);
 router.get("/:id", verifyToken, verifyManager, getEmployeeById);
 router.post("/", verifyToken, verifyManager, createEmployee);

@@ -21,7 +21,7 @@ const PrivateRoute = ({ children }) => {
 
     return children;
   } catch (error) {
-    console.error("❌ Token inválido:", error);
+    console.error("Token inválido:", error);
     sessionStorage.removeItem("Token");
     sessionStorage.removeItem("User");
     return <Navigate to="/employee" replace />;
