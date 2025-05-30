@@ -69,7 +69,7 @@ export function EmpLoginNav(){
           src="/public/logotipo.png"
           alt="Dunas de Oro"
         /></NavLink>
-
+  
   <div className="d-flex align-items-center gap-3">
     {userName && <span className="fw-bold">Bienvenido, {userName}</span>}
     {userName && (

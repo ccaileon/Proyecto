@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Spinner, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-
+import { EmpLoginNav } from './../components/employeeLoginNav/EmployeeLoginNav';
 export default function EmpRooms() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,9 +63,15 @@ export default function EmpRooms() {
 
 
   return (
-    <Container className="mt-4">
+    <div className ="container-fluid">
+      <EmpLoginNav></EmpLoginNav>
+ <Container className="mt-4">
       <h2 className="mb-4 text-center">Gestión de Habitaciones</h2>
-
+    <div className="mb-3 text-center">
+      <Button variant="secondary" onClick={() => window.location.href = "/employee/menu"}>
+        Volver al menú
+      </Button>
+    </div>
       <Form.Select
         value={filterStatus}
         onChange={handleFilterChange}
@@ -123,5 +129,8 @@ export default function EmpRooms() {
         </Row>
       )}
     </Container>
+
+    </div>
+   
   );
 }
