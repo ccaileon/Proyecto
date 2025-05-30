@@ -88,7 +88,7 @@ const handleCreateEmployee = async () => {
     });
 
     if (!response.ok) {
-    // Aquí capturas errores HTTP como 400, 500, etc
+    // Errores HTTP como 400, 500, etc
     const errorData = await response.json();
     console.error('Error en la respuesta:', errorData);
     Swal.fire({
@@ -96,7 +96,7 @@ const handleCreateEmployee = async () => {
       title: "Error",
       text: "Complete todos los campos",
     });
-    // Puedes mostrar mensaje al usuario o guardar el error en estado
+    // Mostrar mensaje al usuario o guardar el error en estado
   } else {
     const data = await response.json();
     console.log('Empleado creado:', data);
@@ -107,9 +107,9 @@ const handleCreateEmployee = async () => {
         timer: 2000,
         showConfirmButton: false,
       });
-      // Cierra el Offcanvas
+      // Cerrar el Offcanvas
       setShowOffcanvas(false);
-      // Limpia el formulario
+      // Limpiar el formulario
       setNewEmployee({
         emp_doc_id: "",
         emp_name: "",
