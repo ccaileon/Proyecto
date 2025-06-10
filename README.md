@@ -23,7 +23,7 @@ This project is a web application for a hotel that allows users to register, log
 ## Branches
 
 - `main`: Main and stable branch of the project.
-- `progresos`: Personal working branch of EduZu for progress and testing.
+- `progresos`: Working branch for progress and testing.
 
 ## Requirements
 
@@ -106,7 +106,7 @@ Este repositorio contiene el desarrollo del proyecto final del segundo año del 
 ## Ramas
 
 - `main`: Rama principal y estable del proyecto.
-- `progresos`: Rama de trabajo personal de EduZu para avances y pruebas.
+- `progresos`: Rama de trabajo para avances y pruebas.
 
 ## Requisitos
 
