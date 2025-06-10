@@ -24,7 +24,7 @@ export default function EmpReservations() {
       const data = await response.json();
       setFilteredData(data);
     } catch (error) {
-      console.error("❌ Error al obtener las reservas:", error);
+      console.error("Error al obtener las reservas:", error);
     }
   };
 

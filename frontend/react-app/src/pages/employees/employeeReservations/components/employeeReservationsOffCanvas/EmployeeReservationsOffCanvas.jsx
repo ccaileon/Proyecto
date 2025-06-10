@@ -21,7 +21,7 @@ const mapEstadoReservaToFrontend = (estado) => {
     case "checkout": return "Check Out Realizado";
     case "closed": return "Reserva Cerrada";
     case "pending": return "Pendiente";
-    default: return "Estado de la reserva";
+    default: return "Pendiente";
   }
 };
 
@@ -177,13 +177,13 @@ export function EmpReservationOffCanvas({ show, onHide, reservation, onUpdate })
             </Col>
             <Col xs="auto">
               <Form.Group>
-                <Form.Label>1º apellido:</Form.Label>
+                <Form.Label>1º Apellido:</Form.Label>
                 <Form.Control type="text" name="client_surname_one" value={clientData.client_surname_one || ""} onChange={handleClientChange} />
               </Form.Group>
             </Col>
             <Col xs="auto">
               <Form.Group>
-                <Form.Label>2º apellido:</Form.Label>
+                <Form.Label>2º Apellido:</Form.Label>
                 <Form.Control type="text" name="client_surname_two" value={clientData.client_surname_two || ""} onChange={handleClientChange} />
               </Form.Group>
             </Col>
@@ -202,12 +202,12 @@ export function EmpReservationOffCanvas({ show, onHide, reservation, onUpdate })
                 <Form.Control type="text" name="client_doc_id" value={clientData.client_doc_id || ""} onChange={handleClientChange} />
               </Form.Group>
             </Col>
-            <Col xs="auto">
+            {/*<Col xs="auto">
               <Form.Group>
                 <Form.Label>Prefijo:</Form.Label>
                 <Form.Control type="text" defaultValue="NO ESTA DEFINIDO" readOnly />
               </Form.Group>
-            </Col>
+            </Col>*/}
             <Col xs="auto">
               <Form.Group>
                 <Form.Label>Número de contacto:</Form.Label>

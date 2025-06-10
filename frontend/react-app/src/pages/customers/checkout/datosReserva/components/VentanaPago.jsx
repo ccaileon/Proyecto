@@ -60,6 +60,17 @@ const VentanaPago = ({ guestData, room, checkIn, checkOut }) => {
     const añoActual = fechaActual.getFullYear() % 100;
     const mesActual = fechaActual.getMonth() + 1;
 
+    if (mes < 1 || mes > 12) {
+      Swal.fire({
+        title: "Error",
+        text: "El mes de expiración no es válido.",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        customClass: { confirmButton: "btn" }
+      });
+      return;
+    }
+
     if (año < añoActual || (año === añoActual && mes < mesActual)) {
       Swal.fire({
         title: "Error",

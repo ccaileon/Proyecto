@@ -95,7 +95,7 @@ function GuestDetails() {
         </Form.Group>
         <Form.Group>
           <Form.Control
-            type="number"
+            type="tel"
             name="phone"
             placeholder="Teléfono *"
             value={guestData.phone}

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-06-2025 a las 18:45:07
+-- Tiempo de generación: 10-06-2025 a las 19:30:28
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -38,7 +38,12 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`account_client_id`, `account_passwd`, `account_points`) VALUES
-(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 110);
+(17, '$2b$10$nrg60G09laFJ2JjqXQLk0uVFw4eqEHYLdBqs4iQ0p38BNSF3/1.R2', 110),
+(62, '$2b$10$4r6N365iFCNgUCEVdW.8.OQDdXOsoP9xobyVxDt0Z7ceuSQ8xWth.', 90),
+(63, '$2b$10$jXTu0C0rv.plTcdZEhWodebsbqkXACRXuWv4IVGwABIbCIgJ7l3xO', 230),
+(64, '$2b$10$D/VO5G07kdDvNUjvU9pmqOOfF9.8pmnTN7nmIJy63Zbv1wB.8H2MS', 10),
+(65, '$2b$10$s7sT4lTYvMorvTU6RTdZquNtWGggdlP5hFFW86199EdAXbf/aPkDq', 190),
+(66, '$2b$10$YMSe.TglLTSpuRlOP8jxSeGRwdxDFWTQifQBRirfSl7lcsMmESFn2', 40);
 
 -- --------------------------------------------------------
 
@@ -53,7 +58,7 @@ CREATE TABLE `client` (
   `client_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `client_surname_one` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `client_surname_two` varchar(20) NOT NULL,
-  `client_telephone` int(20) NOT NULL,
+  `client_telephone` varchar(20) NOT NULL,
   `client_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii COLLATE=ascii_general_ci;
 
@@ -62,7 +67,12 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`client_id`, `client_doc_type`, `client_doc_id`, `client_name`, `client_surname_one`, `client_surname_two`, `client_telephone`, `client_email`) VALUES
-(17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', 222333444, 'eduzu@gmail.com');
+(17, 'dni', '214235423r', 'Eduard', 'Ciprian', '', '222333444', 'eduzu@gmail.com'),
+(62, '', '', 'Hans', 'Grossenberg', '', '+41225439807', 'hans@gmail.com'),
+(63, '', '', 'Ana María', 'Soto', 'Garcia', '612345678', 'anamaria@gmail.com'),
+(64, '', '', 'Jose Antonio', 'Valverde', 'Huesca', '+39467895432', 'jose@gmail.com'),
+(65, '', '', 'Carlos', 'Marin', 'Herrero', '+34123456789', 'carlos@gmail.com'),
+(66, '', '', 'Claudia', 'Maldonado', 'Lopez', '+34678564312', 'claudia@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -196,7 +206,14 @@ CREATE TABLE `invoice` (
 
 INSERT INTO `invoice` (`invoice_id`, `invoice_code_transact`, `invoice_details`, `invoice_pay_method`, `invoice_points_used`, `invoice_total_price`, `invoice_date`, `invoice_res_id`, `invoice_client_id`, `invoice_guest_id`) VALUES
 (65, NULL, 'Habitación plus, 2 noches', 'Tarjeta', 0, 193.60, '2025-06-08', 92, 17, NULL),
-(66, NULL, 'Habitación plus, 2 noches', 'Tarjeta', 0, 193.60, '2025-06-08', 93, NULL, 48);
+(66, NULL, 'Habitación plus, 2 noches', 'Tarjeta', 0, 193.60, '2025-06-08', 93, NULL, 48),
+(67, NULL, 'Habitación suite-family, 13 noches', 'Tarjeta', 0, 3303.30, '2025-06-10', 94, 62, NULL),
+(68, NULL, 'Habitación plus, 3 noches', 'Tarjeta', 200, 261.36, '2025-06-10', 95, 62, NULL),
+(69, NULL, 'Habitación plus, 3 noches', 'Tarjeta', 100, 275.88, '2025-06-10', 96, 62, NULL),
+(70, NULL, 'Habitación standard-family, 19 noches', 'Tarjeta', 0, 2299.00, '2025-06-10', 97, 63, NULL),
+(71, NULL, 'Habitación plus, 1 noches', 'Tarjeta', 0, 96.80, '2025-06-10', 98, 64, NULL),
+(72, NULL, 'Habitación plus-family, 11 noches', 'Tarjeta', 0, 1863.27, '2025-06-10', 99, 65, NULL),
+(73, NULL, 'Habitación suite, 3 noches', 'Tarjeta', 0, 435.60, '2025-06-10', 100, 66, NULL);
 
 -- --------------------------------------------------------
 
@@ -234,8 +251,15 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`res_id`, `res_client_id`, `res_room_id`, `res_room_hotel_id`, `res_checkin`, `res_checkout`, `res_hour_checkin`, `res_hour_checkout`, `res_is_checkin`, `res_is_checkout`, `res_is_closed`, `res_checkin_by`, `res_checkout_by`, `res_observations`, `res_bed_preference`, `res_file_one`, `res_file_two`, `res_file_three`, `res_guest_id`, `res_add_points`, `res_adults`, `res_children`) VALUES
-(92, 17, 36, 1, '2025-06-07', '2025-06-09', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, NULL, NULL, 'Quiero un par de almohadas mas.', 'individual', NULL, NULL, NULL, NULL, 20, 2, 0),
-(93, NULL, 36, 1, '2025-06-10', '2025-06-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Quiero una botella de vino', 'doble', NULL, NULL, NULL, 48, 0, 2, 0);
+(92, 17, 36, 1, '2025-06-05', '2025-06-07', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 1, 0, NULL, 2, 'Quiero un par de almohadas mas.', 'individual', NULL, NULL, NULL, NULL, 20, 2, 0),
+(93, NULL, 36, 1, '2025-06-09', '2025-06-11', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Quiero una botella de vino', 'doble', NULL, NULL, NULL, 48, 0, 2, 0),
+(94, 62, 67, 1, '2025-07-13', '2025-07-26', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Vistas al mar', 'individual', NULL, NULL, NULL, NULL, 330, 4, 0),
+(95, 62, 36, 1, '2025-10-21', '2025-10-24', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, '', 'individual', NULL, NULL, NULL, NULL, 30, 1, 0),
+(96, 62, 38, 1, '2025-10-21', '2025-10-24', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Almohada blanda', 'individual', NULL, NULL, NULL, NULL, 30, 1, 0),
+(97, 63, 60, 1, '2025-11-09', '2025-11-28', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Necesitamos una cuna y toallas extra, gracias.', 'doble', NULL, NULL, NULL, NULL, 230, 2, 1),
+(98, 64, 36, 1, '2025-06-27', '2025-06-28', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, 2, 2, 'Por favor pongan solo café descafeinado', 'individual', NULL, NULL, NULL, NULL, 10, 2, 0),
+(99, 65, 21, 1, '2025-08-09', '2025-08-20', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 0, 0, 0, NULL, NULL, 'Una cama doble como mínimo y toallas extra.', 'doble', NULL, NULL, NULL, NULL, 190, 2, 1),
+(100, 66, 3, 1, '2025-06-09', '2025-06-12', '0000-00-00 00:00:00.000000', '0000-00-00 00:00:00.000000', 1, 0, 0, 2, NULL, 'Necesitaría almohadas extra y sobres de manzanilla.', 'doble', NULL, NULL, NULL, NULL, 40, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -338,7 +362,9 @@ INSERT INTO `shift` (`shift_id`, `shift_emp_id`, `shift_date_in`, `shift_date_ou
 (80, 9, '2025-06-08 18:05:30.935000', '2025-06-08 18:22:13.314000', 16),
 (81, 9, '2025-06-08 18:22:13.314000', '2025-06-08 18:23:07.723000', 0.9),
 (82, 9, '2025-06-08 18:23:16.686000', '2025-06-08 18:33:17.807000', 10.0167),
-(83, 9, '2025-06-08 18:33:26.914000', '2025-06-08 18:44:54.993000', 11.4667);
+(83, 9, '2025-06-08 18:33:26.914000', '2025-06-08 18:44:54.993000', 11.4667),
+(84, 9, '2025-06-10 19:09:17.313000', '2025-06-10 19:25:35.239000', 16),
+(85, 9, '2025-06-10 19:25:35.239000', '2025-06-10 19:27:26.947000', 1.85);
 
 -- --------------------------------------------------------
 
@@ -366,7 +392,7 @@ INSERT INTO `type_room` (`room_type`, `room_capacity`, `room_mts_square`, `room_
 ('plus-family', 4, 30, 0, 0, 0, 1, 139.99),
 ('standard', 2, 18, 0, 0, 0, 0, 60.00),
 ('standard-family', 4, 25, 0, 0, 0, 0, 100.00),
-('suite', 2, 30, 1, 1, 1, 1, 120.00),
+('suite', 4, 30, 1, 1, 1, 1, 120.00),
 ('suite-family', 4, 45, 1, 1, 1, 1, 210.00);
 
 --
@@ -469,7 +495,7 @@ ALTER TABLE `type_room`
 -- AUTO_INCREMENT de la tabla `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT de la tabla `contact_messages`
@@ -499,13 +525,13 @@ ALTER TABLE `hotel`
 -- AUTO_INCREMENT de la tabla `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de la tabla `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `res_id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `room`
@@ -517,7 +543,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT de la tabla `shift`
 --
 ALTER TABLE `shift`
-  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `shift_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- Restricciones para tablas volcadas

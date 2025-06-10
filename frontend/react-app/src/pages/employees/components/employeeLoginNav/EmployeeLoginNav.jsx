@@ -66,14 +66,14 @@ export function EmpLoginNav(){
     <nav className="z-3 align-items-start min-vw-100 navbar navbar-expand-lg bg-body-tertiary m-0 p-0 ">
       <div className="container-fluid navbar-custom d-flex justify-content-between align-items-center">
   <NavLink className="navbar-brand" to="/employee/menu"><img className={styles.empNavImage}
-          src="/public/logotipo.png"
+          src="/logotipo.png"
           alt="Dunas de Oro"
         /></NavLink>
   
   <div className="d-flex align-items-center gap-3">
     {userName && <span className="fw-bold">Bienvenido, {userName}</span>}
     {userName && (
-      <Button variant="outline-danger" onClick={handleLogout}>
+      <Button variant="outline-danger" onClick={handleLogout} className="mx-2">
         Cerrar sesión
       </Button>
     )}
