@@ -182,21 +182,22 @@ Desarrollador Web Full-Stack | Estudiante de DAW
 
 
 1. Home Page
-![Home Page](/screenshots/index.png)  
+![Home Page](/screenshots/index.PNG)  
 2. Login
-![Login](/screenshots/login.png)  
+![Login](/screenshots/login.PNG)  
 3. Rooms
-![Rooms](/screenshots/rooms.png)  
+![Rooms](/screenshots/rooms.PNG)  
 4. Services
-![Services](/screenshots/services.png)  
+![Services](/screenshots/services.PNG)  
 5. Contact
-![Contact](/screenshots/contact.png)  
+![Contact](/screenshots/contact.PNG)  
 6. Room Search
-![Room Search](/screenshots/room-search.png)  
+![Room Search](/screenshots/room-search.PNG)  
 7. Checkout
-![Checkout](/screenshots/checkout.png)  
+![Checkout](/screenshots/checkout.PNG)  
 
 <br>
+
 **Employee Side**
 
 1. Index/Carousel Menu
@@ -204,6 +205,6 @@ Desarrollador Web Full-Stack | Estudiante de DAW
 3. Booking Management
 ![Booking Management](/screenshots/employee-booking-management.png)  
 5. Rooms Management
-![Rooms Management](/screenshots/employee-rooms.png)  
+![Rooms Management](/screenshots/employee-rooms.PNG)  
 
 
