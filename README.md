@@ -1,9 +1,15 @@
+
+<img src="https://flagcdn.com/w20/es.png" width="20"/> [Leer en español](#proyecto-final-daw---gestión-de-hotel)   
+
+📸 [Screenshots](#screenshots)
+
+
+<br>
+
+
 # Hotel Management App
 
-🇪🇸 [Leer en español](#proyecto-final-daw---gestión-de-hotel)
-
-
-This repository contains the development of the final project for the second year of the Higher Vocational Training Degree in Web Application Development (DAW).
+This repository contains the development of the final project for the second year of the Higher Vocational Training Degree in Web Application Development.
 
 This project is a web application for a hotel that allows users to register, log in, and make room reservations. The frontend is built with React, providing a dynamic and responsive user interface, while the backend is powered by Express, handling authentication, booking management, and data storage.
 
@@ -84,7 +90,7 @@ Full-Stack Web Developer | Web Application Development (DAW) Student
    
 
 ---
-
+<br>
 
 # Proyecto Final DAW - Gestión de Hotel
 
@@ -152,7 +158,7 @@ Este repositorio contiene el desarrollo del proyecto final del segundo año del 
    npm run dev
    ```
 
----
+
 
 ## Autores del Proyecto
 
@@ -166,5 +172,38 @@ Desarrollador Web y Técnico Informático | Estudiante de DAW
 Desarrollador Web Full-Stack | Estudiante de DAW
 
 ---
+<br>
 
-> ¡Gracias por revisar este proyecto! Cualquier sugerencia o mejora es bienvenida.
+## Screenshots
+
+<br>
+
+**Client Side**
+
+
+1. Home Page
+![Home Page](/screenshots/index.png)  
+2. Login
+![Login](/screenshots/login.png)  
+3. Rooms
+![Rooms](/screenshots/rooms.png)  
+4. Services
+![Services](/screenshots/services.png)  
+5. Contact
+![Contact](/screenshots/contact.png)  
+6. Room Search
+![Room Search](/screenshots/room-search.png)  
+7. Checkout
+![Checkout](/screenshots/checkout.png)  
+
+<br>
+**Employee Side**
+
+1. Index/Carousel Menu
+![Index](/screenshots/employee-menu-carousel.png)  
+3. Booking Management
+![Booking Management](/screenshots/employee-booking-management.png)  
+5. Rooms Management
+![Rooms Management](/screenshots/employee-rooms.png)  
+
+
